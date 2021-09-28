@@ -1,0 +1,221 @@
+<nb-card size="large" class="col-md-12 h-auto py-5">
+  <nb-card-body>
+    <h3>New SLA Policy</h3>
+    <nb-card>
+      <nb-card-body>
+        <label class="col-md-12">
+          Name <span class="text-danger">*</span>
+          <input type="text" nbInput fullWidth placeholder="SLA Name">
+        </label>
+        <label class="col-md-12">
+          Description
+          <textarea nbInput fullWidth placeholder="Description"></textarea>
+        </label>
+      </nb-card-body>
+    </nb-card>
+
+    <nb-card class="col-md-12 pt-3 pb-3">
+      <nb-card-header>
+        <h5>When Ticket satisfies these conditions</h5>
+      </nb-card-header>
+      <nb-card-body>
+        <nb-select placeholder="Conditions" fullWidth>
+          <nb-option [value]="0">Condition 0</nb-option>
+          <nb-option [value]="0">Condition 1</nb-option>
+          <nb-option [value]="0">Condition 2</nb-option>
+          <nb-option [value]="0">Condition 3</nb-option>
+        </nb-select>
+      </nb-card-body>
+    </nb-card>
+
+    <nb-card class="col-md-12 pt-3 pb-3 overflow-auto">
+      <table class="table">
+        <thead>
+        <tr>
+          <th scope="col">Priority</th>
+          <th scope="col">First response time</th>
+          <th scope="col">Every response time</th>
+          <th scope="col">Resolution time</th>
+          <th scope="col">Operational hours</th>
+          <th scope="col">Escalation</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let entry of entries;let i = index">
+          <th scope="row">
+            <span class="priorityColor" [style.background-color]="entry.priority.color"></span>
+            {{entry.priority.name | titlecase}}
+          </th>
+          <td>
+            <input nbInput [placeholder]="entry.firstResponse" [nbPopover]="templateRef1">
+            <ng-template #templateRef1 class="col-md-2">
+              <div class="w-100  d-flex flex-wrap justify-content-between p-3">
+                <input nbInput placeholder="Days" type="number" [(ngModel)]="firstResponseTimeDay"
+                       style="width: 30% !important;">
+                <input nbInput placeholder="Hrs" type="number" [(ngModel)]="firstResponseTimeHrs"
+                       style="width: 30% !important;">
+                <input nbInput placeholder="Min" type="number" [(ngModel)]="firstResponseTimeMin"
+                       style="width: 30% !important;">
+              </div>
+            </ng-template>
+          </td>
+          <td>
+            <input nbInput [placeholder]="entry.everyResponse" [nbPopover]="templateRef"
+                   (change)="setEveryResponseTime($event)">
+            <ng-template #templateRef class="col-md-2">
+              <div class="w-100  d-flex flex-wrap justify-content-between p-3">
+                <input nbInput placeholder="Days" type="number" [(ngModel)]="everyResponseTimeDay"
+                       style="width: 30% !important;">
+                <input nbInput placeholder="Hrs" type="number" [(ngModel)]="everyResponseTimeHrs"
+                       style="width: 30% !important;">
+                <input nbInput placeholder="Min" type="number" [(ngModel)]="everyResponseTimeMin"
+                       style="width: 30% !important;">
+              </div>
+
+            </ng-template>
+
+          </td>
+          <td>
+            <input nbInput [placeholder]="entry.resolutionTime" [nbPopover]="templateRef2">
+            <ng-template #templateRef2 class="col-md-2">
+              <div class="w-100  d-flex flex-wrap justify-content-between p-3">
+                <input nbInput placeholder="Days" type="number" [(ngModel)]="firstResponseTimeDay"
+                       style="width: 30% !important;">
+                <input nbInput placeholder="Hrs" type="number" [(ngModel)]="firstResponseTimeHrs"
+                       style="width: 30% !important;">
+                <input nbInput placeholder="Min" type="number" [(ngModel)]="firstResponseTimeMin"
+                       style="width: 30% !important;">
+              </div>
+            </ng-template>
+          </td>
+          <td>
+            <nb-select>
+              <nb-option *ngFor="let option of entry.operationalHours"> {{option}}</nb-option>
+            </nb-select>
+          </td>
+          <td>
+            <nb-toggle [(ngModel)]="entry.escalation"></nb-toggle>
+        </tr>
+
+        </tbody>
+      </table>
+    </nb-card>
+
+
+    <nb-card class="col-md-12 pt-3 pb-3">
+      <nb-card-header>
+        <h5>Remind agents when the SLA due time approaches</h5>
+      </nb-card-header>
+      <nb-card-body>
+        <div class="py-4 text-center col-md-12" *ngIf="reminders().controls.length < 1">
+          <p>
+            <nb-icon icon="clock-outline" class="mr-3"></nb-icon>
+            Send reminder to agents when the SLA due time approaches.
+          </p>
+        </div>
+        <form [formGroup]="agentReminderForm" (ngSubmit)="onSubmitReminder()">
+
+          <div class="col-12 pb-3" *ngFor="let quantity of reminders().controls; let i=index"
+               [formGroupName]="i">
+            <label class="col-md-6">
+              When<br>
+              <input nbInput fullWidth formControlName="when">
+            </label>
+            <label class="col-md-6">
+              approaches in
+              <input nbInput fullWidth formControlName="approachesIn">
+            </label>
+            <label class="col-md-10">
+              send reminder to
+              <nb-select fullWidth multiple formControlName="reminderTo">
+                <nb-option [value]="'Assigned agent'">Assigned Agent</nb-option>
+                <nb-option [value]="'Joe'">Joe</nb-option>
+              </nb-select>
+            </label>
+            <div class="d-flex align-items-center justify-content-end">
+              <button nbButton (click)="removeReminder(i)" status="danger" shape="round">
+                <nb-icon icon="trash-2-outline"></nb-icon>
+              </button>
+            </div>
+
+            <hr>
+          </div>
+        </form>
+      </nb-card-body>
+      <nb-card-footer>
+        <button type="button" (click)="addReminder()" nbButton *ngIf="reminders().controls.length < 1">
+          Add Reminder
+        </button>
+        <button type="button" (click)="addReminder()" nbButton *ngIf="reminders().controls.length > 0">
+          Add More Reminders
+        </button>
+        <br>
+        <p style="opacity: 0.5;">
+          {{this.agentReminderForm.value | json}}
+        </p>
+      </nb-card-footer>
+    </nb-card>
+
+    <nb-card class="col-md-12 pt-3 pb-3">
+      <nb-card-header>
+        <h5>Send escalation when the SLA is violated</h5>
+      </nb-card-header>
+      <nb-card-body>
+        <div class="py-4 text-center col-md-12" *ngIf="escalations().controls.length < 1">
+          <p>
+            <nb-icon icon="email-outline" class="mr-3"></nb-icon>
+            Send escalation whenever the SLA is been breached.
+          </p>
+        </div>
+        <form [formGroup]="agentReminderForm" (ngSubmit)="onSubmitEscalation()">
+
+          <div class="col-12 pb-3" *ngFor="let quantity of escalations().controls; let i=index" [formGroupName]="i">
+            <label class="col-md-6">
+              When
+              <input nbInput fullWidth formControlName="escalationCondition">
+            </label>
+            <label class="col-md-6">
+              is not met, escalate
+              <input nbInput fullWidth formControlName="escalationUrgency">
+            </label>
+            <label class="col-md-10">
+              to
+              <nb-select multiple fullWidth formControlName="escalateTo">
+                <nb-option [value]="'Assigned agent'">Assigned Agent</nb-option>
+                <nb-option [value]="'Joe'">Joe</nb-option>
+              </nb-select>
+            </label>
+            <div class="d-flex align-items-center justify-content-end">
+              <button nbButton (click)="removeEscalation(i)" status="danger" shape="round">
+                <nb-icon icon="trash-2-outline"></nb-icon>
+              </button>
+            </div>
+            <hr>
+          </div>
+        </form>
+      </nb-card-body>
+      <nb-card-footer>
+        <button type="button" (click)="addEscalation()" nbButton *ngIf="escalations().controls.length < 1">
+          Create Escalation
+        </button>
+        <button type="button" (click)="addEscalation()" nbButton *ngIf="escalations().controls.length > 0">
+          Add New Escalation
+        </button>
+        <br>
+        <p style="opacity: 0.5;">
+          {{this.escalationForm.value | json}}
+        </p>
+      </nb-card-footer>
+    </nb-card>
+
+
+  </nb-card-body>
+  <nb-card-footer class="d-flex justify-content-end">
+    <button nbButton status="danger" type="button" class="mx-1">
+      Cancel
+    </button>
+    <button nbButton status="primary" type="button" class="mx-1 w-25">
+      Save
+    </button>
+  </nb-card-footer>
+</nb-card>

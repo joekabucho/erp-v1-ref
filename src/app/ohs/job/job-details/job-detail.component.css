@@ -1,0 +1,272 @@
+.approval-btn:disabled,
+.approval-btn[disabled] {
+  color: #ffffff !important;
+  background-color: #00d68f !important;
+}
+
+nb-tabset nb-tab {
+  height: 45em;
+  overflow: auto;
+}
+
+.detail-card {
+  cursor: pointer;
+  -webkit-box-shadow: 1px 1px 2px 2px rgba(0, 0, 0, 0.2);
+  -moz-box-shadow: 1px 1px 2px 2px rgba(0, 0, 0, 0.2);
+  box-shadow: 1px 1px 2px 2px rgba(0, 0, 0, 0.2);
+}
+.detail-card:hover {
+  -webkit-box-shadow: 0 0 5px 6px rgba(0, 0, 0, 0.2);
+  -moz-box-shadow: 0 0 5px 6px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 0 5px 6px rgba(0, 0, 0, 0.2);
+  transition: all 0.2s ease-in-out;
+}
+.detail-card nb-card-header {
+  display: flex;
+  justify-content: center;
+  padding: 5px;
+  border-bottom: none;
+}
+.detail-card nb-card-header .detail {
+  font-weight: bold;
+  font-style: normal;
+  font-size: 0.75em;
+  color: #ffaa00;
+}
+.detail-card fa-icon {
+  cursor: pointer;
+  color: #002cff;
+  font-size: 1rem;
+}
+.detail-card fa-icon:hover {
+  font-size: 1.5rem;
+}
+.detail-card nb-card-body {
+  display: flex;
+  justify-content: center;
+  padding: 10px;
+}
+.detail-card nb-card-body .fetched-data {
+  font-style: normal;
+  font-size: 1em;
+  font-family: Montserrat;
+  text-transform: capitalize;
+}
+.detail-card nb-card-body nb-icon {
+  font-size: 1.25em;
+  margin: 0 5px;
+}
+
+.image-card {
+  -webkit-box-shadow: 1px 1px 2px 2px rgba(0, 0, 0, 0.2);
+  -moz-box-shadow: 1px 1px 2px 2px rgba(0, 0, 0, 0.2);
+  box-shadow: 1px 1px 2px 2px rgba(0, 0, 0, 0.2);
+  cursor: pointer;
+  width: fit-content;
+}
+.image-card nb-card-body {
+  padding: 0;
+  height: fit-content;
+}
+.image-card nb-card-body img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+.image-card .safety {
+  width: 100%;
+  height: 100%;
+}
+
+.permit-card {
+  -webkit-box-shadow: 1px 1px 2px 2px rgba(0, 0, 0, 0.2);
+  -moz-box-shadow: 1px 1px 2px 2px rgba(0, 0, 0, 0.2);
+  box-shadow: 1px 1px 2px 2px rgba(0, 0, 0, 0.2);
+  cursor: pointer;
+}
+.permit-card .permit-details {
+  margin: 5px;
+  border-bottom: 1px solid #edf1f7;
+  box-sizing: border-box;
+  height: fit-content;
+  display: flex;
+  justify-content: space-between;
+  padding: 10px;
+}
+.permit-card .permit-details .fetched-data {
+  font-weight: bolder;
+  margin-left: 10px;
+}
+
+.comment {
+  font-weight: 600;
+}
+
+.comment-text {
+  color: #65676b;
+  font-weight: 100;
+}
+
+.certificate-card {
+  padding: 0;
+  background-color: #f2f3f5;
+}
+.certificate-card .image-detail {
+  display: flex;
+  flex-direction: column;
+  padding: 10px;
+  letter-spacing: 1px;
+}
+.certificate-card .image-detail .image-user {
+  font-weight: 600;
+}
+.certificate-card .image-detail .image-text {
+  color: #65676b;
+  font-weight: 100;
+}
+.certificate-card .image-detail .image-time {
+  margin-top: 2px;
+  color: #65676b;
+  font-weight: 100;
+  font-size: 11px;
+}
+.certificate-card .image-detail .image-comment {
+  color: #65676b;
+  font-weight: 100;
+}
+.certificate-card .image-detail .image-comment:hover {
+  text-decoration: underline;
+}
+.certificate-card nb-card-body {
+  padding: 0;
+}
+.certificate-card img {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+.certificate-card .img-link img {
+  width: 60px;
+  height: 60px;
+  align-self: center;
+}
+.certificate-card .img-link .file-name {
+  align-self: center;
+}
+
+.image-modal {
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+}
+.image-modal nb-icon {
+  font-size: 40px;
+  margin: 10px;
+  float: right;
+  cursor: pointer;
+}
+.image-modal img {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: contain;
+}
+
+agm-map {
+  height: 600px;
+}
+
+.edit {
+  cursor: pointer;
+  color: #00d68f;
+  font-size: 1.3rem;
+}
+.edit:hover {
+  font-size: 1.5rem;
+}
+
+.trash {
+  cursor: pointer;
+  color: #ff3d71;
+  font-size: 1.3rem;
+}
+.trash:hover {
+  font-size: 1.5rem;
+}
+
+ion-content {
+  display: none;
+}
+
+/*
+Max width before this PARTICULAR table gets nasty
+This query will take effect for any screen smaller than 760px
+and also iPads specifically.
+*/
+@media only screen and (max-width: 760px), (min-device-width: 768px) and (max-device-width: 1024px) {
+  nb-card {
+    display: none;
+  }
+
+  .link {
+    display: none;
+  }
+
+  .row {
+    display: none;
+  }
+
+  ion-content {
+    display: block;
+    overflow-y: scroll;
+    position: fixed;
+  }
+
+  .color {
+    color: white;
+  }
+
+  .card {
+    background: linear-gradient(to bottom right, #738ae6, #5c5edd);
+    border-radius: 5px 50px 5px 5px;
+    /*TL TR BR BL*/
+  }
+
+  .card1 {
+    background: linear-gradient(to bottom right, #fe95b6, #ff5287);
+    border-radius: 5px 50px 5px 5px;
+    /*TL TR BR BL*/
+  }
+
+  .card2 {
+    background: linear-gradient(to bottom right, #6f72ca, #1e1466);
+    border-radius: 5px 50px 5px 5px;
+    /*TL TR BR BL*/
+  }
+
+  .card3 {
+    background: linear-gradient(to bottom right, #fa7d82, #ffb295);
+    border-radius: 5px 50px 5px 5px;
+    /*TL TR BR BL*/
+  }
+
+  .card4 {
+    background: linear-gradient(to bottom right, #fe95b6, #ff5287);
+    border-radius: 5px 50px 5px 5px;
+    /*TL TR BR BL*/
+  }
+
+  .card5 {
+    background: linear-gradient(to bottom right, #6f72ca, #1e1466);
+    border-radius: 5px 50px 5px 5px;
+    /*TL TR BR BL*/
+  }
+
+  .card6 {
+    background: linear-gradient(to bottom right, #994143, #ffb295);
+    border-radius: 5px 50px 5px 5px;
+    /*TL TR BR BL*/
+  }
+}
+
+/*# sourceMappingURL=job-detail.component.css.map */

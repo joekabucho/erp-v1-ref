@@ -1,0 +1,48 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Edit Work Permit </ion-title>
+    <ion-icon name='close-circle' (click)='dismiss()' style='float: right;' size="large"></ion-icon>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <form [formGroup]="workpermitForm">
+  <ion-item>
+    <ion-input placeholder="Security & Access" formControlName="safety_access"></ion-input>
+  </ion-item>
+  <ion-item>
+    <ion-input placeholder="Security & Environmental concerns" formControlName="safety_or_concerns"></ion-input>
+  </ion-item>
+  <ion-item>
+    <ion-label>Project Manager</ion-label>
+    <ion-select  cancelText="No" okText="Okay!" formControlName="project_manager">
+      <ion-select-option *ngFor="let user of projectManager" [value]="user.id">{{user.first_name}} {{user.last_name}}</ion-select-option>
+    </ion-select>
+  </ion-item>
+  <ion-item>
+    <ion-label>Supervisor</ion-label>
+    <ion-select  cancelText="No" okText="Okay!"  formControlName="supervisor">
+      <ion-select-option *ngFor="let user of Supervisor" [value]="user.id">{{user.first_name}} {{user.last_name}}</ion-select-option>
+    </ion-select>
+  </ion-item>
+  <ion-item>
+    <ion-label>HOD</ion-label>
+    <ion-select  cancelText="No" okText="Okay!" formControlName="hod">
+      <ion-select-option *ngFor="let user of HOD" [value]="user.id">{{user.first_name}} {{user.last_name}}</ion-select-option>
+    </ion-select>
+  </ion-item>
+  <ion-item>
+    <ion-label>Permits</ion-label>
+    <ion-select multiple="true" cancelText="No" okText="Okay!" formControlName="permits">
+      <ion-select-option *ngFor="let perm of permits" [value]="perm.id">{{perm.name}}</ion-select-option>
+    </ion-select>
+  </ion-item>
+    <ion-fab  horizontal="end" style="bottom: 80px" edge>
+      <ion-fab-button>
+        <ion-icon name="save"  (click)="editPermit();dismiss()"></ion-icon>
+      </ion-fab-button>
+    </ion-fab>
+  </form>
+</ion-content>
+
+

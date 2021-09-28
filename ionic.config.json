@@ -1,0 +1,8 @@
+{
+  "name": "Adrian ARP",
+  "integrations": {
+    "cordova": {},
+    "capacitor": {}
+  },
+  "type": "angular"
+}

@@ -1,0 +1,340 @@
+<div class="row">
+  <div class="col-sm-12">
+    <nb-card>
+      <nb-card-header>Site Inspections
+        <div class="d-flex" style="width: 30%;">
+          <button nbButton status="success" size="small" (click)="create(dialog)">Add Positive Behaviour  Observation</button>
+        </div>
+      </nb-card-header>
+      <nb-card-body>
+
+
+        <table  class="table table-striped table-hover">
+          <thead>
+          <tr>
+            <th *ngFor="let head of headElements" scope="col">{{head}}</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td><nb-icon icon="edit-outline" class="edit" (click)="edit(dialog1)"></nb-icon></td>
+            <td><nb-icon icon="trash-outline" class="trash"></nb-icon></td>
+          </tr>
+          </tbody>
+        </table>
+
+      </nb-card-body>
+
+    </nb-card>
+  </div>
+</div>
+
+<ng-template #dialog let-data let-ref="dialogRef">
+  <nb-card status="success" style="width: 40em;" size="giant">
+    <nb-card-header>Create Positive Behaviour Observation
+      <a (click)="ref.close()" aria-label="Back" style="float: right;"  id="close-edit">
+        <nb-icon icon="close"></nb-icon>
+      </a>
+    </nb-card-header>
+    <nb-card-body>
+      <form [formGroup]="pboForm">
+
+        <div class="form-group">
+          <div class="form-group">
+            <label class="label" for="inputStartDate">Observer</label>
+            <input type="text" nbInput fullWidth >
+          </div>
+        </div>
+        <div class="form-group">
+          <div class="form-group">
+            <label class="label" for="inputStartDate">Observer Department</label>
+            <input type="text" nbInput fullWidth >
+          </div>
+        </div>
+        <div class="form-group">
+          <div class="form-group">
+            <label class="label" for="inputStartDate">Date</label>
+            <input type="datetime-local" nbInput fullWidth >
+          </div>
+        </div>
+        <div class="form-group">
+          <div class="form-group">
+            <label class="label" for="inputStartDate">Observed activity</label>
+            <textarea type="text" nbInput fullWidth ></textarea>
+          </div>
+        </div>
+
+        <div class="form-group justify-content-between d-flex">
+          <label class="label">Eyes on the road</label>
+          <nb-radio [value]="'safe'">safe
+          </nb-radio>
+          <nb-radio [value]="'not safe'">Not safe
+          </nb-radio>
+          <nb-radio [value]="'not observed'">Not observed
+          </nb-radio>
+        </div>
+
+        <div class="form-group justify-content-between d-flex">
+          <label class="label">Eyes on the job</label>
+          <nb-radio [value]="'safe'">safe
+          </nb-radio>
+          <nb-radio [value]="'not safe'">Not safe
+          </nb-radio>
+          <nb-radio [value]="'not observed'">Not observed
+          </nb-radio>
+        </div>
+
+        <div class="form-group justify-content-between d-flex">
+          <label class="label">Used adequate tools in proper conditions</label>
+          <nb-radio [value]="'safe'">safe
+          </nb-radio>
+          <nb-radio [value]="'not safe'">Not safe
+          </nb-radio>
+          <nb-radio [value]="'not observed'">Not observed
+          </nb-radio>
+        </div>
+
+        <div class="form-group justify-content-between d-flex">
+          <label class="label">Used adequate PPE</label>
+          <nb-radio [value]="'safe'">safe
+          </nb-radio>
+          <nb-radio [value]="'not safe'">Not safe
+          </nb-radio>
+          <nb-radio [value]="'not observed'">Not observed
+          </nb-radio>
+        </div>
+
+        <div class="form-group justify-content-between d-flex">
+          <label class="label">Work safely at height</label>
+          <nb-radio [value]="'safe'">safe
+          </nb-radio>
+          <nb-radio [value]="'not safe'">Not safe
+          </nb-radio>
+          <nb-radio [value]="'not observed'">Not observed
+          </nb-radio>
+        </div>
+
+
+        <div class="form-group justify-content-between d-flex">
+          <label class="label">Adherence to absolute rules</label>
+          <nb-radio [value]="'safe'">safe
+          </nb-radio>
+          <nb-radio [value]="'not safe'">Not safe
+          </nb-radio>
+          <nb-radio [value]="'not observed'">Not observed
+          </nb-radio>
+        </div>
+
+        <div class="form-group justify-content-between d-flex">
+          <label class="label">Protecting the envuronament</label>
+          <nb-radio [value]="'safe'">safe
+          </nb-radio>
+          <nb-radio [value]="'not safe'">Not safe
+          </nb-radio>
+          <nb-radio [value]="'not observed'">Not observed
+          </nb-radio>
+        </div>
+
+        <div class="form-group">
+          <div class="form-group">
+            <label class="label" for="inputStartDate">Observer employee opinion</label>
+            <textarea type="text" nbInput fullWidth ></textarea>
+          </div>
+        </div>
+        <div class="form-group">
+          <div class="form-group">
+            <label class="label" for="inputStartDate">Observer opinion</label>
+            <textarea type="text" nbInput fullWidth ></textarea>
+          </div>
+        </div>
+        <div class="form-group">
+          <div class="form-group">
+            <label class="label" for="inputStartDate">Behaviour</label>
+            <input type="text" nbInput fullWidth >
+          </div>
+        </div>
+        <div class="form-group">
+          <div class="form-group">
+            <label class="label" for="inputStartDate">Action</label>
+            <input type="text" nbInput fullWidth >
+          </div>
+        </div>
+        <div class="form-group">
+          <div class="form-group">
+            <label class="label" for="inputStartDate">Who</label>
+            <input type="text" nbInput fullWidth >
+          </div>
+        </div>
+        <div class="form-group">
+          <div class="form-group">
+            <label class="label" for="inputStartDate">When</label>
+            <input type="text" nbInput fullWidth >
+          </div>
+        </div>
+      </form>
+
+    </nb-card-body>
+  </nb-card>
+</ng-template>
+
+<ng-template #dialog1 let-data let-ref="dialogRef">
+  <nb-card status="success" style="width: 40em;" size="giant">
+    <nb-card-header>Edit Positive Behaviour Observation
+      <a (click)="ref.close()" aria-label="Back" style="float: right;"  id="close-edit">
+        <nb-icon icon="close"></nb-icon>
+      </a>
+    </nb-card-header>
+    <nb-card-body>
+      <form [formGroup]="pboForm">
+
+        <div class="form-group">
+          <div class="form-group">
+            <label class="label" for="inputStartDate">Observer</label>
+            <input type="text" nbInput fullWidth >
+          </div>
+        </div>
+        <div class="form-group">
+          <div class="form-group">
+            <label class="label" for="inputStartDate">Observer Department</label>
+            <input type="text" nbInput fullWidth >
+          </div>
+        </div>
+        <div class="form-group">
+          <div class="form-group">
+            <label class="label" for="inputStartDate">Date</label>
+            <input type="datetime-local" nbInput fullWidth >
+          </div>
+        </div>
+        <div class="form-group">
+          <div class="form-group">
+            <label class="label" for="inputStartDate">Observed activity</label>
+            <textarea type="text" nbInput fullWidth ></textarea>
+          </div>
+        </div>
+
+        <div class="form-group justify-content-between d-flex">
+          <label class="label">Eyes on the road</label>
+          <nb-radio [value]="'safe'">safe
+          </nb-radio>
+          <nb-radio [value]="'not safe'">Not safe
+          </nb-radio>
+          <nb-radio [value]="'not observed'">Not observed
+          </nb-radio>
+        </div>
+
+        <div class="form-group justify-content-between d-flex">
+          <label class="label">Eyes on the job</label>
+          <nb-radio [value]="'safe'">safe
+          </nb-radio>
+          <nb-radio [value]="'not safe'">Not safe
+          </nb-radio>
+          <nb-radio [value]="'not observed'">Not observed
+          </nb-radio>
+        </div>
+
+        <div class="form-group justify-content-between d-flex">
+          <label class="label">Used adequate tools in proper conditions</label>
+          <nb-radio [value]="'safe'">safe
+          </nb-radio>
+          <nb-radio [value]="'not safe'">Not safe
+          </nb-radio>
+          <nb-radio [value]="'not observed'">Not observed
+          </nb-radio>
+        </div>
+
+        <div class="form-group justify-content-between d-flex">
+          <label class="label">Used adequate PPE</label>
+          <nb-radio [value]="'safe'">safe
+          </nb-radio>
+          <nb-radio [value]="'not safe'">Not safe
+          </nb-radio>
+          <nb-radio [value]="'not observed'">Not observed
+          </nb-radio>
+        </div>
+
+        <div class="form-group justify-content-between d-flex">
+          <label class="label">Work safely at height</label>
+          <nb-radio [value]="'safe'">safe
+          </nb-radio>
+          <nb-radio [value]="'not safe'">Not safe
+          </nb-radio>
+          <nb-radio [value]="'not observed'">Not observed
+          </nb-radio>
+        </div>
+
+
+        <div class="form-group justify-content-between d-flex">
+          <label class="label">Adherence to absolute rules</label>
+          <nb-radio [value]="'safe'">safe
+          </nb-radio>
+          <nb-radio [value]="'not safe'">Not safe
+          </nb-radio>
+          <nb-radio [value]="'not observed'">Not observed
+          </nb-radio>
+        </div>
+
+        <div class="form-group justify-content-between d-flex">
+          <label class="label">Protecting the envuronament</label>
+          <nb-radio [value]="'safe'">safe
+          </nb-radio>
+          <nb-radio [value]="'not safe'">Not safe
+          </nb-radio>
+          <nb-radio [value]="'not observed'">Not observed
+          </nb-radio>
+        </div>
+
+        <div class="form-group">
+          <div class="form-group">
+            <label class="label" for="inputStartDate">Observer employee opinion</label>
+            <textarea type="text" nbInput fullWidth ></textarea>
+          </div>
+        </div>
+        <div class="form-group">
+          <div class="form-group">
+            <label class="label" for="inputStartDate">Observer opinion</label>
+            <textarea type="text" nbInput fullWidth ></textarea>
+          </div>
+        </div>
+        <div class="form-group">
+          <div class="form-group">
+            <label class="label" for="inputStartDate">Behaviour</label>
+            <input type="text" nbInput fullWidth >
+          </div>
+        </div>
+        <div class="form-group">
+          <div class="form-group">
+            <label class="label" for="inputStartDate">Action</label>
+            <input type="text" nbInput fullWidth >
+          </div>
+        </div>
+        <div class="form-group">
+          <div class="form-group">
+            <label class="label" for="inputStartDate">Who</label>
+            <input type="text" nbInput fullWidth >
+          </div>
+        </div>
+        <div class="form-group">
+          <div class="form-group">
+            <label class="label" for="inputStartDate">When</label>
+            <input type="text" nbInput fullWidth >
+          </div>
+        </div>
+      </form>
+
+    </nb-card-body>
+  </nb-card>
+</ng-template>

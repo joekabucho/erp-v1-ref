@@ -1,0 +1,140 @@
+nb-card nb-card-header {
+  display: flex;
+  justify-content: space-between;
+}
+nb-card nb-card-body .edit {
+  cursor: pointer;
+  color: #00d68f;
+  font-size: 1.3rem;
+}
+nb-card nb-card-body .edit:hover {
+  font-size: 1.5rem;
+}
+nb-card nb-card-body .trash {
+  cursor: pointer;
+  color: #ff3d71;
+  font-size: 1.3rem;
+}
+nb-card nb-card-body .trash:hover {
+  font-size: 1.5rem;
+}
+nb-card nb-card-body .work-card {
+  cursor: pointer;
+  -webkit-box-shadow: 1px 1px 2px 2px rgba(0, 0, 0, 0.2);
+  -moz-box-shadow: 1px 1px 2px 2px rgba(0, 0, 0, 0.2);
+  box-shadow: 1px 1px 2px 2px rgba(0, 0, 0, 0.2);
+}
+nb-card nb-card-body .work-card:hover {
+  -webkit-box-shadow: 0 0 5px 6px rgba(0, 0, 0, 0.2);
+  -moz-box-shadow: 0 0 5px 6px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 0 5px 6px rgba(0, 0, 0, 0.2);
+  transition: all 0.2s ease-in-out;
+}
+nb-card nb-card-body .work-card .work-title {
+  font-size: 1em;
+  font-weight: bold;
+  font-family: Montserrat;
+  font-style: normal;
+  color: #ffaa00;
+  text-decoration: underline;
+}
+nb-card nb-card-body .work-card .work-data {
+  margin-right: 5px;
+  letter-spacing: 0.02125em;
+  font-size: 11px;
+}
+nb-card nb-card-body .work-card .fetched-data {
+  font-family: Montserrat;
+  font-style: normal;
+  font-size: 13px;
+  margin-left: 5px;
+  letter-spacing: 0.05em;
+  font-weight: bolder;
+}
+
+.form-group {
+  margin: 20px 10px;
+}
+.form-group .icons {
+  width: 15%;
+  display: flex;
+  justify-content: center;
+}
+.form-group .icons nb-icon {
+  font-size: 1.5rem;
+  cursor: pointer;
+  margin: auto;
+}
+.form-group .icons nb-icon:hover {
+  font-size: 1.6rem;
+}
+.form-group .icons .show {
+  color: #3366ff;
+}
+.form-group .icons .hide {
+  color: #e40046;
+}
+
+.item-add {
+  display: flex;
+}
+.item-add input {
+  border: none;
+  background: #ffffff;
+  border-bottom: solid 1px #0095ff;
+}
+.item-add .add-btn {
+  margin: auto 5px;
+  width: 12%;
+  height: 20px;
+  padding: 0;
+  text-transform: lowercase;
+}
+
+table {
+  table-layout: auto;
+  margin-top: 10px;
+}
+table thead tr {
+  background: #1e22aa;
+  color: #fff;
+}
+table thead tr th {
+  position: sticky;
+  font-size: 14px;
+  top: 0;
+}
+table tbody {
+  overflow: auto;
+}
+table tbody tr td {
+  font-size: 14px;
+  overflow: hidden;
+  overflow-y: hidden;
+}
+
+ion-content {
+  display: none;
+}
+
+/*
+Max width before this PARTICULAR table gets nasty
+This query will take effect for any screen smaller than 760px
+and also iPads specifically.
+*/
+@media only screen and (max-width: 760px), (min-device-width: 768px) and (max-device-width: 1024px) {
+  nb-card {
+    display: none;
+  }
+
+  .ticket-card nb-card-header {
+    display: flex;
+    flex-direction: column;
+  }
+
+  ion-content {
+    display: block;
+  }
+}
+
+/*# sourceMappingURL=safetyinductions.component.css.map */

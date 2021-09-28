@@ -1,0 +1,939 @@
+<nb-tabset style="margin: 1.5em">
+
+  <nb-tab tabTitle="Locations" badgeText="{{Locations.length}}" badgeStatus="info">
+    <div class="col-sm-12">
+      <nb-card status="info" size="giant">
+        <nb-card-header  class="d-flex justify-content-between">Locations
+          <button nbButton status="success" size="small" (click)="openLocationForm(dialog2)">Add Location</button>
+        </nb-card-header>
+        <nb-card-body>
+
+          <nb-card class="col-sm-12 p-0 work-card" *ngFor="let loc of Locations">
+            <nb-card-body class="d-flex justify-content-between">
+              <div class="work-title">{{loc.name}}</div>
+              <div>
+                <nb-icon icon="edit-outline" class="edit"  (click)="openEditLocationForm(loc ,dialog11)"></nb-icon>
+                <nb-icon icon="trash-outline" class="trash"  (click)="deleteLocation(loc)"></nb-icon>
+              </div>
+
+
+            </nb-card-body>
+          </nb-card>
+
+        </nb-card-body>
+      </nb-card>
+    </div>
+  </nb-tab>
+  <nb-tab tabTitle="Scopes" badgeText="{{Scope.length}}" badgeStatus="success">
+    <div class="col-sm-12">
+      <nb-card status="info" size="giant">
+        <nb-card-header class="d-flex justify-content-between">Scopes
+          <button nbButton status="success" size="small" (click)="openScopeForm(dialog3)">Add Scope</button>
+        </nb-card-header>
+        <nb-card-body>
+
+          <nb-card class="col-sm-12 p-0 work-card" *ngFor="let scope of Scope">
+            <nb-card-body class="d-flex justify-content-between">
+              <div class="work-title">{{ scope.name }}</div>
+              <div>
+                <nb-icon icon="edit-outline" class="edit"  (click)="openEditScopeForm(scope,dialog12)"></nb-icon>
+                <nb-icon icon="trash-outline" class="trash"  (click)="deleteScope(scope)"></nb-icon>
+              </div>
+
+
+            </nb-card-body>
+          </nb-card>
+
+        </nb-card-body>
+      </nb-card>
+    </div>
+  </nb-tab>
+  <nb-tab tabTitle="Hazards" badgeText="{{Hazard.length}}" badgeStatus="primary">
+    <div class="col-sm-12">
+      <nb-card status="info" size="giant">
+        <nb-card-header class="d-flex justify-content-between">Hazards
+          <button nbButton status="success" size="small" (click)="openHazform(dialog5)">Add Hazards</button>
+        </nb-card-header>
+        <nb-card-body>
+
+          <nb-card class="col-sm-12 p-0 work-card" *ngFor="let haz of Hazard">
+            <nb-card-body class="d-flex justify-content-between">
+              <div class="work-title">{{ haz.name }}</div>
+
+              <div>
+                <nb-icon icon="edit-outline" class="edit"  (click)="openEditHazform(haz,dialog14)"></nb-icon>
+                <nb-icon icon="trash-outline" class="trash" (click)="deleteHazard(haz)"></nb-icon>
+              </div>
+
+            </nb-card-body>
+          </nb-card>
+
+        </nb-card-body>
+      </nb-card>
+    </div>
+  </nb-tab>
+  <nb-tab tabTitle="Attendants" badgeText="{{Attendants.length}}" badgeStatus="warning">
+    <div class="col-sm-12">
+      <nb-card status="info" size="giant">
+        <nb-card-header class="d-flex justify-content-between">Attendants
+          <button nbButton status="success" size="small" (click)="openAttendants(dialog1)">Add Attendee</button>
+        </nb-card-header>
+        <nb-card-body>
+
+          <nb-card class="col-sm-12 p-0 work-card" *ngFor="let attend of Attendants">
+            <nb-card-body class="d-flex justify-content-between">
+              <div class="work-title">  {{ attend.firstname }} {{ attend.lastname }}</div>
+
+              <div>
+                <nb-icon icon="edit-outline" class="edit"  (click)="openEditAttendants(attend,dialog10)"></nb-icon>
+                <nb-icon icon="trash-outline" class="trash"  (click)="deleteAttendees(attend)"></nb-icon>
+              </div>
+
+            </nb-card-body>
+          </nb-card>
+
+        </nb-card-body>
+      </nb-card>
+    </div>
+  </nb-tab>
+  <nb-tab tabTitle="PPE names" badgeText="{{ppenames.length}}" badgeStatus="info">
+    <div class="col-sm-12">
+      <nb-card status="info" size="giant">
+        <nb-card-header class="d-flex justify-content-between">PPE names
+          <button nbButton status="success" size="small" (click)="openPPEModal(dialog8)">Add PPE names</button>
+        </nb-card-header>
+        <nb-card-body>
+
+          <nb-card class="col-sm-12 p-0 work-card" *ngFor="let ppe of ppenames">
+            <nb-card-body class="d-flex justify-content-between">
+              <div class="work-title">    {{ ppe.name }}</div>
+              <div>
+                <nb-icon icon="edit-outline" class="edit"  (click)="openEditPPEModal(ppe,dialog17)"></nb-icon>
+                <nb-icon icon="trash-outline" class="trash" (click)="deletePPE(ppe)"></nb-icon>
+              </div>
+
+
+            </nb-card-body>
+          </nb-card>
+
+        </nb-card-body>
+      </nb-card>
+    </div>
+  </nb-tab>
+  <nb-tab tabTitle="Certificate names" badgeText="{{certificatesnames.length}}" badgeStatus="success">
+    <div class="col-sm-12">
+      <nb-card status="info" size="giant">
+        <nb-card-header class="d-flex justify-content-between">Certificates
+          <button nbButton status="success" size="small" (click)="openCertModal(dialog7)">Add Certificate</button>
+        </nb-card-header>
+        <nb-card-body>
+
+          <nb-card class="col-sm-12 p-0 work-card" *ngFor="let cert of certificatesnames">
+            <nb-card-body class="d-flex justify-content-between">
+              <div class="work-title">     {{ cert.name }}</div>
+
+              <div>
+                <nb-icon icon="edit-outline" class="edit"  (click)="openEditCertModal(cert,dialog16)"></nb-icon>
+                <nb-icon icon="trash-outline" class="trash"  (click)="deleteCERT(cert)"></nb-icon>
+
+              </div>
+
+            </nb-card-body>
+          </nb-card>
+
+        </nb-card-body>
+      </nb-card>
+    </div>
+  </nb-tab>
+  <nb-tab tabTitle="SSE names" badgeText="{{ssenames.length}}" badgeStatus="primary">
+    <div class="col-sm-12">
+      <nb-card status="info" size="giant">
+        <nb-card-header class="d-flex justify-content-between">SSE names
+          <button nbButton status="success" size="small" (click)="openSSEModal(dialog9)">Add SSE name</button>
+        </nb-card-header>
+        <nb-card-body>
+
+          <nb-card class="col-sm-12 p-0 work-card" *ngFor="let sse of ssenames">
+            <nb-card-body class="d-flex justify-content-between">
+              <div class="work-title">{{ sse.name }}</div>
+              <div>
+                <nb-icon icon="edit-outline" class="edit"  (click)="openEditSSEModal(sse,dialog18)"></nb-icon>
+                <nb-icon icon="trash-outline" class="trash"  (click)="deleteSSE(sse)"></nb-icon>
+
+              </div>
+
+            </nb-card-body>
+          </nb-card>
+
+        </nb-card-body>
+      </nb-card>
+    </div>
+  </nb-tab>
+  <nb-tab tabTitle="Departments" badgeText="{{Departments.length}}" badgeStatus="warning">
+    <div class="col-sm-12">
+      <nb-card status="info" size="giant">
+        <nb-card-header class="d-flex justify-content-between">Departments
+          <button nbButton status="success" size="small" (click)="openDepartmentForm(dialog4)">Add Department</button>
+        </nb-card-header>
+        <nb-card-body>
+
+          <nb-card class="col-sm-12 p-0 work-card" *ngFor="let dep of Departments">
+            <nb-card-body class="d-flex justify-content-between">
+              <div class="work-title"> {{ dep.name }}</div>
+              <div>
+                <nb-icon icon="edit-outline" class="edit"  (click)="openEditDepartmentForm(dep,dialog13)"></nb-icon>
+                <nb-icon icon="trash-outline" class="trash"  (click)="deleteDepartment(dep)"></nb-icon>
+              </div>
+
+
+            </nb-card-body>
+          </nb-card>
+
+        </nb-card-body>
+      </nb-card>
+    </div>
+  </nb-tab>
+  <nb-tab tabTitle="Sites" badgeText="{{Departments.length}}" badgeStatus="info">
+    <div class="col-sm-12">
+      <nb-card status="info" size="giant">
+        <nb-card-header class="d-flex justify-content-between">Sites
+          <button nbButton status="success" size="small" (click)="openSiteform(dialog6)">Add Site names</button>
+        </nb-card-header>
+        <nb-card-body>
+
+          <nb-card class="col-sm-12 p-0 work-card" *ngFor="let site of Sites">
+            <nb-card-body class="d-flex justify-content-between">
+              <div class="work-title">  {{ site.name }}</div>
+              <div>
+                <nb-icon icon="edit-outline" class="edit"  (click)=openEditSiteform(site,dialog15)></nb-icon>
+                <nb-icon icon="trash-outline" class="trash"  (click)="deleteSite(site)"></nb-icon>
+
+              </div>
+
+            </nb-card-body>
+          </nb-card>
+
+        </nb-card-body>
+      </nb-card>
+    </div>
+  </nb-tab>
+</nb-tabset>
+
+<ng-template #dialog1 let-data let-ref="dialogRef">
+  <nb-card status="success" style="width: 27em;">
+    <nb-card-header>Create Attendant
+      <a (click)="ref.close();flush();" aria-label="Back" style="float: right;"  id="close-save-attendant">
+        <nb-icon icon="close"></nb-icon>
+      </a>
+    </nb-card-header>
+    <nb-card-body>
+      <form [formGroup]="attendantForm">
+
+        <div class="form-group">
+          <input
+            type="text"
+            nbInput
+            fullWidth
+            placeholder="First Name"
+            formControlName="firstname">
+        </div>
+        <div class="form-group">
+          <input
+            type="text"
+            nbInput
+            fullWidth
+            placeholder="Last Name"
+            formControlName="lastname">
+        </div>
+        <div class="form-group">
+          <input
+            type="number"
+            nbInput
+            fullWidth
+            placeholder="Phone number"
+            formControlName="phone_number">
+        </div>
+        <div class="form-group">
+          <input
+            type="number"
+            nbInput
+            fullWidth
+            placeholder="ID number"
+            formControlName="id_number">
+        </div>
+
+
+        <div class="form-group">
+          <button nbButton status="success" size="small" style="float: right;" [disabled]="submitted || !attendantForm.valid"
+                  [class.btn-pulse]="submitted" (click)="createAttendants()">submit</button>
+        </div>
+      </form>
+
+    </nb-card-body>
+  </nb-card>
+</ng-template>
+
+<ng-template #dialog2 let-data let-ref="dialogRef" style="z-index:2;">
+  <nb-card style="width: 25em;">
+    <nb-card-header>Add Location
+      <a (click)="ref.close();flush();" aria-label="Back" style="float: right;" id="close-save-location">
+        <nb-icon icon="close"></nb-icon>
+      </a>
+    </nb-card-header>
+    <nb-card-body>
+      <form #locationForm="ngForm" (ngSubmit)="createLocation()">
+        <div class="form-group">
+          <input
+            nbInput
+            autofocus
+            fullWidth
+            fieldSize="medium"
+            placeholder="Location name"
+            (selectedPlace)="placeChangedCallback($event)"
+            [(ngModel)]="LocDetails"
+            #name="ngModel"
+            name="name"
+            ngxAutocomPlace
+            autocorrect="off" autocapitalize="off" spellcheck="off" class="form-control" #search
+            [status]="name.dirty ? (name.invalid  ? 'danger' : 'success') : 'basic'"
+            [attr.aria-invalid]="name.invalid && name.touched ? true : null"
+            required>
+          <ng-container *ngIf="name.invalid && name.touched">
+            <p class="caption status-danger" *ngIf="name.errors?.required">
+              Name is required!
+            </p>
+          </ng-container>
+        </div>
+        <div class="form-group">
+          <button nbButton status="success" size="small" style="float: right;" [disabled]="submitted || !locationForm.valid" [class.btn-pulse]="submitted">submit</button>
+        </div>
+      </form>
+    </nb-card-body>
+  </nb-card>
+</ng-template>
+
+<ng-template #dialog3 let-data let-ref="dialogRef">
+  <nb-card status="success" style="width: 30em;">
+    <nb-card-header>Save Scope
+      <a (click)="ref.close();flush();" aria-label="Back" style="float: right;" id="close-save-scope">
+        <nb-icon icon="close"></nb-icon>
+      </a>
+    </nb-card-header>
+    <nb-card-body>
+      <form [formGroup]="scopeForm">
+        <div class="form-group">
+          <label class="label" for="inputName">Name</label>
+          <input type="text" nbInput fullWidth id="inputName" placeholder="Scope name" formControlName="name">
+        </div>
+        <div class="form-group">
+          <label class="label" for="inputActivity">Activity</label>
+          <input type="text" nbInput fullWidth id="inputActivity" placeholder="Activity" formControlName="activity">
+        </div>
+
+        <div class="form-group">
+          <label class="label" for="inputRisk">Risk</label>
+          <nb-select fullWidth id="inputRisk" placeholder="Select risk level" formControlName="risk">
+            <nb-option value="low">Low</nb-option>
+            <nb-option value="medium">Medium</nb-option>
+            <nb-option value="high">High</nb-option>
+          </nb-select>
+        </div>
+        <label class="label" for="inputDepartment">Department</label>
+        <div class="form-group d-flex justify-content-between">
+          <ng-autocomplete [data]="Departments" [searchKeyword]="keywordDep" (selected)='selectDep($event)'
+                           (inputChanged)='onChangeSearch($event)' (inputFocused)='onFocusedDepartment($event)' [itemTemplate]="itemTemplateDep"
+                           [notFoundTemplate]="notFoundTemplate"
+                           placeholder="Department" formControlName="department">
+          </ng-autocomplete>
+
+          <ng-template  #itemTemplateDep let-item>
+            <a [innerHTML]="item.name"></a>
+          </ng-template>
+
+          <ng-template #notFoundTemplate let-notFound>
+            <div [innerHTML]="notFound"></div>
+          </ng-template>
+          <button class="route-btn" nbSuffix nbButton ghost (click)="openDepartmentForm(dialog1)">
+            <nb-icon icon="plus-square-outline"></nb-icon>
+          </button>
+        </div>
+
+        <div class="form-group">
+          <label class="label" for="inputDepartment">Hazards</label>
+          <nb-select multiple fullWidth id="inputHazard" placeholder="Select hazards" formControlName="hazards">
+            <nb-option *ngFor="let jha of Hazard" [value]="jha.id">{{jha.name}}</nb-option>
+          </nb-select>
+        </div>
+      </form>
+    </nb-card-body>
+    <nb-card-footer>
+      <button nbButton status="success" size="small" style="float: right;" [disabled]="submitted || !scopeForm.valid"
+              [class.btn-pulse]="submitted" (click)="saveScope()">submit</button>
+    </nb-card-footer>
+  </nb-card>
+</ng-template>
+
+<ng-template #dialog4 let-data let-ref="dialogRef">
+  <nb-card status="success" style="width: 27em;">
+    <nb-card-header>Create Department
+      <a (click)="ref.close();flush();" aria-label="Back" style="float: right;"  id="close-save-dept">
+        <nb-icon icon="close"></nb-icon>
+      </a>
+    </nb-card-header>
+    <nb-card-body>
+      <form [formGroup]="depForm">
+
+        <div class="form-group">
+          <input
+            type="text"
+            nbInput
+            fullWidth
+            placeholder="Name"
+            formControlName="name">
+        </div>
+        <div class="form-group d-flex justify-content-between">
+          <ng-autocomplete [data]="divisions" [searchKeyword]="keywordDiv" (selected)='selectDiv($event)'
+                           (inputChanged)='onChangeSearch($event)' (inputFocused)='onFocusedDivisions($event)' [itemTemplate]="itemTemplateDiv"
+                           [notFoundTemplate]="notFoundTemplate"
+                           placeholder="Division" formControlName="division" >
+          </ng-autocomplete>
+
+          <ng-template  #itemTemplateDiv let-item>
+            <a [innerHTML]="item.name"></a>
+          </ng-template>
+
+          <ng-template #notFoundTemplate let-notFound>
+            <div [innerHTML]="notFound"></div>
+          </ng-template>
+        </div>
+
+        <div class="form-group d-flex justify-content-between">
+          <ng-autocomplete [data]="teams" [searchKeyword]="keywordTeam" (selected)='selectTeam($event)'
+                           (inputChanged)='onChangeSearch($event)' (inputFocused)='onFocusedTeams($event)' [itemTemplate]="itemTemplateTeam"
+                           [notFoundTemplate]="notFoundTemplate"
+                           placeholder="Teams" formControlName="teams" >
+          </ng-autocomplete>
+
+          <ng-template  #itemTemplateTeam let-item>
+            <a [innerHTML]="item.name"></a>
+          </ng-template>
+
+          <ng-template #notFoundTemplate let-notFound>
+            <div [innerHTML]="notFound"></div>
+          </ng-template>
+        </div>
+
+
+        <div class="form-group">
+          <button nbButton status="success" size="small" style="float: right;" [disabled]="submitted || !depForm.valid"
+                  [class.btn-pulse]="submitted" (click)="saveDepartment()">submit</button>
+        </div>
+      </form>
+
+    </nb-card-body>
+  </nb-card>
+</ng-template>
+
+<ng-template #dialog5 let-data let-ref="dialogRef">
+  <nb-card status="success" style="width: 30em;">
+    <nb-card-header>Create Hazard
+      <a (click)="ref.close();flush();" aria-label="Back" id="close-save-hazard" style="float: right;">
+        <nb-icon icon="close"></nb-icon>
+      </a>
+    </nb-card-header>
+    <nb-card-body>
+      <form [formGroup]="hazForm">
+        <div class="form-group">
+          <label class="label" for="inputName">Name</label>
+          <input type="text" nbInput fullWidth id="inputName" placeholder="Hazard name" formControlName="name">
+        </div>
+        <div class="form-group">
+          <label class="label" for="inputConsequence">Consequence</label>
+          <input type="text" nbInput fullWidth id="inputConsequence" placeholder="Consequences" formControlName="consequence">
+        </div>
+        <div class="form-group">
+          <label class="label" for="inputControl">Control</label>
+          <input type="text" nbInput fullWidth id="inputControl" placeholder="Control" formControlName="control">
+        </div>
+      </form>
+    </nb-card-body>
+    <nb-card-footer>
+      <button nbButton status="success" size="small" style="float: right;" [disabled]="submitted || !hazForm.valid"
+              [class.btn-pulse]="submitted" (click)="saveHazard()">submit</button>
+    </nb-card-footer>
+  </nb-card>
+</ng-template>
+
+<ng-template #dialog6 let-data let-ref="dialogRef">
+  <nb-card status="success" style="width: 30em;" size="giant">
+    <nb-card-header>Create Site Name
+      <a (click)="ref.close();flush();" aria-label="Back" id="close-save-site" style="float: right;">
+        <nb-icon icon="close"></nb-icon>
+      </a>
+    </nb-card-header>
+    <nb-card-body>
+      <form [formGroup]="siteForm">
+        <div class="form-group">
+          <label class="label" for="inputName">Name</label>
+          <input type="text" nbInput fullWidth id="siteName" placeholder="Site name" formControlName="name">
+        </div>
+
+        <div class="form-group">
+          <input
+            type="text"
+            nbInput
+            fullWidth
+            placeholder="Activity"
+            formControlName="activity">
+        </div>
+        <div class="form-group d-flex justify-content-between">
+          <ng-autocomplete [data]="Locations" [searchKeyword]="keywordLoc" (selected)='selectLoc($event)'
+                           (inputChanged)='onChangeSearch($event)' (inputFocused)='onFocusedLoc($event)' [itemTemplate]="itemTemplateLoc"
+                           [notFoundTemplate]="notFoundTemplate"
+                           placeholder="Select location" formControlName="location">
+          </ng-autocomplete>
+
+          <ng-template #itemTemplateLoc let-item>
+            <a [innerHTML]="item.name"></a>
+          </ng-template>
+
+          <ng-template #notFoundTemplate let-notFound>
+            <div [innerHTML]="notFound"></div>
+          </ng-template>
+        </div>
+      </form>
+    </nb-card-body>
+    <nb-card-footer>
+      <button nbButton status="success" size="small" style="float: right;" [disabled]="submitted || !siteForm.valid"
+              [class.btn-pulse]="submitted" (click)="saveSite()">submit</button>
+    </nb-card-footer>
+  </nb-card>
+</ng-template>
+
+
+<ng-template #dialog9 let-data let-ref="dialogRef">
+  <nb-card status="success" style="width: 25em;">
+    <nb-card-header>Add SSE name
+      <a (click)="ref.close();flush();" aria-label="Back" id="close-save-sse" style="float: right;">
+        <nb-icon icon="close"></nb-icon>
+      </a>
+    </nb-card-header>
+    <nb-card-body>
+      <form [formGroup]="sseForm">
+        <div class="form-group m-2">
+          <label class="label" for="inputName">Name</label>
+          <input type="text" nbInput fullWidth id="inputName" placeholder="Name" formControlName="name">
+        </div>
+      </form>
+    </nb-card-body>
+    <nb-card-footer>
+      <button nbButton status="success" size="small" style="float: right;" [disabled]="submitted || !sseForm.valid"
+              [class.btn-pulse]="submitted" (click)="saveSSE()">submit</button>
+    </nb-card-footer>
+  </nb-card>
+</ng-template>
+
+
+<ng-template #dialog7 let-data let-ref="dialogRef">
+  <nb-card status="success" style="width: 25em;">
+    <nb-card-header>Add Certificate
+      <a (click)="ref.close();flush();" aria-label="Back" id="close-save-cert" style="float: right;">
+        <nb-icon icon="close"></nb-icon>
+      </a>
+    </nb-card-header>
+    <nb-card-body>
+      <form [formGroup]="certForm">
+        <div class="form-group m-2">
+          <label class="label" for="inputName">Name</label>
+          <input type="text" nbInput fullWidth id="inputName" placeholder="Name" formControlName="name">
+        </div>
+      </form>
+    </nb-card-body>
+    <nb-card-footer>
+      <button nbButton status="success" size="small" style="float: right;" [disabled]="submitted || !certForm.valid"
+              [class.btn-pulse]="submitted" (click)="saveCertificate()">submit</button>
+    </nb-card-footer>
+  </nb-card>
+</ng-template>
+
+
+<ng-template #dialog8 let-data let-ref="dialogRef">
+  <nb-card status="success" style="width: 25em;">
+    <nb-card-header>Add PPE names
+      <a (click)="ref.close();flush();" aria-label="Back" id="close-save-ppe" style="float: right;">
+        <nb-icon icon="close"></nb-icon>
+      </a>
+    </nb-card-header>
+    <nb-card-body>
+      <form [formGroup]="ppeForm">
+        <div class="form-group m-2">
+          <label class="label" for="inputName">Name</label>
+          <input type="text" nbInput fullWidth id="inputName" placeholder="Name" formControlName="name">
+        </div>
+      </form>
+    </nb-card-body>
+    <nb-card-footer>
+      <button nbButton status="success" size="small" style="float: right;" [disabled]="submitted || !ppeForm.valid"
+              [class.btn-pulse]="submitted" (click)="savePPE()">submit</button>
+    </nb-card-footer>
+  </nb-card>
+</ng-template>
+
+  <ng-template #dialog10 let-data let-ref="dialogRef">
+    <nb-card status="success" style="width: 27em;">
+      <nb-card-header>Edit Attendant
+        <a (click)="ref.close()" aria-label="Back" style="float: right;"  id="close-edit-attendant">
+          <nb-icon icon="close"></nb-icon>
+        </a>
+      </nb-card-header>
+      <nb-card-body>
+        <form [formGroup]="attendantEditForm">
+
+          <div class="form-group">
+            <input
+              type="text"
+              nbInput
+              fullWidth
+              placeholder="First Name"
+              formControlName="firstname">
+          </div>
+          <div class="form-group">
+            <input
+              type="text"
+              nbInput
+              fullWidth
+              placeholder="Last Name"
+              formControlName="lastname">
+          </div>
+          <div class="form-group">
+            <input
+              type="number"
+              nbInput
+              fullWidth
+              placeholder="Phone number"
+              formControlName="phone_number">
+          </div>
+          <div class="form-group">
+            <input
+              type="number"
+              nbInput
+              fullWidth
+              placeholder="ID number"
+              formControlName="id_number">
+          </div>
+
+
+          <div class="form-group">
+            <button nbButton status="success" size="small" style="float: right;" [disabled]="submitted || !attendantEditForm.valid"
+                    [class.btn-pulse]="submitted" (click)="editAttendants()">submit</button>
+          </div>
+        </form>
+
+      </nb-card-body>
+    </nb-card>
+  </ng-template>
+
+  <ng-template #dialog11 let-data let-ref="dialogRef" style="z-index:2;">
+    <nb-card style="width: 25em;">
+      <nb-card-header>Edit Location
+        <a (click)="ref.close()" aria-label="Back" style="float: right;" id="close-edit-location">
+          <nb-icon icon="close"></nb-icon>
+        </a>
+      </nb-card-header>
+      <nb-card-body>
+        <form #locationEditForm="ngForm" (ngSubmit)="editLocation()">
+          <div class="form-group">
+            <input
+              nbInput
+              autofocus
+              fullWidth
+              fieldSize="medium"
+              placeholder="Location name"
+              (selectedPlace)="placeChangedCallback($event)"
+              [(ngModel)]="LocDetails"
+              #name="ngModel"
+              name="name"
+              ngxAutocomPlace
+              autocorrect="off" autocapitalize="off" spellcheck="off" class="form-control" #search
+              [status]="name.dirty ? (name.invalid  ? 'danger' : 'success') : 'basic'"
+              [attr.aria-invalid]="name.invalid && name.touched ? true : null"
+              required>
+            <ng-container *ngIf="name.invalid && name.touched">
+              <p class="caption status-danger" *ngIf="name.errors?.required">
+                Name is required!
+              </p>
+            </ng-container>
+          </div>
+          <div class="form-group">
+            <button nbButton status="success" size="small" style="float: right;" [disabled]="submitted || !locationEditForm.valid" [class.btn-pulse]="submitted">submit</button>
+          </div>
+        </form>
+      </nb-card-body>
+    </nb-card>
+  </ng-template>
+
+  <ng-template #dialog12 let-data let-ref="dialogRef">
+    <nb-card status="success" style="width: 30em;">
+      <nb-card-header>Edit Scope
+        <a (click)="ref.close()" aria-label="Back" style="float: right;" id="close-edit-scope">
+          <nb-icon icon="close"></nb-icon>
+        </a>
+      </nb-card-header>
+      <nb-card-body>
+        <form [formGroup]="scopeEditForm">
+          <div class="form-group">
+            <label class="label" for="inputName">Name</label>
+            <input type="text" nbInput fullWidth id="inputName" placeholder="Scope name" formControlName="name">
+          </div>
+          <div class="form-group">
+            <label class="label" for="inputActivity">Activity</label>
+            <input type="text" nbInput fullWidth id="inputActivity" placeholder="Activity" formControlName="activity">
+          </div>
+
+          <div class="form-group">
+            <label class="label" for="inputRisk">Risk</label>
+            <nb-select fullWidth id="inputRisk" placeholder="Select risk level" formControlName="risk">
+              <nb-option value="low">Low</nb-option>
+              <nb-option value="medium">Medium</nb-option>
+              <nb-option value="high">High</nb-option>
+            </nb-select>
+          </div>
+          <div class="form-group d-flex justify-content-between">
+            <ng-autocomplete [data]="Departments" [searchKeyword]="keywordDep" (selected)='selectDep($event)'
+                             (inputChanged)='onChangeSearch($event)' (inputFocused)='onFocusedDepartment($event)' [itemTemplate]="itemTemplateDep"
+                             [notFoundTemplate]="notFoundTemplate"
+                             placeholder="Department" formControlName="department">
+            </ng-autocomplete>
+
+            <ng-template  #itemTemplateDep let-item>
+              <a [innerHTML]="item.name"></a>
+            </ng-template>
+
+            <ng-template #notFoundTemplate let-notFound>
+              <div [innerHTML]="notFound"></div>
+            </ng-template>
+            <button class="route-btn" nbSuffix nbButton ghost (click)="openDepartmentForm(dialog1)">
+              <nb-icon icon="plus-square-outline"></nb-icon>
+            </button>
+          </div>
+
+          <div class="form-group">
+            <label class="label" for="inputDepartment">Hazards</label>
+            <nb-select multiple fullWidth id="inputHazard" placeholder="Select hazards" formControlName="hazards">
+              <nb-option *ngFor="let jha of Hazard" [value]="jha.id">{{jha.name}}</nb-option>
+            </nb-select>
+          </div>
+        </form>
+      </nb-card-body>
+      <nb-card-footer>
+        <button nbButton status="success" size="small" style="float: right;" [disabled]="submitted || !scopeEditForm.valid"
+                [class.btn-pulse]="submitted" (click)="editScope()">submit</button>
+      </nb-card-footer>
+    </nb-card>
+  </ng-template>
+
+  <ng-template #dialog13 let-data let-ref="dialogRef">
+    <nb-card status="success" style="width: 27em;">
+      <nb-card-header>Edit Department
+        <a (click)="ref.close()" aria-label="Back" style="float: right;"  id="close-edit-dept">
+          <nb-icon icon="close"></nb-icon>
+        </a>
+      </nb-card-header>
+      <nb-card-body>
+        <form [formGroup]="depEditForm">
+
+          <div class="form-group">
+            <input
+              type="text"
+              nbInput
+              fullWidth
+              placeholder="Name"
+              formControlName="name">
+          </div>
+          <div class="form-group d-flex justify-content-between">
+            <ng-autocomplete [data]="divisions" [searchKeyword]="keywordDiv" (selected)='selectDiv($event)'
+                             (inputChanged)='onChangeSearch($event)' (inputFocused)='onFocusedDivisions($event)' [itemTemplate]="itemTemplateDiv"
+                             [notFoundTemplate]="notFoundTemplate"
+                             placeholder="Division" formControlName="division" >
+            </ng-autocomplete>
+
+            <ng-template  #itemTemplateDiv let-item>
+              <a [innerHTML]="item.name"></a>
+            </ng-template>
+
+            <ng-template #notFoundTemplate let-notFound>
+              <div [innerHTML]="notFound"></div>
+            </ng-template>
+          </div>
+
+          <div class="form-group d-flex justify-content-between">
+            <ng-autocomplete [data]="teams" [searchKeyword]="keywordTeam" (selected)='selectTeam($event)'
+                             (inputChanged)='onChangeSearch($event)' (inputFocused)='onFocusedTeams($event)' [itemTemplate]="itemTemplateTeam"
+                             [notFoundTemplate]="notFoundTemplate"
+                             placeholder="Teams" formControlName="teams" >
+            </ng-autocomplete>
+
+            <ng-template  #itemTemplateTeam let-item>
+              <a [innerHTML]="item.name"></a>
+            </ng-template>
+
+            <ng-template #notFoundTemplate let-notFound>
+              <div [innerHTML]="notFound"></div>
+            </ng-template>
+          </div>
+
+
+          <div class="form-group">
+            <button nbButton status="success" size="small" style="float: right;" [disabled]="submitted || !depEditForm.valid"
+                    [class.btn-pulse]="submitted" (click)="editDepartment()">submit</button>
+          </div>
+        </form>
+
+      </nb-card-body>
+    </nb-card>
+  </ng-template>
+
+  <ng-template #dialog14 let-data let-ref="dialogRef">
+    <nb-card status="success" style="width: 30em;">
+      <nb-card-header>Edit Hazard
+        <a (click)="ref.close()" aria-label="Back" id="close-edit-hazard" style="float: right;">
+          <nb-icon icon="close"></nb-icon>
+        </a>
+      </nb-card-header>
+      <nb-card-body>
+        <form [formGroup]="hazEditForm">
+          <div class="form-group">
+            <label class="label" for="inputName">Name</label>
+            <input type="text" nbInput fullWidth id="inputName" placeholder="Hazard name" formControlName="name">
+          </div>
+          <div class="form-group">
+            <label class="label" for="inputConsequence">Consequence</label>
+            <input type="text" nbInput fullWidth id="inputConsequence" placeholder="Consequences" formControlName="consequence">
+          </div>
+          <div class="form-group">
+            <label class="label" for="inputControl">Control</label>
+            <input type="text" nbInput fullWidth id="inputControl" placeholder="Control" formControlName="control">
+          </div>
+        </form>
+      </nb-card-body>
+      <nb-card-footer>
+        <button nbButton status="success" size="small" style="float: right;" [disabled]="submitted || !hazEditForm.valid"
+                [class.btn-pulse]="submitted" (click)="editHazard()">submit</button>
+      </nb-card-footer>
+    </nb-card>
+  </ng-template>
+
+  <ng-template #dialog15 let-data let-ref="dialogRef">
+    <nb-card status="success" style="width: 30em;" size="giant">
+      <nb-card-header>Edit Site
+        <a (click)="ref.close()" aria-label="Back" id="close-edit-site" style="float: right;">
+          <nb-icon icon="close"></nb-icon>
+        </a>
+      </nb-card-header>
+      <nb-card-body>
+        <form [formGroup]="siteForm">
+          <div class="form-group">
+            <label class="label" for="inputName">Name</label>
+            <input type="text" nbInput fullWidth id="siteName" placeholder="Site name" formControlName="name">
+          </div>
+
+          <div class="form-group">
+            <input
+              type="text"
+              nbInput
+              fullWidth
+              placeholder="Activity"
+              formControlName="activity">
+          </div>
+          <div class="form-group d-flex justify-content-between">
+            <ng-autocomplete [data]="Locations" [searchKeyword]="keywordLoc" (selected)='selectLoc($event)'
+                             (inputChanged)='onChangeSearch($event)' (inputFocused)='onFocusedLoc($event)' [itemTemplate]="itemTemplateLoc"
+                             [notFoundTemplate]="notFoundTemplate"
+                             placeholder="Select location" formControlName="location">
+            </ng-autocomplete>
+
+            <ng-template #itemTemplateLoc let-item>
+              <a [innerHTML]="item.name"></a>
+            </ng-template>
+
+            <ng-template #notFoundTemplate let-notFound>
+              <div [innerHTML]="notFound"></div>
+            </ng-template>
+          </div>
+        </form>
+      </nb-card-body>
+      <nb-card-footer>
+        <button nbButton status="success" size="small" style="float: right;" [disabled]="submitted || !siteEditForm.valid"
+                [class.btn-pulse]="submitted" (click)="editSite()">submit</button>
+      </nb-card-footer>
+    </nb-card>
+  </ng-template>
+
+
+  <ng-template #dialog18 let-data let-ref="dialogRef">
+    <nb-card status="success" style="width: 25em;">
+      <nb-card-header>Edit SSE name
+        <a (click)="ref.close()" aria-label="Back" id="close-edit-sse" style="float: right;">
+          <nb-icon icon="close"></nb-icon>
+        </a>
+      </nb-card-header>
+      <nb-card-body>
+        <form [formGroup]="sseEditForm">
+          <div class="form-group m-2">
+            <label class="label" for="inputName">Name</label>
+            <input type="text" nbInput fullWidth id="inputName" placeholder="Name" formControlName="name">
+          </div>
+        </form>
+      </nb-card-body>
+      <nb-card-footer>
+        <button nbButton status="success" size="small" style="float: right;" [disabled]="submitted || !sseEditForm.valid"
+                [class.btn-pulse]="submitted" (click)="editSSE()">submit</button>
+      </nb-card-footer>
+    </nb-card>
+  </ng-template>
+
+
+  <ng-template #dialog16 let-data let-ref="dialogRef">
+    <nb-card status="success" style="width: 25em;">
+      <nb-card-header>Edit Certificate
+        <a (click)="ref.close()" aria-label="Back" id="close-edit-cert" style="float: right;">
+          <nb-icon icon="close"></nb-icon>
+        </a>
+      </nb-card-header>
+      <nb-card-body>
+        <form [formGroup]="certEditForm">
+          <div class="form-group m-2">
+            <label class="label" for="inputName">Name</label>
+            <input type="text" nbInput fullWidth id="inputName" placeholder="Name" formControlName="name">
+          </div>
+        </form>
+      </nb-card-body>
+      <nb-card-footer>
+        <button nbButton status="success" size="small" style="float: right;" [disabled]="submitted || !certEditForm.valid"
+                [class.btn-pulse]="submitted" (click)="editCertificate()">submit</button>
+      </nb-card-footer>
+    </nb-card>
+  </ng-template>
+
+
+  <ng-template #dialog17 let-data let-ref="dialogRef">
+    <nb-card status="success" style="width: 25em;">
+      <nb-card-header class="d-flex justify-content-between">Edit PPE names
+        <a (click)="ref.close()" aria-label="Back" id="close-edit-ppe" style="float: right;">
+          <nb-icon icon="close"></nb-icon>
+        </a>
+      </nb-card-header>
+      <nb-card-body>
+        <form [formGroup]="ppeEditForm">
+          <div class="form-group m-2">
+            <label class="label" for="inputName">Name</label>
+            <input type="text" nbInput fullWidth id="inputName" placeholder="Name" formControlName="name">
+          </div>
+        </form>
+      </nb-card-body>
+      <nb-card-footer>
+        <button nbButton status="success" size="small" style="float: right;" [disabled]="submitted || !ppeEditForm.valid"
+                [class.btn-pulse]="submitted" (click)="editPPE()">submit</button>
+      </nb-card-footer>
+    </nb-card>
+  </ng-template>

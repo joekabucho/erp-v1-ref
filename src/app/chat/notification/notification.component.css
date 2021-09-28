@@ -1,0 +1,61 @@
+.notification-card {
+  overflow: auto;
+  height: 81vh;
+}
+.notification-card nb-card-header {
+  display: flex;
+}
+.notification-card nb-card-header .select-detail {
+  margin-left: 25px;
+}
+.notification-card nb-card-header button {
+  margin: auto 20px;
+}
+.notification-card .notification {
+  display: flex;
+  margin-bottom: 5px;
+  border-radius: 10px;
+  border-bottom: 1px solid #f0f2f5;
+  height: 4em;
+  width: 100%;
+  overflow: hidden;
+  justify-content: space-between;
+  cursor: pointer;
+}
+.notification-card .notification .notification-details {
+  border-radius: 5%;
+  padding: 5px;
+  margin: auto 10px;
+  display: flex;
+}
+.notification-card .notification .notification-details nb-checkbox {
+  margin: 10px 0 0 10px;
+}
+.notification-card .notification .notification-details .number-circle {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background-color: #00d68f;
+  margin: auto -5px;
+}
+.notification-card .notification .notification-details .notification-title {
+  font-weight: 800;
+  font-size: 15px;
+}
+.notification-card .notification .notification-details .notification-content {
+  font-size: 10px;
+}
+.notification-card .notification .notification-info {
+  display: flex;
+}
+.notification-card .notification .notification-info .notification-stamp {
+  font-size: 10px;
+  margin: auto;
+  color: #6a737d;
+}
+.notification-card .notification:hover {
+  background: #f0f2f5;
+  cursor: pointer;
+}
+
+/*# sourceMappingURL=notification.component.css.map */

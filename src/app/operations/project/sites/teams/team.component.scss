@@ -1,0 +1,290 @@
+@import '../../../../@theme/styles/themes';
+@import '~bootstrap/scss/mixins/breakpoints';
+@import '~@nebular/theme/styles/global/breakpoints';
+
+@include nb-install-component() {
+
+  nb-tabset {
+    .tab-link {
+      @include media-breakpoint-down(md) {
+        font-size: 10px;
+      }
+    }
+
+    nb-tab {
+      border-top: 1px solid #ced4da;
+      padding: 1.5em 1em 0 0.2em;
+    }
+  }
+
+  .team-card {
+    cursor: pointer;
+    box-shadow: 0 0 4px 1px rgba(0, 0, 0, 0.3);
+
+    &:hover {
+      -webkit-box-shadow: 4px 4px 5px 5px rgba(0, 0, 0, 0.2);
+      -moz-box-shadow: 4px 4px 5px 5px rgba(0, 0, 0, 0.2);
+      box-shadow: 4px 4px 5px 5px rgba(0, 0, 0, 0.2);
+      transition: all 0.5s ease-in-out;
+    }
+
+    nb-card-body {
+      display: flex;
+      justify-content: space-around;
+      padding: 1.25rem;
+
+      @include media-breakpoint-down(sm) {
+        display: flex;
+        flex-direction: column;
+      }
+
+      .team-title {
+        font-size: 1em;
+        font-weight: bold;
+        font-family: Montserrat;
+        font-style: normal;
+        width: 20%;
+
+
+
+        @include media-breakpoint-down(sm) {
+          width: 100%;
+        }
+      }
+
+      .team-details {
+        width: 20%;
+        font-weight: bold;
+        color: #1e22aa;
+
+        @include media-breakpoint-down(sm) {
+          width: 100%;
+        }
+      }
+
+      .team-data {
+        margin-right: 5px;
+        color: #1e22aa;
+        letter-spacing: 0.02125em;
+        font-size: 11px;
+      }
+
+      .fetched-data {
+        font-family: Montserrat;
+        font-style: normal;
+        font-size: 13px;
+        margin-left: 5px;
+        letter-spacing: 0.05em;
+        font-weight: bolder;
+        color: #1e22aa;
+      }
+
+      .progress-wrap {
+        width: 25%;
+
+        .progress {
+          height: 5px;
+          margin: 5px 0;
+        }
+
+        @include media-breakpoint-down(sm) {
+          width: 100%;
+        }
+
+      }
+      .team-tasks {
+        width: 15%;
+        display: flex;
+        justify-content: center;
+
+        // .add-btn {
+        //   margin: 5px;
+        // }
+      }
+
+    }
+  }
+
+}
+
+.file-container {
+  width: 90%;
+  padding: 10px;
+  overflow: scroll;
+  box-shadow: 0 0 4px 1px rgba(0, 0, 0, 0.3);
+}
+
+
+.image-card {
+  cursor: pointer;
+  border: 1px solid #ced4da;
+  border-radius: 2%;
+  width: fit-content;
+  // height: fit-content;
+  // margin: 0 10px;
+
+  nb-card-header {
+    padding: 0;
+    display: flex;
+    justify-content: space-between;
+
+    .dots::after {
+      content: '•••';
+      font-size: 10px;
+      margin: 10px;
+    }
+  }
+
+  .image-detail {
+    display: flex;
+    flex-direction: column;
+    padding: 10px;
+    letter-spacing: 1px;
+
+
+    .image-user {
+      font-weight: 600;
+    }
+    .image-text {
+      color: #65676b;
+      font-weight: 100;
+    }
+    .image-time {
+      margin-top: 2px;
+      color: #65676b;
+      font-weight: 100;
+      font-size: 11px;
+    }
+    .image-comment {
+      color: #65676b;
+      font-weight: 100;
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+
+  }
+
+  nb-card-body {
+    padding: 0;
+    background-color: #f2f3f5;
+
+    img {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+
+    .img-link {
+      img {
+        width: 60px;
+        height: 60px;
+        align-self: center;
+      }
+      .file-name {
+        align-self: center;
+      }
+
+    }
+
+  }
+}
+
+
+.form-group {
+  // margin: 20px 10px;
+
+  .icons {
+    width: 15%;
+    display: flex;
+    justify-content: center;
+
+    nb-icon {
+      font-size: 1.5rem;
+      cursor: pointer;
+      margin: auto;
+
+      &:hover {
+        font-size: 1.6rem;
+      }
+    }
+
+    .show {
+      color: #3366ff;
+    }
+    .hide {
+      color: #e40046;
+    }
+
+  }
+}
+
+.item-add {
+  display: flex;
+
+  input {
+    border: none;
+    background: #ffffff;
+    border-bottom: solid 1px #0095ff;
+  }
+
+  .add-btn {
+    margin: auto 5px;
+    width: 12%;
+    height: 20px;
+    padding: 2px;
+    text-transform: lowercase;
+  }
+}
+
+.location,
+  .date {
+    display: block;
+  }
+
+  .location {
+    margin-bottom: 0.5rem;
+  }
+
+
+  .today {
+    display: flex;
+    justify-content: space-around;
+  }
+
+  .today-temperature {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin: 0.5rem 1.5rem;
+  }
+
+  .today-icon {
+    color: nb-theme(color-primary-default);
+    font-size: 10rem;
+    line-height: 1;
+    margin-top: -1rem;
+    margin-left: auto;
+    margin-right: 0.4rem;
+  }
+
+  .weekly-forecast {
+    display: flex;
+    justify-content: space-around;
+    margin: auto 0;
+  }
+
+  .day {
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .caption {
+    font-size: 1rem;
+  }
+
+  .weather-icon {
+    font-size: 2.5rem;
+    line-height: 2.5rem;
+  }

@@ -1,0 +1,46 @@
+.card {
+  /* Add shadows to create the "card" effect */
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+  transition: 0.3s;
+  border-radius: 5px; /* 5px rounded corners */
+}
+
+/* On mouse-over, add a deeper shadow */
+.card:hover {
+  box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2);
+}
+
+/* Add some padding inside the card container */
+.container {
+
+}
+
+
+.chart-container{
+  width: 100%;
+  display: grid;
+  min-height: 600px;
+}
+
+.task-numbers-cont{
+  border: 2px solid green;
+  border-radius: 10px;
+  display: inline-block;
+  padding: 10px 20px;
+  max-width: 100%;
+  line-height: 200%;
+}
+.task-numbers-cont b{
+  font-size: 30px;
+}
+
+nb-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 4.5rem;
+  height: 3.5rem;
+}
+.select-section{
+  float: right;
+}

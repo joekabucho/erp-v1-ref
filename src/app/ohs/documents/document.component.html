@@ -1,0 +1,636 @@
+<nb-tabset style="margin: 1.5em">
+
+  <nb-tab tabTitle="Personal Protective Equipment"  badgeStatus="warning">
+    <div class="col-md-12 m-0 p-0">
+      <nb-card class="permit-card" accent="primary" style="width: 75em;">
+        <nb-card-header>
+          <input nbInput size="small" type="text" class="form-control form-control ml-auto" autocomplete="on" placeholder="Search by Name" [(ngModel)]="searchPPE" (ngModelChange)="fetchPPEDetails()">
+        </nb-card-header>
+        <nb-card-body>
+          <div class="table-responsive">
+            <table class="table table-striped table-hover">
+              <thead>
+              <tr>
+                <th *ngFor="let head of ppeElements" scope="col">{{head}}</th>
+              </tr>
+              </thead>
+              <tbody>
+              <tr *ngFor="let item of ppe; index as i;trackBy: identify">
+                <th scope="row">{{ i + 1 }}</th>
+                <td><li *ngFor="let ppe of item.ppe_names">{{ppe.name}}</li></td>
+                <td>{{item.safety_officer?.username}}</td>
+                <td>{{item.technician?.username}}</td>
+                <td>{{item.ticket?.ticket_code}}</td>
+                <td ><fa-icon  [icon]="pdf"  *ngIf="item?.file_type?.startsWith('application');" (click)="openPDF(dialog10,item)"></fa-icon><fa-icon  [icon]="image"  *ngIf="item?.file_type?.startsWith('image');" (click)="openImage(dialog11,item)"></fa-icon></td>
+                <td><nb-icon icon="edit-outline" class="edit" (click)="editPPEFileModal(dialog6,item)"></nb-icon></td>
+                <td><nb-icon icon="trash-outline" class="trash" (click)="confirmDeletePPE(item)"></nb-icon></td>
+              </tr>
+              </tbody>
+            </table>
+          </div>
+        </nb-card-body>
+        <nb-card-footer class="d-flex">
+          <div class="form-group">
+            <nb-select [(selected)]="itemsPerPage" [(ngModel)]="itemsPerPage" (selectedChange)="onChangePPE($event)" placeholder="Select fetched items">
+              <nb-option  [value]="25">25</nb-option>
+              <nb-option  [value]="50">50</nb-option>
+              <nb-option  [value]="100">100</nb-option>
+              <nb-option  [value]="100000000">All</nb-option>
+            </nb-select>
+          </div>
+        </nb-card-footer>
+      </nb-card>
+    </div>
+  </nb-tab>
+  <nb-tab tabTitle="Technician Certificates"  badgeStatus="warning">
+    <div class="col-md-12 m-0 p-0">
+      <nb-card class="permit-card" accent="primary" style="width: 75em;">
+        <nb-card-header>
+          <button nbButton hero size="small" status="success" (click)="openCertFileModal(dialog5)">Add certificate</button>
+          <input nbInput size="small" type="text" class="form-control form-control ml-auto" autocomplete="on" placeholder="Search by Name" [(ngModel)]="searchCert" (ngModelChange)="fetchCertDetails()">
+
+        </nb-card-header>
+        <nb-card-body>
+          <div class="table-responsive">
+            <table class="table table-striped table-hover">
+              <thead>
+              <tr>
+                <th *ngFor="let head of certificateElements" scope="col">{{head}}</th>
+              </tr>
+              </thead>
+              <tbody>
+              <tr *ngFor="let cert of certificates; index as i;trackBy: identify">
+                <th scope="row">{{ i + 1 }}</th>
+                <td>{{cert.certificate?.name}}</td>
+                <td>{{cert.technician?.username}}</td>
+                <td ><fa-icon  [icon]="pdf"  *ngIf="cert?.file_type?.startsWith('application');" (click)="openPDF(dialog10,cert)"></fa-icon><fa-icon  [icon]="image"  *ngIf="cert?.file_type?.startsWith('image');" (click)="openImage(dialog11,cert)"></fa-icon></td>
+                <td><nb-icon icon="edit-outline" class="edit" (click)="editCertFileModal(dialog8,cert)"></nb-icon></td>
+                <td><nb-icon icon="trash-outline" class="trash" (click)="confirmDeleteCertificate(cert)"></nb-icon></td>
+              </tr>
+              </tbody>
+            </table>
+          </div>
+        </nb-card-body>
+        <nb-card-footer class="d-flex">
+          <div class="form-group">
+            <nb-select [(selected)]="itemsPerPage" [(ngModel)]="itemsPerPage" (selectedChange)="onChangeCert($event)" placeholder="Select fetched items">
+              <nb-option  [value]="25">25</nb-option>
+              <nb-option  [value]="50">50</nb-option>
+              <nb-option  [value]="100">100</nb-option>
+              <nb-option  [value]="100000000">All</nb-option>
+            </nb-select>
+          </div>
+        </nb-card-footer>
+      </nb-card>
+    </div>
+  </nb-tab>
+  <nb-tab tabTitle="Permits"  badgeStatus="warning">
+    <div class="col-md-12 m-0 p-0">
+      <nb-card class="permit-card" accent="primary" style="width: 70em;">
+        <nb-card-header>
+          <button nbButton hero size="small" status="success" (click)="openPermitModal(dialog)">Add permit</button>
+          <input nbInput size="small" type="text" class="form-control form-control ml-auto" autocomplete="on" placeholder="Search by Name" [(ngModel)]="searchPermit" (ngModelChange)="fetchPermitDetails()">
+
+        </nb-card-header>
+        <nb-card-body>
+          <div class="table-responsive">
+            <table class="table table-striped table-hover" >
+              <thead>
+              <tr>
+                <th *ngFor="let head of permitsElements" scope="col">{{head}}</th>
+              </tr>
+              </thead>
+              <tbody>
+              <tr *ngFor="let perm of permits ; index as i">
+                <th scope="row">{{ i + 1 }}</th>
+                <td>{{perm.name}}</td>
+                <td><nb-icon icon="edit-outline" class="edit" (click)="openPermitModal(dialog)"></nb-icon></td>
+                <td><nb-icon icon="trash-outline" class="trash" (click)="confirmDeletePermit(perm)"></nb-icon></td>
+              </tr>
+              </tbody>
+            </table>
+          </div>
+        </nb-card-body>
+        <nb-card-footer class="d-flex">
+          <div class="form-group">
+            <nb-select [(selected)]="itemsPerPage" [(ngModel)]="itemsPerPage" (selectedChange)="onChangePermit($event)" placeholder="Select fetched items">
+              <nb-option  [value]="25">25</nb-option>
+              <nb-option  [value]="50">50</nb-option>
+              <nb-option  [value]="100">100</nb-option>
+              <nb-option  [value]="100000000">All</nb-option>
+            </nb-select>
+          </div>
+        </nb-card-footer>
+      </nb-card>
+
+
+    </div>
+  </nb-tab>
+  <nb-tab tabTitle="Site Safety Equipment"  badgeStatus="warning">
+    <div class="col-md-12 m-0 p-0">
+      <nb-card class="permit-card" accent="primary" style="width: 70em;">
+        <nb-card-header>
+          <input nbInput size="small" type="text" class="form-control form-control ml-auto" autocomplete="on" placeholder="Search by Name" [(ngModel)]="searchSSE" (ngModelChange)="fetchSSEDetails()">
+
+        </nb-card-header>
+        <nb-card-body>
+          <div class="table-responsive">
+            <table class="table table-striped table-hover">
+              <thead>
+              <tr>
+                <th *ngFor="let head of sseElements" scope="col">{{head}}</th>
+              </tr>
+              </thead>
+              <tbody>
+              <tr *ngFor="let item of sse; index as i;trackBy: identify">
+                <th scope="row">{{ i + 1 }}</th>
+                <td>{{item.name?.name}}</td>
+                <td>{{item.ticket?.ticket_code}}</td>
+                <td>{{item.site?.name}}</td>
+                <td>{{item.safety_officer?.username}}</td>
+                <td ><fa-icon  [icon]="pdf"  *ngIf="item?.file_type?.startsWith('application');" (click)="openPDF(dialog10,item)"></fa-icon><fa-icon  [icon]="image"  *ngIf="item?.file_type?.startsWith('image');" (click)="openImage(dialog11,item)"></fa-icon></td>
+                <td><nb-icon icon="edit-outline" class="edit" (click)="editSSEFileModal(dialog7,item)"></nb-icon></td>
+                <td><nb-icon icon="trash-outline" class="trash" (click)="confirmDeleteSSE(item)"></nb-icon></td>
+              </tr>
+              </tbody>
+            </table>
+          </div>
+        </nb-card-body>
+        <nb-card-footer class="d-flex">
+          <div class="form-group">
+            <nb-select [(selected)]="itemsPerPage" [(ngModel)]="itemsPerPage" (selectedChange)="onChangeSSE($event)" placeholder="Select fetched items">
+              <nb-option  [value]="25">25</nb-option>
+              <nb-option  [value]="50">50</nb-option>
+              <nb-option  [value]="100">100</nb-option>
+              <nb-option  [value]="100000000">All</nb-option>
+            </nb-select>
+          </div>
+        </nb-card-footer>
+      </nb-card>
+    </div>
+  </nb-tab>
+</nb-tabset>
+
+
+<ng-template #dialog let-data let-ref="dialogRef">
+  <nb-card status="success" style="width: 25em;">
+    <nb-card-header>Add Permit
+      <a (click)="ref.close()" aria-label="Back" id="close-perm" style="float: right;">
+        <nb-icon icon="close"></nb-icon>
+      </a>
+    </nb-card-header>
+    <nb-card-body>
+      <form [formGroup]="docForm">
+        <div class="form-group m-2">
+          <label class="label" for="inputName">Name</label>
+          <input type="text" nbInput fullWidth id="inputName" placeholder="Name" formControlName="name">
+        </div>
+      </form>
+    </nb-card-body>
+    <nb-card-footer>
+      <button nbButton status="success" size="small" style="float: right;" [disabled]="submitted || !docForm.valid"
+      [class.btn-pulse]="submitted" (click)="savePermit()">submit</button>
+    </nb-card-footer>
+  </nb-card>
+</ng-template>
+
+
+<ng-template #dialog9 let-data let-ref="dialogRef">
+  <nb-card status="success" style="width: 25em;">
+    <nb-card-header>Add SSE name
+      <a (click)="ref.close()" aria-label="Back" id="close-sse-names" style="float: right;">
+        <nb-icon icon="close"></nb-icon>
+      </a>
+    </nb-card-header>
+    <nb-card-body>
+      <form [formGroup]="docForm">
+        <div class="form-group m-2">
+          <label class="label" for="inputName">Name</label>
+          <input type="text" nbInput fullWidth id="inputName" placeholder="Name" formControlName="name">
+        </div>
+      </form>
+    </nb-card-body>
+    <nb-card-footer>
+      <button nbButton status="success" size="small" style="float: right;" [disabled]="submitted || !docForm.valid"
+              [class.btn-pulse]="submitted" (click)="saveSSE()">submit</button>
+    </nb-card-footer>
+  </nb-card>
+</ng-template>
+
+
+<ng-template #dialog1 let-data let-ref="dialogRef">
+  <nb-card status="success" style="width: 25em;">
+    <nb-card-header>Add Certificate
+      <a (click)="ref.close()" aria-label="Back" id="close-cert" style="float: right;">
+        <nb-icon icon="close"></nb-icon>
+      </a>
+    </nb-card-header>
+    <nb-card-body>
+      <form [formGroup]="docForm">
+        <div class="form-group m-2">
+          <label class="label" for="inputName">Name</label>
+          <input type="text" nbInput fullWidth id="inputName" placeholder="Name" formControlName="name">
+        </div>
+      </form>
+    </nb-card-body>
+    <nb-card-footer>
+      <button nbButton status="success" size="small" style="float: right;" [disabled]="submitted || !docForm.valid"
+      [class.btn-pulse]="submitted" (click)="saveCertificate()">submit</button>
+    </nb-card-footer>
+  </nb-card>
+</ng-template>
+
+
+<ng-template #dialog2 let-data let-ref="dialogRef">
+  <nb-card status="success" style="width: 25em;">
+    <nb-card-header>Add PPE names
+      <a (click)="ref.close()" aria-label="Back" id="close-ppe-names" style="float: right;">
+        <nb-icon icon="close"></nb-icon>
+      </a>
+    </nb-card-header>
+    <nb-card-body>
+      <form [formGroup]="docForm">
+        <div class="form-group m-2">
+          <label class="label" for="inputName">Name</label>
+          <input type="text" nbInput fullWidth id="inputName" placeholder="Name" formControlName="name">
+        </div>
+      </form>
+    </nb-card-body>
+    <nb-card-footer>
+      <button nbButton status="success" size="small" style="float: right;" [disabled]="submitted || !docForm.valid"
+      [class.btn-pulse]="submitted" (click)="savePPE()">submit</button>
+    </nb-card-footer>
+  </nb-card>
+</ng-template>
+
+
+<ng-template #dialog5 let-data let-ref="dialogRef">
+  <nb-card class="site-form" style="width: 65em;" size="giant">
+    <nb-card-header>Add Technician Certificates
+      <a (click)="ref.close()" aria-label="Back" style="float: right;" id="close-certificate">
+        <nb-icon icon="close"></nb-icon>
+      </a>
+    </nb-card-header>
+    <nb-card-body>
+
+      <form [formGroup]="certForm">
+        <div formArrayName="cert_items">
+          <div *ngFor="let item of certItems.controls; let pointIndex=index" [formGroupName]="pointIndex">
+
+        <div class="row">
+        <div class="form-group col-3">
+          <input   id="file"
+                   type="file"
+                   formControlName="file"
+                     nbInput fullWidth  class="p-0" (change)="onCertificateFileSelected($event)">
+
+
+        </div>
+
+
+
+        <div class="form-group col-3">
+          <div class="form-group d-flex justify-content-between">
+            <nb-select    fullWidth   placeholder="Certificate names"
+                        formControlName="certificate" >
+              <nb-option *ngFor="let cert of certificatesnames" [value]="cert.id">{{cert.name}}</nb-option>
+            </nb-select>
+            <button class="route-btn" nbSuffix nbButton ghost (click)="openCertModal(dialog1)">
+              <nb-icon icon="plus-square-outline"></nb-icon>
+            </button>
+          </div>
+        </div>
+
+        <div class="form-group col-3">
+          <div class="form-group d-flex justify-content-between">
+            <nb-select    fullWidth   placeholder="Technician"
+                          formControlName="technician" >
+              <nb-option *ngFor="let tech of Technicians" [value]="tech.id">{{tech.first_name}} {{tech.last_name}}</nb-option>
+            </nb-select>
+          </div>
+        </div>
+
+          <fa-icon [icon]="plus"  (click)="addCertItems()" class="col-1"></fa-icon>
+          <fa-icon [icon]="minus" (click)="deleteCertItems(pointIndex)" class="col-1"></fa-icon>
+
+      </div>
+
+          </div>
+          <div class="form-group">
+            <button nbButton status="success" size="small" style="float: right;" [disabled]="submitted || certForm.invalid"
+                    [class.btn-pulse]="submitted" (click)="saveCertificateFile(this.certForm.value)">submit</button>
+          </div>
+        </div>
+      </form>
+
+    </nb-card-body>
+  </nb-card>
+</ng-template>
+
+
+
+<ng-template #dialog6 let-data let-ref="dialogRef">
+  <nb-card class="site-form" style="width: 50em;" size="giant">
+    <nb-card-header>Edit PPE file
+      <a (click)="ref.close()" aria-label="Back" style="float: right;" id="close-ppe">
+        <nb-icon icon="close"></nb-icon>
+      </a>
+    </nb-card-header>
+    <nb-card-body>
+      <form #fileForm='ngForm'>
+
+        <div class="form-group">
+          <input type="file" multiple nbInput fullWidth id="inputFile" class="p-0" (change)="onPPEFileSelected($event)">
+        </div>
+          <div class="form-group">
+            <div class="form-group d-flex justify-content-between">
+              <nb-select  multiple  fullWidth   placeholder="PPE names"
+                          [(ngModel)]="fileForm.ppe_names"
+                          #ppe_names="ngModel"
+                          name="ppe_names"
+                          (change)="onPpeNamesSelected($event)"
+              >
+                <nb-option *ngFor="let ppes of ppenames" [value]="ppes.id">{{ppes.name}}</nb-option>
+              </nb-select>
+            </div>
+            <ng-container *ngIf="ppe_names.invalid && ppe_names.touched">
+              <p class="caption status-danger" *ngIf="ppe_names.errors?.required">
+                Required!
+              </p>
+            </ng-container>
+            <div class="input-group-append">
+              <button class="route-btn" nbSuffix nbButton ghost (click)="openPPEModal(dialog2)">
+                <nb-icon icon="plus-square-outline"></nb-icon>
+              </button>
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="form-group d-flex justify-content-between">
+              <nb-select    fullWidth   placeholder="Safety Officer"
+                            [(ngModel)]="fileForm.safety_officer"
+                            #safety_officer="ngModel"
+                            name="safety_officer" >
+                <nb-option *ngFor="let safety of safetyOfficer" [value]="safety.id">{{safety.first_name}} {{safety.last_name}}</nb-option>
+              </nb-select>
+            </div>
+            <ng-container *ngIf="safety_officer.invalid && safety_officer.touched">
+              <p class="caption status-danger" *ngIf="safety_officer.errors?.required">
+                Required!
+              </p>
+            </ng-container>
+          </div>
+        <div class="form-group">
+          <div class="form-group d-flex justify-content-between">
+            <nb-select    fullWidth   placeholder="Safety Officer"
+                          [(ngModel)]="fileForm.technician"
+                          #technician="ngModel"
+                          name="technician" >
+              <nb-option *ngFor="let tech of Technicians" [value]="tech.id">{{tech.first_name}} {{tech.last_name}}</nb-option>
+            </nb-select>
+          </div>
+          <ng-container *ngIf="technician.invalid && technician.touched">
+            <p class="caption status-danger" *ngIf="technician.errors?.required">
+              Required!
+            </p>
+          </ng-container>
+        </div>
+          <div class="form-group">
+            <div class="form-group d-flex justify-content-between">
+              <nb-select   fullWidth   placeholder="Ticket"
+                           [(ngModel)]="fileForm.ticket"
+                           #ticket="ngModel"
+                           name="ticket" >
+                <nb-option *ngFor="let ticket of tickets" [value]="ticket.id">{{ticket.ticket_code}}</nb-option>
+              </nb-select>
+            </div>
+            <ng-container *ngIf="ticket.invalid && ticket.touched">
+              <p class="caption status-danger" *ngIf="ticket.errors?.required">
+                Required!
+              </p>
+            </ng-container>
+          </div>
+
+          <div class="form-group">
+            <button nbButton status="success" size="small" style="float: right;" [disabled]="submitted || fileForm.invalid"
+                    [class.btn-pulse]="submitted" (click)="editPPEFile(fileForm)">submit</button>
+          </div>
+      </form>
+    </nb-card-body>
+  </nb-card>
+</ng-template>
+
+<ng-template #dialog7 let-data let-ref="dialogRef">
+  <nb-card class="site-form" style="width: 25em;">
+    <nb-card-header>Edit SSE file
+      <a (click)="ref.close()" aria-label="Back" style="float: right;" id="close-sse">
+        <nb-icon icon="close"></nb-icon>
+      </a>
+    </nb-card-header>
+    <nb-card-body>
+      <form #fileForm='ngForm'>
+
+        <div class="form-group">
+          <input type="file" nbInput multiple fullWidth id="inputFile" class="p-0" (change)="onSSEFileSelected($event)">
+        </div>
+
+        <div class="form-group">
+          <div class="form-group d-flex justify-content-between">
+            <nb-select    fullWidth   placeholder="SSE name"
+                          [(ngModel)]="fileForm.name"
+                          #name="ngModel"
+                          name="name" >
+              <nb-option *ngFor="let sse of ssenames" [value]="sse.id">{{sse.name}}</nb-option>
+            </nb-select>
+            <button class="route-btn" nbSuffix nbButton ghost (click)="openPPEModal(dialog2)">
+              <nb-icon icon="plus-square-outline"></nb-icon>
+            </button>
+          </div>
+          <ng-container *ngIf="name.invalid && name.touched">
+            <p class="caption status-danger" *ngIf="name.errors?.required">
+              Required!
+            </p>
+          </ng-container>
+        </div>
+        <div class="form-group">
+          <div class="form-group d-flex justify-content-between">
+            <nb-select    fullWidth   placeholder="Safety Officer"
+                          [(ngModel)]="fileForm.safety_officer"
+                          #safety_officer="ngModel"
+                          name="safety_officer" >
+              <nb-option *ngFor="let safety of safetyOfficer" [value]="safety.id">{{safety.first_name}} {{safety.last_name}}</nb-option>
+            </nb-select>
+          </div>
+          <ng-container *ngIf="safety_officer.invalid && safety_officer.touched">
+            <p class="caption status-danger" *ngIf="safety_officer.errors?.required">
+              Required!
+            </p>
+          </ng-container>
+        </div>
+        <div class="form-group">
+          <div class="form-group d-flex justify-content-between">
+            <nb-select   fullWidth   placeholder="Ticket"
+                         [(ngModel)]="fileForm.ticket"
+                         #ticket="ngModel"
+                         name="ticket" >
+              <nb-option *ngFor="let ticket of tickets" [value]="ticket.id">{{ticket.ticket_code}}</nb-option>
+            </nb-select>
+          </div>
+          <ng-container *ngIf="ticket.invalid && ticket.touched">
+            <p class="caption status-danger" *ngIf="ticket.errors?.required">
+              Required!
+            </p>
+          </ng-container>
+        </div>
+
+        <div class="form-group">
+          <div class="form-group d-flex justify-content-between">
+            <nb-select   fullWidth   placeholder="Site name"
+                         [(ngModel)]="fileForm.site"
+                         #site="ngModel"
+                         name="sites" >
+              <nb-option *ngFor="let site of Site" [value]="site.id">{{site.name}}</nb-option>
+            </nb-select>
+            <button class="route-btn" nbSuffix nbButton ghost (click)="openSite(dialog12)">
+              <nb-icon icon="plus-square-outline"></nb-icon>
+            </button>
+          </div>
+          <ng-container *ngIf="site.invalid && site.touched">
+            <p class="caption status-danger" *ngIf="site.errors?.required">
+              Required!
+            </p>
+          </ng-container>
+        </div>
+
+        <div class="form-group">
+          <button nbButton status="success" size="small" style="float: right;" [disabled]="submitted || fileForm.invalid"
+                  [class.btn-pulse]="submitted" (click)="editSSEFile(fileForm)">submit</button>
+        </div>
+
+      </form>
+    </nb-card-body>
+  </nb-card>
+</ng-template>
+
+<ng-template #dialog8 let-data let-ref="dialogRef">
+  <nb-card class="site-form" style="width: 25em;">
+    <nb-card-header>Edit Technician Certificates
+      <a (click)="ref.close()" aria-label="Back" style="float: right;" id="close-certificate">
+        <nb-icon icon="close"></nb-icon>
+      </a>
+    </nb-card-header>
+    <nb-card-body>
+      <form #fileForm='ngForm'>
+
+        <div class="form-group">
+          <input type="file" nbInput multiple fullWidth id="inputFile" class="p-0" (change)="onCertificateFileSelected($event)">
+        </div>
+
+        <div class="form-group">
+          <div class="form-group d-flex justify-content-between">
+            <nb-select    fullWidth   placeholder="Certificate names"
+                          [(ngModel)]="fileForm.certificate"
+                          #certificate="ngModel"
+                          name="certificate" >
+              <nb-option *ngFor="let cert of certificatesnames" [value]="cert.id">{{cert.name}}</nb-option>
+            </nb-select>
+          </div>
+          <ng-container *ngIf="certificate.invalid && certificate.touched">
+            <p class="caption status-danger" *ngIf="certificate.errors?.required">
+              Required!
+            </p>
+          </ng-container>
+          <div class="input-group-append">
+            <button class="route-btn" nbSuffix nbButton ghost (click)="openCertModal(dialog1)">
+              <nb-icon icon="plus-square-outline"></nb-icon>
+            </button>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <div class="form-group d-flex justify-content-between">
+            <nb-select    fullWidth   placeholder="Technician"
+                          [(ngModel)]="fileForm.technician"
+                          #technician="ngModel"
+                          name="technician" >
+              <nb-option *ngFor="let tech of Technicians" [value]="tech.id">{{tech.first_name}} {{tech.last_name}}</nb-option>
+            </nb-select>
+          </div>
+          <ng-container *ngIf="technician.invalid && technician.touched">
+            <p class="caption status-danger" *ngIf="technician.errors?.required">
+              Required!
+            </p>
+          </ng-container>
+        </div>
+        <div class="form-group">
+          <button nbButton status="success" size="small" style="float: right;" [disabled]="submitted || fileForm.invalid"
+                  [class.btn-pulse]="submitted" (click)="editCertificateFile(fileForm)">submit</button>
+        </div>
+
+      </form>
+    </nb-card-body>
+  </nb-card>
+</ng-template>
+
+<ng-template #dialog10 let-data let-ref="dialogRef">
+  <nb-card class="site-form" style="width: 70em;" size="giant">
+    <nb-card-header> File
+      <a (click)="ref.close()" aria-label="Back" style="float: right;" id="close-pdf">
+        <nb-icon icon="close"></nb-icon>
+      </a>
+    </nb-card-header>
+    <nb-card-body>
+      <pdf-viewer [src]="pdfSrc"
+                  [render-text]="true"
+                  style="display: block;"
+      ></pdf-viewer>
+    </nb-card-body>
+  </nb-card>
+</ng-template>
+
+<ng-template #dialog11 let-data let-ref="dialogRef">
+  <nb-card class="site-form" style="width: 85em;" size="giant">
+    <nb-card-header> File
+      <a (click)="ref.close()" aria-label="Back" style="float: right;" id="close-image">
+        <nb-icon icon="close"></nb-icon>
+      </a>
+    </nb-card-header>
+    <nb-card-body>
+        <img style="height: 650px; width: 1250px" [src]="imageToView" alt="image">
+    </nb-card-body>
+  </nb-card>
+</ng-template>
+
+<ng-template #dialog12 let-data let-ref="dialogRef">
+  <nb-card status="success" style="width: 27em;">
+    <nb-card-header>Create Site
+      <a (click)="ref.close()" aria-label="Back" style="float: right;"  id="close-site">
+        <nb-icon icon="close"></nb-icon>
+      </a>
+    </nb-card-header>
+    <nb-card-body>
+      <form [formGroup]="siteForm">
+
+        <div class="form-group">
+          <input
+            type="text"
+            nbInput
+            fullWidth
+            placeholder="Name"
+            formControlName="name"/>
+        </div>
+
+
+        <div class="form-group d-flex justify-content-between">
+          <nb-select fullWidth  placeholder="Select location" formControlName="location" >
+            <nb-option *ngFor="let loc of Location" [value]="loc.id">{{loc.name}}</nb-option>
+          </nb-select>
+        </div>
+        <div class="form-group">
+          <button nbButton status="success" size="small" style="float: right;" [disabled]="submitted || !siteForm.valid"
+                  [class.btn-pulse]="submitted" (click)="createSite()">submit</button>
+        </div>
+      </form>
+
+    </nb-card-body>
+  </nb-card>
+</ng-template>

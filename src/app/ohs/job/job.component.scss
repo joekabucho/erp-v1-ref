@@ -1,0 +1,89 @@
+.edit {
+  cursor: pointer;
+  color: #00d68f;
+  font-size: 1.3rem;
+}
+
+.edit:hover {
+  font-size: 1.5rem;
+}
+
+.trash {
+  cursor: pointer;
+  color: #ff3d71;
+  font-size: 1.3rem;
+  &:hover {
+    font-size: 1.5rem;
+  }
+}
+
+.approval-btn:disabled,
+.approval-btn[disabled] {
+  color: #ffffff !important;
+  background-color: #00d68f !important;
+}
+
+table {
+  table-layout: auto;
+  margin-top: 10px;
+}
+
+table thead tr {
+  background: #1e22aa;
+  color: #fff;
+}
+
+table thead tr th {
+  position: sticky;
+  font-size: 14px;
+  top: 0;
+}
+
+table tbody {
+  overflow: auto;
+}
+
+table tbody tr td {
+  font-size: 14px;
+  overflow: hidden;
+  overflow-y: hidden;
+}
+
+.ticket-card nb-card-header {
+  border: none;
+  padding-bottom: 0;
+  font-weight: bold;
+}
+
+ion-content {
+  display: none;
+}
+
+
+/*
+Max width before this PARTICULAR table gets nasty
+This query will take effect for any screen smaller than 760px
+and also iPads specifically.
+*/
+@media only screen and (max-width: 760px), (min-device-width: 768px) and (max-device-width: 1024px) {
+
+  nb-card {
+    display: none;
+  }
+  .ticket-card nb-card-header {
+    display: flex;
+    flex-direction: column;
+  }
+
+
+  ion-content {
+    display: block;
+  }
+  .wrapper {
+    text-align: center;
+  }
+
+}
+/*# sourceMappingURL=job.component.css.map */
+
+/*# sourceMappingURL=job.component.css.map */

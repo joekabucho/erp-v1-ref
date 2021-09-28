@@ -1,0 +1,49 @@
+<nb-layout>
+  <nb-layout-header fixed>
+    <ngx-header></ngx-header>
+  </nb-layout-header>
+  <nb-layout-column>
+  <div class="row w-100">
+    <div class="col-sm-12 welcome-title text-uppercase">
+      <h2>Welcome to Adrian resource planning</h2>
+    </div>
+  </div>
+  <div class="container">
+    <div class="row content-section d-flex justify-content-center flex-wrap">
+      <nb-card class="card-wrap col-sm-12 col-md-4" (click)="toOperations()">
+        <nb-card-body class="card-body">
+          <img src="../../assets/adrian-images/ic_operations.png" alt="operations" srcset="" >
+          <h4>Operations Module</h4>
+        </nb-card-body>
+      </nb-card>
+      <nb-card class="card-wrap col-sm-12 col-md-4" (click)="toCasuals()">
+        <nb-card-body class="card-body">
+          <img src="../../assets/adrian-images/ic_admin-with-cogwheels.svg" alt="operations" srcset="" >
+          <h4>Casuals Module</h4>
+        </nb-card-body>
+      </nb-card>
+
+      <nb-card class="card-wrap col-sm-12 col-md-4" (click)="toTicketing()">
+        <nb-card-body class="card-body">
+          <img src="../../assets/adrian-images/ic_ticketing.png" alt="operations" srcset="" >
+          <h4>Ticketing Module</h4>
+        </nb-card-body>
+      </nb-card>
+
+      <nb-card class="card-wrap col-sm-12 col-md-4" (click)="toAdmin()">
+        <nb-card-body class="card-body">
+          <img src="../../assets/adrian-images/ic_admin-with-cogwheels.svg" alt="operations" srcset="" >
+          <h4>Admin Module</h4>
+        </nb-card-body>
+      </nb-card>
+
+      <nb-card class="card-wrap col-sm-12 col-md-4" (click)="toOhs()">
+        <nb-card-body class="card-body">
+          <img src="../../assets/adrian-images/ic_shield.svg" alt="operations" srcset="" >
+          <h4>Safety Module</h4>
+        </nb-card-body>
+      </nb-card>
+    </div>
+  </div>
+</nb-layout-column>
+</nb-layout>

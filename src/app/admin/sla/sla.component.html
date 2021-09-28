@@ -1,0 +1,49 @@
+<nb-card size="large" class="col-md-12 h-100 py-5">
+  <nb-card-body class="m-sm-1 p-sm-0">
+    <div class="d-flex flex-wrap justify-content-between">
+      <div class="col-md-8 col-sm-12">
+        <h3>SLA Policies</h3>
+        <p>
+          Service Level Agreement(SLA) policies help you setup and maintain targets for the duration within which your
+          teams
+          respond and resolve tickets.</p>
+      </div>
+      <div class="col-md-3 col-sm-12">
+        <button nbButton routerLink="./new" class="w-100">
+          <nb-icon icon="plus-circle-outline"></nb-icon>
+          Add policy
+        </button>
+      </div>
+    </div>
+    <p class="text-info col-md-12 py-sm-2">
+      <nb-icon icon="alert-circle-outline" class="mr-2"></nb-icon>
+      The first matching SLA policy will be applied to tickets with matching conditions
+    </p>
+
+    <nb-card class="col-md-9 mb-4 border border-dark ">
+      <nb-card-body class="d-flex justify-content-between flex-wrap">
+        <div class="col-md-7 col-sm-12">
+          <p><span>1 .</span> Default SLA Policy</p>
+          <p>Default Policy</p>
+        </div>
+        <div class="col-md-2 col-sm-12 d-flex align-items-center justify-content-end flex-wrap">
+          <nb-toggle [(ngModel)]="checked" disabled></nb-toggle>
+          <nb-icon icon="more-vertical-outline" [nbPopover]="templateRef" nbPopoverPlacement="bottom"></nb-icon>
+          <ng-template #templateRef>
+            <div class="py-3 px-3 font-weight-lighter">
+              <p class="px-2">
+                <nb-icon icon="edit-outline" class="mr-2"></nb-icon>
+                Edit
+              </p>
+              <p class="px-2">
+                <nb-icon icon="trash-2-outline" class="mr-2"></nb-icon>
+                Delete
+              </p>
+            </div>
+
+          </ng-template>
+        </div>
+      </nb-card-body>
+    </nb-card>
+  </nb-card-body>
+</nb-card>

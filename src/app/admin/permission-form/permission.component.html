@@ -1,0 +1,173 @@
+<div class="role-section">
+  <div class="row">
+
+    <div class="d-flex col-md-8">
+      <div class="role">
+        <nb-card size="giant" status="info">
+          <nb-card-header class="d-flex justify-content-between">
+            Current Roles
+            <button nbButton status="success" size="small" (click)="showRoleForm(dialog)">Add Role</button>
+          </nb-card-header>
+          <nb-list>
+            <nb-list-item *ngFor="let role of roles| orderBy: 'name'| reverse">
+              {{role.name}}
+              <div>
+                <span class="view" (click)="viewDetails(role)">View details</span>
+                <nb-icon class="trash" icon="trash-2-outline" (click)="confirmDelete(role)"></nb-icon>
+              </div>
+            </nb-list-item>
+          </nb-list>
+        </nb-card>
+      </div>
+      <div class="permission" *ngIf="show">
+        <nb-card size="giant"  status="info">
+          <nb-card-header>{{selectedRole.name}}
+            <a (click)="closeSide()" aria-label="Back" style="float: right;" id="close-side">
+              <nb-icon icon="close"></nb-icon>
+            </a>
+          </nb-card-header>
+          <nb-card-body>
+            <div class="role-details" *ngFor="let perm of selectedRole.permissions">
+              <div *ngIf="!perm.deleted">
+                <div class="role-description">Content Type: {{perm.content_type.name}}  <nb-icon class="trash" icon="trash-2-outline" (click)="removePerssion(perm)"></nb-icon></div>
+                <div class="perm-details">
+                  <nb-checkbox status="success" [checked]="perm.View">View</nb-checkbox>
+                  <nb-checkbox status="success" [checked]="perm.Edit">Edit</nb-checkbox>
+                  <nb-checkbox status="success" [checked]="perm.Create">Create</nb-checkbox>
+                  <nb-checkbox status="success" [checked]="perm.Delete">Delete</nb-checkbox>
+                  <nb-checkbox status="success" [checked]="perm.Approver">Approver</nb-checkbox>
+                  <nb-checkbox status="success" [checked]="perm.Is_superuser">Superuser</nb-checkbox>
+                </div>
+              </div>
+            </div>
+          </nb-card-body>
+        </nb-card>
+      </div>
+    </div>
+
+
+    <div class="col-md-4">
+      <nb-card>
+        <nb-card-header>Add Permissions
+        </nb-card-header>
+        <nb-card-body>
+          <form #permForm="ngForm">
+            <!-- <div class="form-group">
+              <nb-select fullWidth  placeholder="Select Role" [(ngModel)]="permForm.role"  name="role" selected="" required>
+                <nb-option *ngFor="let role of roles | orderBy : 'name'|reverse" [value]="role.id">{{role.name}} </nb-option>
+              </nb-select>
+            </div> -->
+
+
+            <div class="form-group">
+              <ng-autocomplete
+                [data]="roles | orderBy : 'name'|reverse"
+                [searchKeyword]="keyword"
+                placeholder="Search role"
+                (selected)='selectEvent($event)'
+                (inputChanged)='onChangeSearch($event)'
+                (inputFocused)='onFocused($event)'
+                historyIdentifier="roles"
+                [itemTemplate]="itemTemplate"
+                [notFoundTemplate]="notFoundTemplate">
+              </ng-autocomplete>
+
+              <ng-template #itemTemplate let-item>
+                <a [innerHTML]="item.name"></a>
+              </ng-template>
+
+              <ng-template #notFoundTemplate let-notFound>
+                <div [innerHTML]="notFound"></div>
+              </ng-template>
+            </div>
+
+            <div class="form-group">
+              <ng-autocomplete
+                [data]="contentTypes | orderBy : 'model'|reverse"
+                [searchKeyword]="keywordContentType"
+                placeholder="Search Content Type"
+                (selected)='selectContentEvent($event)'
+                (inputChanged)='onChangeSearch($event)'
+                (inputFocused)='onFocused($event)'
+                historyIdentifier="contentTypes"
+                [itemTemplate]="itemContentTemplate"
+                [notFoundTemplate]="notFoundTemplateContent">
+              </ng-autocomplete>
+
+              <ng-template #itemContentTemplate let-item>
+                <a [innerHTML]="item.model"></a>
+              </ng-template>
+
+              <ng-template #notFoundTemplateContent let-notFound>
+                <div [innerHTML]="notFound"></div>
+              </ng-template>
+            </div>
+
+
+
+            <!-- <div class="form-group">
+              <nb-select fullWidth  placeholder="Select Content" [(ngModel)]="permForm.content_type"  name="content_type" selected="" required>
+                <nb-option *ngFor="let content of contentTypes | orderBy : 'model'|reverse" [value]="content.id">{{content.model}} </nb-option>
+              </nb-select>
+            </div> -->
+
+            <div class="form-group checkboxes">
+              <label class="label" for="inputSelectPermissions">Select Permissions</label>
+              <nb-checkbox status="success" [(ngModel)]="permForm.View"   name="View">View</nb-checkbox>
+              <nb-checkbox status="success" [(ngModel)]="permForm.Edit"  name="Edit">Edit</nb-checkbox>
+              <nb-checkbox status="success" [(ngModel)]="permForm.Create"  name="Create">Create</nb-checkbox>
+              <nb-checkbox status="success" [(ngModel)]="permForm.Delete"  name="Delete">Delete</nb-checkbox>
+              <nb-checkbox status="success" [(ngModel)]="permForm.Approver"  name="Approver">Approver</nb-checkbox>
+              <nb-checkbox status="success" [(ngModel)]="permForm.Is_superuser"  name="Is_superuser">Superuser</nb-checkbox>
+            </div>
+
+            <div class="form-group">
+              <button nbButton status="success" size="small" style="float: right;"
+              [disabled]="submitted || !permForm.valid" [class.btn-pulse]="submitted"
+              (click)="addPermission(permForm)">submit</button>
+            </div>
+          </form>
+        </nb-card-body>
+      </nb-card>
+    </div>
+
+  </div>
+</div>
+
+
+<ng-template #dialog let-data let-ref="dialogRef">
+  <nb-card style="width: 25em;">
+    <nb-card-header>Add Role
+      <a (click)="ref.close()" aria-label="Back" style="float: right;" id="close-role">
+        <nb-icon icon="close"></nb-icon>
+      </a>
+    </nb-card-header>
+    <nb-card-body>
+      <form #roleForm="ngForm" (ngSubmit)="onSubmit(roleForm)">
+        <div class="form-group">
+          <input
+          nbInput
+          autofocus
+          fullWidth
+          fieldSize="medium"
+          placeholder="Role"
+          [(ngModel)]="roleForm.name"
+          #name="ngModel"
+          id="input-name"
+          name="name"
+          [status]="name.dirty ? (name.invalid  ? 'danger' : 'success') : 'basic'"
+          [attr.aria-invalid]="name.invalid && name.touched ? true : null"
+          required>
+          <ng-container *ngIf="name.invalid && name.touched">
+            <p class="caption status-danger" *ngIf="name.errors?.required">
+              Role is required!
+            </p>
+          </ng-container>
+        </div>
+        <div class="form-group">
+          <button nbButton status="success" size="small" style="float: right;" [disabled]="submitted || !roleForm.valid" [class.btn-pulse]="submitted">submit</button>
+        </div>
+      </form>
+    </nb-card-body>
+  </nb-card>
+</ng-template>

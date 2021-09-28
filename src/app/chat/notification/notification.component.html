@@ -1,0 +1,25 @@
+<a href="#" (click)="back()" class="link back-link m-2" aria-label="Back">
+  <nb-icon icon="arrow-back"></nb-icon>
+</a>
+<nb-card class="notification-card">
+  <nb-card-header>
+    <div class="select-detail" *ngIf="selectedNotifications.length > 0"><nb-checkbox (change)="selectAll($event)" [checked]="true"></nb-checkbox>{{selectedNotifications.length}} Selected</div>
+    <div class="select-detail" *ngIf="selectedNotifications.length === 0"><nb-checkbox (change)="selectAll($event)" [checked]="false"></nb-checkbox>Select all</div>
+    <button *ngIf="selectedNotifications.length > 0" nbButton status="success" size="small" (click)="readNotification()">Mark as read</button>
+  </nb-card-header>
+  <nb-card-body>
+    <div class="notification" *ngFor="let note of allNotifications">
+      <div class="notification-details">
+        <div class="number-circle" *ngIf="note.read === false"></div>
+        <nb-checkbox (change)="changed($event, note)" [checked]="note.checked"></nb-checkbox>
+        <div>
+          <div class="notification-title">{{note.action}}</div>
+          <div class="notification-content">{{note.message}}</div>
+        </div>
+      </div>
+      <div class="notification-info">
+        <div class="notification-stamp">{{note.created_at | date: 'mediumDate'}}</div>
+      </div>
+    </div>
+  </nb-card-body>
+</nb-card>

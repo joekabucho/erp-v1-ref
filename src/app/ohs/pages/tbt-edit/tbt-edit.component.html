@@ -1,0 +1,31 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Edit Toolbox Talk </ion-title>
+    <ion-icon name='close-circle' (click)='dismiss()' style='float: right;' size="large"></ion-icon>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <form [formGroup]="toolboxForm">
+    <ion-item>
+      <ion-datetime placeholder="date" display-timezone="utc"  formControlName="date"></ion-datetime>
+    </ion-item>
+    <ion-item>
+      <ion-input placeholder="Agenda" formControlName="agenda"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label>Attendants</ion-label>
+      <ion-select multiple="true" cancelText="No" okText="Okay!"  formControlName="attendants">
+        <ion-select-option *ngFor="let attend of attendants" value="{{attend.id}}">{{attend.firstname}} {{attend.lastname}}</ion-select-option>
+      </ion-select>
+    </ion-item>
+    <ion-item>
+      <ion-input placeholder="Done By" formControlName="done_by"></ion-input>
+    </ion-item>
+    <ion-fab  horizontal="end" style="bottom: 80px" edge>
+      <ion-fab-button>
+        <ion-icon name="save" (click)="editToolboxTalks();dismiss()"></ion-icon>
+      </ion-fab-button>
+    </ion-fab>
+  </form>
+</ion-content>

@@ -1,0 +1,175 @@
+<div class="row mb-1">
+  <div class="col-12">
+    <a href="#" (click)="back()" class="link back-link" aria-label="Back">
+      <nb-icon icon="arrow-back"></nb-icon>
+    </a>
+  </div>
+</div>
+<div class="row">
+  <div class="col-sm-12">
+    <nb-tabset>
+      <nb-tab tabTitle="Teams" badgeText="{{teams.length}}" badgeStatus="success">
+        <div class="row">
+          <div class="col-12" *ngFor="let team of teams">
+            <nb-card class="team-card" (click)="viewDetails(team)">
+              <nb-card-body>
+                <div class="team-title">{{team.name}}</div>
+                <div class="team-details"><span class="team-data">Team members: </span><span class="fetched-data">{{team.no_of_members}}</span></div>
+                <div class="team-details"><span class="team-data">Number of Tasks: </span> <span class="fetched-data">{{team.no_of_tasks}}</span></div>
+                <div class="progress-wrap">
+                  <div class="d-flex justify-content-between">
+                    <span class="team-data">Progress</span>
+                    <span class="fetched-data">{{team.progress}} %</span>
+                  </div>
+                  <div class="progress">
+                    <div class="progress-bar progress-bar-striped" role="progressbar"
+                    aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" [ngStyle]="{'width': team.progress+'%'}"></div>
+                  </div>
+                </div>
+              </nb-card-body>
+            </nb-card>
+          </div>
+        </div>
+      </nb-tab>
+      <nb-tab tabTitle="Files" badgeText="{{files.length}}" badgeStatus="warning">
+        <div class="col-sm-12 m-0 p-0 h-100">
+          <nb-card size="large" class="file-container">
+            <nb-card-header class="d-flex justify-content-between">
+              {{site?.name}} Files
+
+              <div class="d-flex">
+                <button nbButton hero status="success" size="small" (click)="uploadFile(dialog1)" style="float: right;">Add File</button>
+                <!-- <button nbButton hero status="warning" size="small" (click)="getBinder()" style="float: right; margin-left: 10px;">Download Binder</button> -->
+              </div>
+
+            </nb-card-header>
+            <nb-card-body>
+              <nb-card class="image-card" *ngFor="let file of files">
+                <nb-card-header class="image-detail">
+                  <div class="image-user">{{file.posted_by.name}} <span class="image-text">posted this file.</span></div>
+                  <div class="image-time">{{file.date_posted | date: 'medium'}}</div>
+                </nb-card-header>
+                <nb-card-body>
+                  <ng-container *ngIf="file.upload_type.startsWith('image', 0) ; else notImage">
+                    <a href="{{file.file}}" target="_blank">
+                      <img src="{{file.file}}" alt="image">
+                    </a>
+                  </ng-container>
+                  <ng-template #notImage>
+                    <a href="{{file.file}}" target="_blank" class="d-flex img-link">
+                      <img class="img-file" src="assets/images/Filetype-icon.png" alt="image">
+                      <div class="file-name">{{file.name}}</div>
+                    </a>
+                  </ng-template>
+                </nb-card-body>
+                <nb-card-footer class="image-detail">
+                  <div class="image-user">comment: <span class="image-text">{{file.comment}}</span></div>
+                </nb-card-footer>
+              </nb-card>
+
+            </nb-card-body>
+          </nb-card>
+        </div>
+      </nb-tab>
+      <nb-tab tabTitle="Weather">
+        <div class="row">
+          <div class="col-xxxl-8 col-lg-8 col-sm-12">
+            <nb-card size="medium">
+              <nb-card-body class="d-flex flex-column">
+
+                <span class="h3 location">{{ this.weatherData?.location.name }} </span>
+                <span class="h6">{{ this.weatherData?.location.localtime | date: 'medium'}}</span>
+
+
+                <div class="today">
+                  <div class="today-coordinates">
+                    <span class="date">Lat : {{ this.weatherData?.location.lat }}&deg;, Long : {{ this.weatherData?.location.lon }}&deg;</span>
+                  </div>
+
+                  <nb-icon icon="sun-outline" pack="eva" class="today-icon"></nb-icon>
+                </div>
+
+                <div class="weekly-forecast">
+                  <div class="day">
+                    <span class="caption">Cloud cover</span>
+                    <i class="weather-icon ion-ios-cloudy-outline"></i>
+                    <span class="temperature">{{ this.weatherData?.current.cloud }}%</span>
+                  </div>
+
+                  <div class="day">
+                    <span class="caption">Temperature</span>
+                    <i class="weather-icon ion-ios-sunny-outline"></i>
+                    <span class="temperature">{{ this.weatherData?.current.temp_c }}&deg;</span>
+                  </div>
+
+                  <div class="day">
+                    <span class="caption">Humidity</span>
+                    <i class="weather-icon ion-ios-rainy-outline"></i>
+                    <span class="temperature">{{ this.weatherData?.current.humidity }}%</span>
+                  </div>
+                  <div class="day">
+                    <span class="caption">Wind Speed</span>
+                    <i class="weather-icon ion-ios-partlysunny-outline"></i>
+                    <span class="temperature">{{ this.weatherData?.current.wind_kph }} KM/HR</span>
+                  </div>
+                  <div class="day">
+                    <span class="caption">Visibility</span>
+                    <i class="weather-icon ion-ios-thunderstorm-outline"></i>
+                    <span class="temperature">{{ this.weatherData?.current.cloud }}&deg;</span>
+                  </div>
+                </div>
+              </nb-card-body>
+            </nb-card>
+          </div>
+        </div>
+      </nb-tab>
+
+
+    </nb-tabset>
+  </div>
+</div>
+
+
+<ng-template #dialog1 let-data let-ref="dialogRef">
+  <nb-card class="site-form" style="width: 25em;">
+    <nb-card-header>Add file
+      <a (click)="ref.close()" aria-label="Back" style="float: right;" id="close-file">
+        <nb-icon icon="close"></nb-icon>
+      </a>
+    </nb-card-header>
+    <nb-card-body>
+      <form #fileForm='ngForm'>
+
+        <div class="form-group">
+          <input type="file" nbInput fullWidth id="inputFile" class="p-0" (change)="onErpFileSelected($event)">
+        </div>
+
+        <div class="form-group">
+          <input
+          nbInput
+          autofocus
+          fullWidth
+          fieldSize="medium"
+          placeholder="Comment"
+          [(ngModel)]="fileForm.comment"
+          #comment="ngModel"
+          name="comment"
+          [status]="comment.dirty ? (comment.invalid  ? 'danger' : 'success') : 'basic'"
+          [attr.aria-invalid]="comment.invalid && comment.touched ? true : null"
+          required>
+          <ng-container *ngIf="comment.invalid && comment.touched">
+            <p class="caption status-danger" *ngIf="comment.errors?.required">
+              Required!
+            </p>
+          </ng-container>
+        </div>
+
+        <div class="form-group">
+          <button nbButton status="success" size="small" style="float: right;" [disabled]="submitted || fileForm.invalid"
+          [class.btn-pulse]="submitted" (click)="saveFile(fileForm)">submit</button>
+        </div>
+
+      </form>
+    </nb-card-body>
+  </nb-card>
+</ng-template>

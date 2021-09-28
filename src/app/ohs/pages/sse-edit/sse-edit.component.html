@@ -1,0 +1,46 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Edit SSE</ion-title>
+    <ion-icon name='close-circle' (click)='dismiss()' style='float: right;' size="large"></ion-icon>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <form [formGroup]="sseForm">
+    <div formArrayName="sse_items">
+      <div *ngFor="let item of sseItems.controls; let pointIndex=index" [formGroupName]="pointIndex">
+        <ion-item>
+          <ion-input type="file" id="inputFile{{pointIndex}}" formControlName="file" (change)="onSSEFileSelected($event)"></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-label>Sse names</ion-label>
+          <ion-select  fullWidth   placeholder="SSE names"
+                       formControlName="name">
+            <ion-select-option *ngFor="let sses of ssenames" [value]="sses.id">{{sses.name}}</ion-select-option>
+          </ion-select>
+        </ion-item>
+        <ion-item>
+          <ion-label>Site</ion-label>
+          <ion-select  fullWidth   placeholder="Site"
+                       formControlName="site">
+            <ion-select-option *ngFor="let site of Site" [value]="site.id">{{site.name}}</ion-select-option>
+          </ion-select>
+        </ion-item>
+        <ion-item>
+          <span>
+
+            <ion-icon name="add-circle-outline"  (click)="addSseItems()" size="large"></ion-icon>
+            <ion-icon name="remove-circle-outline"  (click)="deleteSseItems(pointIndex)" size="large"></ion-icon>
+          </span>
+        </ion-item>
+        <ion-fab  horizontal="end" style="bottom: 80px" edge>
+          <ion-fab-button>
+            <ion-icon name="save" (click)="editSSEFile(this.sseForm.value);dismiss()"></ion-icon>
+          </ion-fab-button>
+        </ion-fab>
+      </div>
+    </div>
+  </form>
+</ion-content>
+
+

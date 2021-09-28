@@ -1,0 +1,444 @@
+<div class="row mb-1">
+  <div class="d-flex justify-content-between col-12">
+    <a href="#" (click)="back()" class="link back-link" aria-label="Back">
+      <nb-icon icon="arrow-back"></nb-icon>
+    </a>
+    <div class="d-flex" id="search">
+      <span><nb-search type="modal-move" tag="modal-move"></nb-search></span>
+      <input nbInput size="small" type="text" class="form-control" [(ngModel)]="searchTerm" autocomplete="on" placeholder="Search">
+    </div>
+  </div>
+</div>
+<nb-tabset>
+  <nb-tab tabTitle="Tasks">
+    <div class="row">
+      <div class="col-sm-12 col-md-3">
+        <nb-card class="todo-card" accent="info">
+          <nb-card-header class="header-title">To do - {{toDo.length}} Tasks
+            <button nbButton hero status="success" size="small" class="task-add" (click)="open(dialog)">Add task</button>
+          </nb-card-header>
+          <nb-card-body>
+            <nb-card class="task-card" *ngFor="let task of toDo | filter: searchTerm">
+              <nb-card-header>
+                <div class="task-title">{{task.name}}</div>
+                <ng-container *ngIf="task.assign?.picture === noImage; else image">
+                  <img src="assets/adrian-images/usermg.jpg" alt="user">
+                </ng-container>
+                <ng-template #image>
+                  <img  src="{{task.assign?.picture}}" alt="user">
+                </ng-template>
+              </nb-card-header>
+              <nb-card-body>
+                <div class="task-details"><span class="task-data">Assinged to: </span><span class="fetched-data capitalize">{{task.assign?.name}}</span></div>
+                <div class="task-details"><span class="task-data">Expected days: </span><span class="fetched-data">{{task.kpi?.number_of_days}}</span></div>
+                <div class="task-details"><span class="task-data">No. of Subtasks: </span><span class="fetched-data">{{task.no_of_subtasks}}</span></div>
+                <div class="taskbtn-section d-flex justify-content-between">
+                  <div class="d-flex">
+                    <button nbButton hero status="success" size="small" class="mt-1 mb-1 task-btn" (click)="startTask(task)">start task</button>
+                    <button nbButton hero status="info" size="small" class="ml-3 mt-1 mb-1 task-btn" (click)="addSubtaskForm(task, dialog2)">Add subtask</button>
+                  </div>
+
+                  <div class="d-flex">
+                    <nb-icon icon="trash-outline" class="trash" (click)="confirmDelete(task)"></nb-icon>
+                    <nb-icon class="edit-icon" icon="edit-2-outline" (click)="editTaskForm(task, dialog1)"></nb-icon>
+                  </div>
+                </div>
+              </nb-card-body>
+            </nb-card>
+            <nb-card class="add-card" (click)="open(dialog)">
+              <nb-card-body>
+                <div>Add Task</div>
+                <nb-icon icon="plus-outline"></nb-icon>
+              </nb-card-body>
+            </nb-card>
+            <div *ngIf="toDo.length === 0" class="no-task">
+              <nb-icon icon="checkmark-circle-2-outline"></nb-icon>
+              <h3>No Tasks</h3>
+              <p>Click add to create new Tasks</p>
+            </div>
+          </nb-card-body>
+        </nb-card>
+      </div>
+      <div class="col-sm-12 col-md-3">
+        <nb-card class="todo-card" accent="warning">
+          <nb-card-header class="header-title">In progress - {{inProgress.length}} Tasks</nb-card-header>
+          <nb-card-body>
+            <nb-card class="task-card" *ngFor="let task of inProgress | filter: searchTerm" (click)="viewDetails(task)">
+              <nb-card-header>
+                <div class="task-title">{{task.name}}</div>
+
+                <ng-container *ngIf="task.assign?.picture === noImage; else image">
+                  <img src="assets/adrian-images/usermg.jpg" alt="user">
+                </ng-container>
+                <ng-template #image>
+                  <img  src="{{task.assign?.picture}}" alt="user">
+                </ng-template>
+
+              </nb-card-header>
+              <nb-card-body>
+                <div class="task-details"><span class="task-data">Assinged to: </span><span class="fetched-data capitalize">{{task.assign?.name}}</span></div>
+                <div class="task-details"><span class="task-data">No. of Subtasks: </span><span class="fetched-data">{{task.no_of_subtasks}}</span></div>
+                <div class="task-details"><span class="task-data"><nb-icon icon="calendar-outline"></nb-icon> Due date: </span><span class="fetched-data">{{task.due_date | date: 'mediumDate'}}</span></div>
+                <div class="task-details"><span class="fetched-data"><nb-icon icon="clock-outline"></nb-icon> {{task.days_running}} days running</span></div>
+                <div class="taskbtn-section">
+                  <a (click)="viewDetails(task)">view details</a>
+                  <button nbButton hero status="{{task.statusColor}}" size="small" class="task-btn">{{task.statusMessage}}</button>
+                </div>
+              </nb-card-body>
+            </nb-card>
+            <div *ngIf="inProgress.length === 0" class="no-task">
+              <nb-icon icon="checkmark-circle-2-outline"></nb-icon>
+              <h3>No Tasks</h3>
+              <p>Click add to create new Tasks</p>
+            </div>
+          </nb-card-body>
+        </nb-card>
+      </div>
+      <div class="col-sm-12 col-md-3">
+        <nb-card class="todo-card" accent="danger">
+          <nb-card-header class="header-title">Overdue - {{overdue.length}} Tasks</nb-card-header>
+          <nb-card-body>
+            <nb-card class="task-card" *ngFor="let task of overdue | filter: searchTerm" (click)="viewDetails(task)">
+              <nb-card-header>
+                <div class="task-title">{{task.name}}</div>
+
+                <ng-container *ngIf="task.assign?.picture === noImage; else image">
+                  <img src="assets/adrian-images/usermg.jpg" alt="user">
+                </ng-container>
+                <ng-template #image>
+                  <img  src="{{task.assign?.picture}}" alt="user">
+                </ng-template>
+
+              </nb-card-header>
+              <nb-card-body>
+                <div class="task-details"><span class="task-data">Assinged to: </span><span class="fetched-data capitalize">{{task.assign?.name}}</span></div>
+                <div class="task-details"><span class="task-data">No. of Subtasks: </span><span class="fetched-data">{{task.no_of_subtasks}}</span></div>
+                <div class="task-details"><span class="task-data"><nb-icon icon="calendar-outline"></nb-icon> Due date: </span><span class="fetched-data">{{task.due_date | date: 'mediumDate'}}</span></div>
+                <div class="task-details"><span class="fetched-data"><nb-icon icon="clock-outline"></nb-icon> {{task.days_due}} days overdue</span></div>
+                <div class="taskbtn-section">
+                  <a (click)="viewDetails(task)">view details</a>
+                  <button nbButton hero status="{{task.statusColor}}" size="small" class="task-btn">{{task.statusMessage}}</button>
+                </div>
+              </nb-card-body>
+            </nb-card>
+            <div *ngIf="overdue.length === 0" class="no-task">
+              <nb-icon icon="checkmark-circle-2-outline"></nb-icon>
+              <h3>No Tasks</h3>
+              <p>Click add to create new Tasks</p>
+            </div>
+          </nb-card-body>
+        </nb-card>
+      </div>
+      <div class="col-sm-12 col-md-3">
+        <nb-card class="todo-card" accent="success">
+          <nb-card-header class="header-title">Done  - {{done.length}} Tasks</nb-card-header>
+          <nb-card-body>
+            <nb-card class="task-card" *ngFor="let task of done | filter: searchTerm" (click)="viewDetails(task)">
+              <nb-card-header>
+                <div class="task-title">{{task.name}}</div>
+
+                <ng-container *ngIf="task.assign?.picture === noImage; else image">
+                  <img src="assets/adrian-images/usermg.jpg" alt="user">
+                </ng-container>
+                <ng-template #image>
+                  <img  src="{{task.assign?.picture}}" alt="user">
+                </ng-template>
+
+              </nb-card-header>
+              <nb-card-body>
+                <div class="task-details"><span class="task-data">Assinged to: </span><span class="fetched-data capitalize">{{task.assign?.name}}</span></div>
+                <div class="task-details"><span class="task-data">No. of Subtasks: </span><span class="fetched-data">{{task.no_of_subtasks}}</span></div>
+                <div class="task-details"><span class="task-data"><nb-icon icon="calendar-outline"></nb-icon> Completed on: </span><span class="fetched-data">{{task.end_date | date: 'mediumDate'}}</span></div>
+                <div class="task-details"><span class="task-data"><nb-icon icon="clock-outline"></nb-icon> {{task.days_taken}} days taken to complete</span></div>
+                <div class="taskbtn-section">
+                  <button nbButton hero status="{{task.statusColor}}" size="small" class="task-btn">{{task.statusMessage}}</button>
+                  <div class="task-icons">
+                    <!-- <span class="icon-data" (click)="viewDetails(task)"><nb-icon icon="message-square-outline"></nb-icon> {{task.comments.length}} </span> -->
+                    <!-- <span class="icon-data" (click)="viewDetails(task)"><nb-icon icon="attach-2-outline"></nb-icon> {{task.files.length}} </span> -->
+                  </div>
+                </div>
+              </nb-card-body>
+            </nb-card>
+            <div *ngIf="done.length === 0" class="no-task">
+              <nb-icon icon="checkmark-circle-2-outline"></nb-icon>
+              <h3>No Tasks</h3>
+              <p>Click add to create new Tasks</p>
+            </div>
+          </nb-card-body>
+        </nb-card>
+      </div>
+    </div>
+  </nb-tab>
+  <nb-tab tabTitle="Team Members">
+    <div class="row">
+      <div class="col-md-12 col-sm-12">
+        <nb-card size="large">
+          <nb-card-body>
+            <nb-list>
+              <nb-list-item class="contact" *ngFor="let user of teamMembers">
+                <!-- <nb-user [picture]="user.picture" [name]="user.username"></nb-user> -->
+                <nb-user [onlyPicture]="userPictureOnly" [picture]="user.picture" [name]="user.username" [title]="user.division?.name" size="medium"></nb-user>
+                <nb-icon icon="message-circle-outline" pack="eva" (click)="viewChats(user)"></nb-icon>
+              </nb-list-item>
+            </nb-list>
+          </nb-card-body>
+        </nb-card>
+      </div>
+    </div>
+  </nb-tab>
+</nb-tabset>
+
+
+
+<ng-template #dialog let-data let-ref="dialogRef">
+  <nb-card style="width: 35em;" size="large" status="success" class="card-dialog">
+    <nb-card-header>Add Task
+      <a (click)="ref.close()" aria-label="Back" style="float: right;"  id="close-task">
+        <nb-icon icon="close"></nb-icon>
+      </a>
+    </nb-card-header>
+    <nb-card-body>
+      <form #taskForm="ngForm">
+
+        <div class="form-group m-2 mb-3">
+          <label class="label">Name</label>
+          <input
+          nbInput
+          autofocus
+          fullWidth
+          fieldSize="medium"
+          placeholder="Task name"
+          [(ngModel)]="taskForm.name"
+          #name="ngModel"
+          id="input-name"
+          name="name"
+          [status]="name.dirty ? (name.invalid  ? 'danger' : 'success') : 'basic'"
+          [attr.aria-invalid]="name.invalid && name.touched ? true : null"
+          required>
+          <ng-container *ngIf="name.invalid && name.touched">
+            <p class="caption status-danger mt-2" *ngIf="name.errors?.required">
+              Task Name is required!
+            </p>
+          </ng-container>
+        </div>
+
+        <div class="form-group d-flex justify-content-between m-2 mb-3">
+          <div class="w-100">
+            <label class="label">KPI</label>
+            <nb-select fullWidth  placeholder="Select KPI" [(ngModel)]="taskForm.kpi"  name="kpi" selected="" required>
+              <nb-option *ngFor="let onekpi of kpis" [value]="onekpi.id">{{onekpi.name}} - {{onekpi.number_of_days}} days</nb-option>
+            </nb-select>
+          </div>
+          <div class="icons mt-4">
+            <nb-icon class="show" icon="plus-square-outline" *ngIf="!addTask" (click)="addTask=true"></nb-icon>
+            <nb-icon class="hide" icon="close-outline" *ngIf="addTask" (click)="addTask=false"></nb-icon>
+          </div>
+        </div>
+        <div class="form-group item-add" *ngIf="addTask">
+          <form class="d-flex" #kpiForm="ngForm">
+            <input type="text" nbInput fullWidth placeholder="KPI name" [(ngModel)]="kpiForm.name" #name="ngModel" name="name">
+            <input type="number" nbInput fullWidth placeholder="Number of days" [(ngModel)]="kpiForm.number_of_days" #number_of_days="ngModel" name="number_of_days">
+            <button nbButton hero status="info" size="small" class="add-btn" [disabled]="submitted || kpiForm.invalid"
+            [class.btn-pulse]="submitted" (click)="savekpi(kpiForm); addTask=false">Add</button>
+          </form>
+        </div>
+
+        <div class="form-group m-2 mb-3">
+          <label class="label">Assinged to</label>
+          <nb-select fullWidth  placeholder="Select Technician" [(ngModel)]="taskForm.assign"  name="assign" selected="" required>
+            <nb-option *ngFor="let manager of taskManager" [value]="manager.id">{{manager.first_name}} {{manager.last_name}} - {{manager.role?.name}}, {{manager.division?.name}}</nb-option>
+          </nb-select>
+        </div>
+
+        <div class="form-group m-2 mb-3">
+          <label class="label">Safety Officer</label>
+          <nb-select fullWidth  placeholder="Select safety officer" [(ngModel)]="taskForm.safety_officer"  name="safety_officer" selected="" required>
+            <nb-option *ngFor="let manager of safetyOfficials" [value]="manager.id">{{manager.first_name}} {{manager.last_name}}</nb-option>
+          </nb-select>
+        </div>
+
+        <div class="form-group m-2 mb-3" [hidden]="siteId !== 0">
+          <label class="label">Select Site</label>
+          <nb-select fullWidth [(ngModel)]="taskForm.site"  name="site" selected="" required>
+            <nb-option *ngFor="let site of sites" [value]="site.id">{{site.name}}</nb-option>
+          </nb-select>
+        </div>
+
+
+        <div class="form-group m-2 mb-3">
+          <label class="label">Tag</label>
+          <nb-select fullWidth  placeholder="Select Priority" [(ngModel)]="taskForm.priority"  name="priority" required>
+            <nb-option *ngFor="let tag of priorities" [value]="tag">{{tag}}</nb-option>
+          </nb-select>
+        </div>
+
+      </form>
+
+    </nb-card-body>
+    <nb-card-footer>
+      <button nbButton status="success" size="small" style="float: right;" [disabled]="submitted || taskForm.invalid"
+      [class.btn-pulse]="submitted" (click)="saveTask(taskForm)">submit</button>
+    </nb-card-footer>
+  </nb-card>
+</ng-template>
+
+
+<ng-template #dialog1 let-data let-ref="dialogRef">
+  <nb-card style="width: 35em;" size="large" status="success">
+    <nb-card-header>Edit Task
+      <a (click)="ref.close()" aria-label="Back" style="float: right;"  id="close-task">
+        <nb-icon icon="close"></nb-icon>
+      </a>
+    </nb-card-header>
+    <nb-card-body>
+      <form [formGroup]="taskEditForm">
+
+        <div class="form-group m-2 mb-3">
+          <label class="label">Name</label>
+          <input
+          type="text"
+          nbInput
+          fullWidth
+          placeholder="Task name"
+          formControlName="name">
+        </div>
+
+        <div class="form-group m-2 mb-3">
+          <label class="label">Assinged to</label>
+          <nb-select fullWidth  placeholder="Select Technician" formControlName="assign" selected="">
+            <nb-option *ngFor="let manager of taskManager" [value]="manager.id">{{manager.first_name}} {{manager.last_name}} - {{manager.role?.name}}, {{manager.division?.name}}</nb-option>
+          </nb-select>
+        </div>
+
+
+        <div class="form-group m-2 mb-3">
+          <label class="label">Safety Officer</label>
+          <nb-select fullWidth  placeholder="Select safety officer" formControlName="safety_officer" selected="">
+            <nb-option *ngFor="let manager of safetyOfficials" [value]="manager.id">{{manager.first_name}} {{manager.last_name}}</nb-option>
+          </nb-select>
+        </div>
+
+
+
+        <div class="form-group d-flex justify-content-between m-2 mb-3">
+          <div class="w-100">
+            <label class="label">KPI</label>
+            <nb-select fullWidth  placeholder="Select KPI" formControlName="kpi" selected="" >
+              <nb-option *ngFor="let onekpi of kpis" [value]="onekpi.id">{{onekpi.name}} - {{onekpi.number_of_days}} days</nb-option>
+            </nb-select>
+          </div>
+
+          <div class="icons mt-4">
+            <nb-icon class="show" icon="plus-square-outline" *ngIf="!addActivity" (click)="addActivity=true"></nb-icon>
+            <nb-icon class="hide" icon="close-outline" *ngIf="addActivity" (click)="addActivity=false"></nb-icon>
+          </div>
+        </div>
+
+        <div class="form-group item-add" *ngIf="addActivity">
+          <form class="d-flex" #kpiForm="ngForm">
+            <input type="text" nbInput fullWidth placeholder="KPI name" [(ngModel)]="kpiForm.name" #name="ngModel" name="name">
+            <input type="number" nbInput fullWidth placeholder="Number of days" [(ngModel)]="kpiForm.number_of_days" #number_of_days="ngModel" name="number_of_days">
+            <button nbButton hero status="info" size="small" class="add-btn" [disabled]="submitted || kpiForm.invalid"
+            [class.btn-pulse]="submitted" (click)="savekpi(kpiForm); addActivity=false">Add</button>
+          </form>
+        </div>
+
+
+
+        <div class="form-group m-2 mb-3">
+          <label class="label">Tag</label>
+          <nb-select fullWidth  placeholder="Select Priority" formControlName="priority" selected="">
+            <nb-option *ngFor="let tag of priorities" [value]="tag">{{tag}}</nb-option>
+          </nb-select>
+        </div>
+
+        <div class="form-group m-2 mb-3" [hidden]="siteId !== 0">
+          <label class="label">Select Site</label>
+          <nb-select fullWidth formControlName="site" selected="" required>
+            <nb-option *ngFor="let site of sites" [value]="site.id">{{site.name}}</nb-option>
+          </nb-select>
+        </div>
+
+      </form>
+
+    </nb-card-body>
+    <nb-card-footer>
+      <button nbButton status="success" size="small" style="float: right;" [disabled]="submitted || !taskEditForm.valid"
+      [class.btn-pulse]="submitted" (click)="editTask(task)">submit</button>
+    </nb-card-footer>
+
+
+  </nb-card>
+</ng-template>
+
+
+
+
+<ng-template #dialog2 let-data let-ref="dialogRef">
+  <nb-card style="width: 35em;" status="primary">
+    <nb-card-header>Add Sub Task
+      <a (click)="ref.close()" aria-label="Back" style="float: right;"  id="close-task">
+        <nb-icon icon="close"></nb-icon>
+      </a>
+    </nb-card-header>
+    <nb-card-body>
+      <form #taskForm="ngForm">
+
+        <div class="form-group m-2 mb-3">
+          <label class="label">Name</label>
+          <input
+          nbInput
+          autofocus
+          fullWidth
+          fieldSize="medium"
+          placeholder="Subtask Name"
+          [(ngModel)]="taskForm.name"
+          #name="ngModel"
+          id="input-name"
+          name="name"
+          [status]="name.dirty ? (name.invalid  ? 'danger' : 'success') : 'basic'"
+          [attr.aria-invalid]="name.invalid && name.touched ? true : null"
+          required>
+          <ng-container *ngIf="name.invalid && name.touched">
+            <p class="caption status-danger mt-2" *ngIf="name.errors?.required">
+              Sub Task Name is required!
+            </p>
+          </ng-container>
+        </div>
+
+        <div class="form-group d-flex justify-content-between m-2 mb-3">
+          <div class="w-100">
+            <label class="label">KPI</label>
+            <nb-select fullWidth  placeholder="KPI" [(ngModel)]="taskForm.kpi"  name="kpi" selected="" required>
+              <nb-option *ngFor="let onekpi of kpis" [value]="onekpi.id">{{onekpi.name}} - {{onekpi.number_of_days}} days</nb-option>
+            </nb-select>
+          </div>
+          <div class="icons mt-4">
+            <nb-icon class="show" icon="plus-square-outline" *ngIf="!addActivity" (click)="addActivity=true"></nb-icon>
+            <nb-icon class="hide" icon="close-outline" *ngIf="addActivity" (click)="addActivity=false"></nb-icon>
+          </div>
+        </div>
+        <div class="form-group item-add" *ngIf="addActivity">
+          <form class="d-flex" #kpiForm="ngForm">
+            <input type="text" nbInput fullWidth placeholder="KPI name" [(ngModel)]="kpiForm.name" #name="ngModel" name="name">
+            <input type="number" nbInput fullWidth placeholder="Number of days" [(ngModel)]="kpiForm.number_of_days" #number_of_days="ngModel" name="number_of_days">
+            <button nbButton hero status="info" size="small" class="add-btn" [disabled]="submitted || kpiForm.invalid"
+            [class.btn-pulse]="submitted" (click)="savekpi(kpiForm); addActivity=false">Add</button>
+          </form>
+        </div>
+
+        <div class="form-group m-2 mb-3">
+          <label class="label">Assinged to</label>
+          <nb-select fullWidth  placeholder="Select Technician" [(ngModel)]="taskForm.assign"  name="assign" selected="" required>
+            <nb-option *ngFor="let manager of taskManager" [value]="manager.id">{{manager.first_name}} {{manager.last_name}} </nb-option>
+          </nb-select>
+        </div>
+      </form>
+
+    </nb-card-body>
+    <nb-card-footer>
+      <button nbButton status="success" size="small" style="float: right;" [disabled]="submitted || taskForm.invalid"
+      [class.btn-pulse]="submitted" (click)="saveSubTask(taskForm)">submit</button>
+    </nb-card-footer>
+  </nb-card>
+</ng-template>

@@ -1,0 +1,19 @@
+<div class="container-fluid d-flex justify-content-between">
+  <input nbInput size="small" type="text" class="form-control form-control" autocomplete="on" placeholder="Search" [(ngModel)]="search" (ngModelChange)="searchDetails()">
+
+  <div class="d-flex">
+
+    <button nbButton status="danger" class="icon-button"><nb-icon icon="arrow-ios-back-outline" (click)="previousPage()"></nb-icon></button>
+    <div class="form-group">
+      <nb-select [(selected)]="itemsPerPage" (selectedChange)="onChange($event)">
+        <nb-option [value]="25">25</nb-option>
+        <nb-option [value]="50">50</nb-option>
+        <nb-option [value]="100">100</nb-option>
+        <nb-option value="all">All</nb-option>
+      </nb-select>
+    </div>
+    <button nbTooltip="Next page" nbTooltipStatus="success" nbButton status="success" class="icon-button"><nb-icon icon="arrow-ios-forward-outline" (click)="nextPage()"></nb-icon></button>
+
+    <ngx-filter></ngx-filter>
+  </div>
+</div>

@@ -1,0 +1,34 @@
+<ion-content fullscreen class="ion-padding" >
+  <div class="row p-2">
+    <div class="col-12">
+      <a href="#" (click)="back()" class="link back-link" aria-label="Back">
+        <nb-icon icon="arrow-back"></nb-icon>
+      </a>
+    </div>
+  </div>
+  <ion-card *ngFor="let perm of permits ; trackBy: identify" >
+    <ion-item>
+      <ion-label>{{perm.ref_number}}</ion-label>
+      <button class="approval-btn" *ngIf="perm.approval === null" nbButton hero size="small" (click)="showApproval(perm.id)">APPROVE</button>
+      <button class="approval-btn" *ngIf="perm.approval !== null" nbButton hero
+                  disabled="{{perm.approval?.status  === 'approved'}}"
+                  status="{{perm.approval?.status  === 'approved' ? 'success': perm.approval?.status  === 'rejected' ? 'danger' : perm.approval?.status  === 'open' ? 'warning' :  perm.approval?.status  === 'expired' ? 'warning' : 'danger'}}"
+                  size="small" (click)="showApproval(perm.id)">{{perm.approval?.status }}</button>
+    </ion-item>
+
+    <ion-card-content (click)="showModal(perm.id)">
+      <ion-list>
+        Safety officer:{{perm.safety_officer?.username}}<br>
+        Hod:{{perm.hod?.username}}<br>
+        Supervisor:{{perm.supervisor?.username}}<br>
+        Project manager:{{perm.project_manager?.username}}<br>
+        Department:{{perm.department?.name}}<br>
+        Scope:{{perm.scope?.name}}<br>
+        Safety or concerns:{{perm.safety_or_concerns}}<br>
+        Safety access:{{perm.safety_access}}<br>
+        Communication Plan:{{perm.communication_plan?.name}}
+      </ion-list>
+    </ion-card-content>
+  </ion-card>
+</ion-content>
+

@@ -1,0 +1,72 @@
+.notification-card {
+  overflow: auto;
+  height: 81vh;
+
+  nb-card-header {
+    display: flex;
+    .select-detail {
+      margin-left: 25px;
+    }
+    button {
+      margin: auto 20px;
+    }
+  }
+
+  .notification {
+    display: flex;
+    margin-bottom: 5px;
+    border-radius: 10px;
+    border-bottom: 1px solid #f0f2f5;
+    height: 4em;
+    width: 100%;
+    overflow: hidden;
+    justify-content: space-between;
+    cursor: pointer;
+
+
+    .notification-details {
+      border-radius: 5%;
+      padding: 5px;
+      margin: auto 10px;
+      display: flex;
+
+      nb-checkbox {
+        margin: 10px 0 0 10px;
+      }
+
+      .number-circle {
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        background-color: #00d68f;
+        margin: auto -5px;
+      }
+
+      .notification-title {
+        font-weight: 800;
+        font-size: 15px;
+      }
+
+      .notification-content {
+        font-size: 10px;
+      }
+
+    }
+
+    .notification-info {
+      display: flex;
+
+      .notification-stamp {
+        font-size: 10px;
+        margin: auto;
+        color: #6a737d;
+      }
+    }
+
+
+    &:hover {
+      background: #f0f2f5;
+      cursor: pointer;
+    }
+  }
+}

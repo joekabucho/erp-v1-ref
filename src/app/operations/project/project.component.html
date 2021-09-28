@@ -1,0 +1,449 @@
+<div class="row">
+  <div class="d-flex flex-wrap justify-content-between col-12 pt-0">
+    <a href="#" (click)="back()" class="link back-link" aria-label="Back">
+      <nb-icon icon="arrow-back"></nb-icon>
+    </a>
+    <div class="d-flex flex-wrap">
+      <div class="col-sm-8 d-flex">
+        <div id="search">
+          <span><nb-search type="modal-move" tag="modal-move"></nb-search></span>
+        </div>
+        <input nbInput size="small" type="text" class="form-control mr-2" [(ngModel)]="searchTerm" autocomplete="on" placeholder="Search">
+      </div>
+
+      <nb-select placeholder="Create" filled status="success" class="col-sm-4">
+        <nb-option (click)="openProject(dialog)">Lot/Cluster</nb-option>
+        <nb-option (click)="openClient(dialog1)">Client</nb-option>
+        <nb-option (click)="openService(dialog2)">Service</nb-option>
+      </nb-select>
+
+    </div>
+  </div>
+</div>
+
+<hr>
+
+<div class="row">
+  <div class="col-lg-4 col-sm-6 pr-0" *ngFor="let project of projects | filter: searchTerm">
+    <nb-card class="project-card">
+      <nb-card-header (click)="viewDetails(project)">
+        <div class="project-title">
+          <div class="title-text">{{project.name}}</div>
+        </div>
+
+        <ng-container *ngIf="project.manager?.picture === noImage; else pic">
+          <img src="assets/adrian-images/usermg.jpg" alt="user">
+        </ng-container>
+        <ng-template #pic>
+          <img  src="{{project.manager?.picture}}" alt="user">
+        </ng-template>
+
+      </nb-card-header>
+      <nb-card-body (click)="viewDetails(project)">
+        <div class="project-details"><span class="project-data">Service: </span><span class="fetched-data">{{project.service?.name}}</span></div>
+        <div class="project-details"><span class="project-data">Client: </span><span class="fetched-data">{{project.client?.name}}</span></div>
+        <div class="project-details"><span class="project-data">Expected Income: </span> <span class="fetched-data">{{project.expected_income | currency: 'Ksh':'symbol': '0.0-0'}}</span></div>
+        <div class="project-details"><span class="project-data">Number of Sites: </span><span class="fetched-data">{{project.no_of_sites}}</span></div>
+        <div class="project-details"><span class="project-data">Assigned To: </span><span class="fetched-data">{{project.manager?.name}}</span></div>
+        <div class="project-details"><span class="project-data">Created by: </span><span class="fetched-data">{{project.created_by?.name}}</span></div>
+      </nb-card-body>
+      <nb-card-footer>
+        <div>
+          <button [hidden]="projectStatus !== 1" nbButton hero status="success" size="small" (click)="startProject(project)">start project</button>
+          <div class="date" [hidden]="projectStatus === 1"><nb-icon icon="calendar-outline"></nb-icon> Started: {{project.date_started | date: 'mediumDate'}}</div>
+          <div class="due_date" [hidden]="projectStatus !== 3"><nb-icon icon="calendar-outline"></nb-icon> Due Date: {{project.due_date | date: 'mediumDate'}}</div>
+          <div class="date" [hidden]="project.close_date === noImage"><nb-icon icon="calendar-outline"></nb-icon> Ended: {{project.close_date | date: 'mediumDate'}}</div>
+        </div>
+        <div class="d-flex">
+          <nb-icon icon="trash-outline" class="trash" [hidden]="projectStatus !== 1" (click)="confirmDelete(project)"></nb-icon>
+          <div class="project-status" [hidden]="projectStatus === 1 || projectStatus === 4"><nb-icon icon="clock-outline"></nb-icon> {{project.days}} days running</div>
+          <div class="project-status" [hidden]="project.close_date === noImage"><nb-icon icon="clock-outline"></nb-icon> {{project.completedOn}} days taken to complete</div>
+          <nb-icon class="edit-icon" icon="edit-2-outline" [hidden]="projectStatus === 4" (click)="editProjectForm(project, dialog3)"></nb-icon>
+        </div>
+      </nb-card-footer>
+    </nb-card>
+  </div>
+  <div *ngIf="projects.length === 0" class="d-flex flex-column m-auto no-project">
+    <nb-icon icon="checkmark-circle-2-outline"></nb-icon>
+    <h2>No projects</h2>
+    <p>Click create to add new projects</p>
+  </div>
+</div>
+
+<ng-template #dialog let-data let-ref="dialogRef">
+  <nb-card class="project-form" size="large" style="width: 35em;" status="success">
+    <nb-card-header class="d-flex justify-content-between">Create Project
+      <a (click)="ref.close()" aria-label="Back" id="close-prj" style="float: right;">
+        <nb-icon icon="close"></nb-icon>
+      </a>
+    </nb-card-header>
+    <nb-card-body>
+      <form #projectForm="ngForm">
+        <div class="form-group m-2 mb-3">
+          <label class="label">Name</label>
+          <input
+          nbInput
+          autofocus
+          fullWidth
+          fieldSize="medium"
+          placeholder="Project Name"
+          [(ngModel)]="projectForm.name"
+          #name="ngModel"
+          id="input-name"
+          name="name"
+          [status]="name.dirty ? (name.invalid  ? 'danger' : 'success') : 'basic'"
+          [attr.aria-invalid]="name.invalid && name.touched ? true : null"
+          required>
+          <ng-container *ngIf="name.invalid && name.touched">
+            <p class="caption status-danger mt-2" *ngIf="name.errors?.required">
+              Name of Project is required!
+            </p>
+          </ng-container>
+        </div>
+
+        <div class="form-group d-flex justify-content-between m-2 mb-3">
+          <div class="w-100">
+            <label class="label">Client</label>
+            <nb-select fullWidth  placeholder="select client" [(ngModel)]="projectForm.client"  name="client" selected="" required>
+              <nb-option *ngFor="let customer of clients" [value]="customer.id">{{customer.name}}</nb-option>
+            </nb-select>
+          </div>
+          <div class="icons pt-4">
+            <nb-icon class="show" icon="plus-square-outline" (click)="openClient(dialog1)"></nb-icon>
+          </div>
+        </div>
+
+        <div class="form-group d-flex justify-content-between m-2 mb-3">
+          <div class="w-100">
+            <label class="label">Service</label>
+            <nb-select fullWidth  placeholder="select service" [(ngModel)]="projectForm.service"  (ngModelChange)="changedItem(projectForm.service)" name="service" selected="" required>
+              <nb-option *ngFor="let serve of services" [value]="serve.id">{{serve.name}}</nb-option>
+            </nb-select>
+          </div>
+          <div class="icons pt-4">
+            <nb-icon class="show" icon="plus-square-outline" (click)="openService(dialog2)"></nb-icon>
+          </div>
+        </div>
+
+        <div class="form-group d-flex justify-content-between m-2 mb-3">
+          <div class="w-100">
+            <label class="label">KPI</label>
+            <nb-select fullWidth  placeholder="select kpi" [(ngModel)]="projectForm.kpi"  name="kpi" selected="" required>
+              <nb-option *ngFor="let kpi of kpisalldata" [value]="kpi.id">{{kpi.name}} - {{kpi.number_of_days}} days</nb-option>
+            </nb-select>
+          </div>
+          <div class="icons pt-4">
+            <nb-icon class="show" icon="plus-square-outline" (click)="openKPI(dialog4)"></nb-icon>
+          </div>
+        </div>
+
+
+        <div class="form-group m-2 mb-3">
+          <label class="label">Expected Income</label>
+          <input
+          type="number"
+          nbInput
+          autofocus
+          fullWidth
+          min=0
+          fieldSize="medium"
+          placeholder="Amount"
+          [(ngModel)]="projectForm.expected_income"
+          #expected_income="ngModel"
+          id="input-income"
+          name="expected_income"
+          [status]="expected_income.dirty ? (expected_income.invalid  ? 'danger' : 'success') : 'basic'"
+          [attr.aria-invalid]="expected_income.invalid && expected_income.touched ? true : null"
+          required>
+          <ng-container *ngIf="expected_income.invalid && expected_income.touched">
+            <p class="caption status-danger mt-2" *ngIf="expected_income.errors?.required">
+              Expected Income is required!
+            </p>
+          </ng-container>
+        </div>
+
+        <div class="form-group m-2 mb-3">
+          <label class="label">Project Manager</label>
+          <nb-select fullWidth  placeholder="Select PM" [(ngModel)]="projectForm.manager"  name="manager" selected="" required>
+            <nb-option *ngFor="let manager of projectManager" [value]="manager.id">{{manager.first_name}} {{manager.last_name}} - {{manager.division.name}}</nb-option>
+          </nb-select>
+        </div>
+
+        <div class="form-group m-2 mb-3">
+          <label class="label">Project Type</label>
+          <nb-select fullWidth  placeholder="Select Project Type" [(ngModel)]="projectForm.project_type"  name="project_type" selected="" required>
+            <nb-option *ngFor="let div of divisions" [value]="div.id">{{div.name}}</nb-option>
+          </nb-select>
+        </div>
+
+       </form>
+    </nb-card-body>
+    <nb-card-footer>
+      <button nbButton status="success" size="small" style="float: right;" [disabled]="submitted || projectForm.invalid"
+      [class.btn-pulse]="submitted" (click)="saveProject(projectForm)">submit</button>
+    </nb-card-footer>
+  </nb-card>
+</ng-template>
+
+<ng-template #dialog1 let-data let-ref="dialogRef">
+  <nb-card style="width: 25em;" status="success">
+    <nb-card-header>Add Client
+      <a (click)="ref.close()" aria-label="Back" style="float: right;" id="close-client">
+        <nb-icon icon="close"></nb-icon>
+      </a>
+    </nb-card-header>
+    <nb-card-body>
+      <form #clientForm="ngForm" (ngSubmit)="saveClient(clientForm)">
+        <div class="form-group">
+          <input
+          nbInput
+          autofocus
+          fullWidth
+          fieldSize="medium"
+          placeholder="Client name"
+          [(ngModel)]="clientForm.name"
+          #name="ngModel"
+          id="input-name"
+          name="name"
+          [status]="name.dirty ? (name.invalid  ? 'danger' : 'success') : 'basic'"
+          [attr.aria-invalid]="name.invalid && name.touched ? true : null"
+          required>
+          <ng-container *ngIf="name.invalid && name.touched">
+            <p class="caption status-danger mt-2" *ngIf="name.errors?.required">
+              Name is required!
+            </p>
+          </ng-container>
+        </div>
+        <div class="form-group">
+          <button nbButton status="success" size="small" style="float: right;" [disabled]="submitted || !clientForm.valid" [class.btn-pulse]="submitted">submit</button>
+        </div>
+      </form>
+    </nb-card-body>
+  </nb-card>
+</ng-template>
+
+
+<ng-template #dialog2 let-data let-ref="dialogRef">
+  <nb-card style="width: 25em;" status="success">
+    <nb-card-header>Add Service
+      <a (click)="ref.close()" aria-label="Back" style="float: right;" id="close-service">
+        <nb-icon icon="close"></nb-icon>
+      </a>
+    </nb-card-header>
+    <nb-card-body>
+      <form #serviceForm="ngForm" (ngSubmit)="saveService(serviceForm)">
+        <div class="form-group">
+          <input
+          nbInput
+          autofocus
+          fullWidth
+          fieldSize="medium"
+          placeholder="Service Name"
+          [(ngModel)]="serviceForm.name"
+          #name="ngModel"
+          id="input-name"
+          name="name"
+          [status]="name.dirty ? (name.invalid  ? 'danger' : 'success') : 'basic'"
+          [attr.aria-invalid]="name.invalid && name.touched ? true : null"
+          required>
+          <ng-container *ngIf="name.invalid && name.touched">
+            <p class="caption status-danger mt-2" *ngIf="name.errors?.required">
+              Service is required!
+            </p>
+          </ng-container>
+        </div>
+
+        <div class="form-group d-flex justify-content-between">
+          <nb-select fullWidth  placeholder="Select KPI" [(ngModel)]="serviceForm.kpi"  name="kpi" selected="" required>
+            <nb-option *ngFor="let onekpi of kpis" [value]="onekpi.id">{{onekpi.name}} - {{onekpi.number_of_days}} days</nb-option>
+          </nb-select>
+          <div class="icons">
+            <nb-icon class="show" icon="plus-square-outline" *ngIf="!addActivity" (click)="addActivity=true"></nb-icon>
+            <nb-icon class="hide" icon="close-outline" *ngIf="addActivity" (click)="addActivity=false"></nb-icon>
+          </div>
+        </div>
+        <div class="form-group item-add" *ngIf="addActivity">
+          <form class="d-flex" #kpiForm="ngForm">
+            <input type="text" nbInput fullWidth placeholder="Name" [(ngModel)]="kpiForm.name" #name="ngModel" name="name">
+            <input type="number" nbInput fullWidth placeholder="Days" [(ngModel)]="kpiForm.number_of_days" #number_of_days="ngModel" name="number_of_days">
+            <nb-select fullWidth  placeholder="Select Service" [(ngModel)]="kpiForm.service"  name="service" selected="" required>
+              <nb-option *ngFor="let oneservice of services" [value]="oneservice.id">{{oneservice.name}}</nb-option>
+            </nb-select>
+            <button nbButton hero status="info" size="small" class="add-btn" [disabled]="submitted || kpiForm.invalid"
+            [class.btn-pulse]="submitted" (click)="savekpi(kpiForm); addActivity=false">Add</button>
+          </form>
+        </div>
+
+
+        <div class="form-group">
+          <button nbButton status="success" size="small" style="float: right;" [disabled]="submitted || !serviceForm.valid" [class.btn-pulse]="submitted">submit</button>
+        </div>
+      </form>
+    </nb-card-body>
+  </nb-card>
+</ng-template>
+
+
+<ng-template #dialog3 let-data let-ref="dialogRef">
+  <nb-card class="project-form" size="large" style="width: 35em;">
+    <nb-card-header>
+      <ng-container *ngIf="selectedProject?.close_date === noImage; else complete">
+        <button
+          nbTooltip="Complete all the sites progress to 100%"
+          nbTooltipStatus="info"
+          nbButton
+          hero
+          status="info"
+          size="small"
+          style="height: 40px"
+          (click)="endProject()">
+          complete project
+        </button>
+      </ng-container>
+      <ng-template #complete>
+        <button
+          nbTooltip="Project completed"
+          nbTooltipStatus="success"
+          nbButton
+          hero
+          status="success"
+          size="small"
+          style="height: 40px">
+          Project completed
+        </button>
+      </ng-template>
+      <div class="d-flex m-2"><nb-icon icon="calendar-outline"></nb-icon> <span class="label">Due on {{selectedProject?.due_date | date: 'mediumDate'}}</span></div>
+      <a (click)="ref.close()" aria-label="Back" style="float: right; margin-left: auto;"  id="close-edit">
+        <nb-icon icon="close"></nb-icon>
+      </a>
+    </nb-card-header>
+    <nb-card-body>
+      <form [formGroup]="projectEditForm" class="edit-form">
+
+        <div class="form-group m-2 mb-3">
+          <label class="label">Name</label>
+          <input type="text" nbInput fullWidth placeholder="Project Name" formControlName="name">
+        </div>
+
+        <div class="form-group m-2 mb-3">
+          <label class="label">Assinged to</label>
+          <nb-select fullWidth  placeholder="Select PM" formControlName="manager" selected="">
+            <nb-option *ngFor="let manager of projectManager" [value]="manager.id">{{manager.first_name}} {{manager.last_name}} - {{manager.division.name}}</nb-option>
+          </nb-select>
+        </div>
+
+        <div class="form-group d-flex justify-content-between m-2 mb-3">
+          <div class="w-100">
+            <label class="label">Client</label>
+            <nb-select fullWidth  placeholder="Select client" formControlName="client" selected="" >
+              <nb-option *ngFor="let customer of clients" [value]="customer.id">{{customer.name}}</nb-option>
+            </nb-select>
+          </div>
+          <div class="icons pt-4">
+            <nb-icon class="show" icon="plus-square-outline" (click)="openClient(dialog1)"></nb-icon>
+          </div>
+        </div>
+
+        <div class="form-group d-flex justify-content-between m-2 mb-3">
+          <div class="w-100">
+            <label class="label">Service</label>
+            <nb-select fullWidth  placeholder="Select service" formControlName="service" selected="">
+              <nb-option *ngFor="let serve of services" [value]="serve.id" (selectionChange)="changedItem(serve.id)">{{serve.name}}</nb-option>
+            </nb-select>
+          </div>
+          <div class="icons pt-4">
+            <nb-icon class="show" icon="plus-square-outline" (click)="openService(dialog2)"></nb-icon>
+          </div>
+        </div>
+
+        <div class="form-group d-flex justify-content-between m-2 mb-3">
+          <div class="w-100">
+            <label class="label">KPI</label>
+            <nb-select fullWidth  placeholder="Select kpi" formControlName="kpi" selected="" >
+              <nb-option *ngFor="let kpi of kpisalldata" [value]="kpi.id">{{kpi.name}} - {{kpi.number_of_days}} days</nb-option>
+            </nb-select>
+          </div>
+          <div class="icons pt-4">
+            <nb-icon class="show" icon="plus-square-outline" (click)="openKPI(dialog4)"></nb-icon>
+          </div>
+        </div>
+
+
+        <div class="form-group m-2 mb-3">
+          <label class="label">Expected Income</label>
+          <input type="number" nbInput fullWidth min=0 placeholder="Amount" formControlName="expected_income">
+          <!-- readonly -->
+        </div>
+
+        <div class="form-group m-2 mb-3">
+          <label class="label">Project Type</label>
+          <nb-select fullWidth  placeholder="Select division" formControlName="project_type" selected="" >
+            <nb-option *ngFor="let div of divisions" [value]="div.id">{{div.name}}</nb-option>
+          </nb-select>
+        </div>
+      </form>
+    </nb-card-body>
+    <nb-card-footer>
+      <button nbButton status="success" size="small" style="float: right;" [disabled]="submitted || !projectEditForm.valid"
+      [class.btn-pulse]="submitted" (click)="editProject()">submit</button>
+    </nb-card-footer>
+  </nb-card>
+</ng-template>
+
+<ng-template #dialog4 let-data let-ref="dialogRef">
+  <nb-card style="width: 25em;">
+    <nb-card-header>Add KPI
+      <a (click)="ref.close()" aria-label="Back" style="float: right;" id="close-kpi">
+        <nb-icon icon="close"></nb-icon>
+      </a>
+    </nb-card-header>
+    <nb-card-body>
+      <form #kpiServiceForm="ngForm" (ngSubmit)="saveServiceKPI(kpiServiceForm)">
+        <div class="form-group">
+          <input
+            nbInput
+            autofocus
+            fullWidth
+            fieldSize="medium"
+            placeholder="KPI Name"
+            [(ngModel)]="kpiServiceForm.name"
+            #name="ngModel"
+            id="kpi-name"
+            name="name"
+            [status]="name.dirty ? (name.invalid  ? 'danger' : 'success') : 'basic'"
+            [attr.aria-invalid]="name.invalid && name.touched ? true : null"
+            required>
+          <ng-container *ngIf="name.invalid && name.touched">
+            <p class="caption status-danger mt-2" *ngIf="name.errors?.required">
+              KPI name is required!
+            </p>
+          </ng-container>
+        </div>
+        <div class="form-group">
+          <input
+            nbInput
+            autofocus
+            fullWidth
+            fieldSize="medium"
+            placeholder="Number Of Days"
+            [(ngModel)]="kpiServiceForm.number_of_days"
+            #name="ngModel"
+            id="input-number_of_days"
+            name="number_of_days"
+          >
+        </div>
+        <div class="form-group">
+          <div class="form-group d-flex justify-content-between">
+            <nb-select fullWidth  placeholder="Select service for the KPI" [(ngModel)]="kpiServiceForm.service"  name="kpi" selected="" required>
+              <nb-option *ngFor="let kpiserve of services" [value]="kpiserve.id">{{kpiserve.name}}</nb-option>
+            </nb-select>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <button nbButton status="success" size="small" style="float: right;" [disabled]="submitted || !kpiServiceForm.valid" [class.btn-pulse]="submitted">submit</button>
+        </div>
+      </form>
+    </nb-card-body>
+  </nb-card>
+</ng-template>

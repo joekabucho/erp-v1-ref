@@ -1,0 +1,396 @@
+@import '../../../@theme/styles/themes';
+@import '~bootstrap/scss/mixins/breakpoints';
+@import '~@nebular/theme/styles/global/breakpoints';
+
+@include nb-install-component() {
+
+  $color-primary: #3366ff;
+  $color-warning: #ffaa00;
+
+  nb-tabset {
+    nb-tab {
+      @include media-breakpoint-down(md) {
+        padding: 20px;
+      }
+      @include media-breakpoint-down(sm) {
+        padding: 10px;
+      }
+    }
+  }
+
+  nb-search {
+    @include media-breakpoint-down(sm) {
+      display: none;
+    }
+  }
+
+
+  .site-btn {
+    margin: 5px 0 15px;
+    // text-transform: lowercase;
+
+
+    @include media-breakpoint-down(sm) {
+      display: none;
+    }
+  }
+
+  .sites {
+    nb-card {
+      cursor: pointer;
+      max-width: 25em;
+      min-width: 15em;
+      width: 95%;
+      border-radius: 5px;
+      -webkit-box-shadow: 1px 1px 5px 1px rgba(0, 0, 0, 0.2);
+      -moz-box-shadow: 1px 1px 5px 1px rgba(0, 0, 0, 0.2);
+      box-shadow: 1px 1px 5px 1px rgba(0, 0, 0, 0.2);
+
+
+      &:hover {
+        -webkit-box-shadow: 4px 4px 5px 5px rgba(0, 0, 0, 0.2);
+        -moz-box-shadow: 4px 4px 5px 5px rgba(0, 0, 0, 0.2);
+        box-shadow: 4px 4px 5px 5px rgba(0, 0, 0, 0.2);
+        transition: all 0.5s ease-in-out;
+      }
+
+      nb-card-header {
+        border: none;
+        display: flex;
+        justify-content: space-between;
+        padding: 10px;
+
+        .site-title {
+          font-size: 1em;
+          font-weight: bold;
+          text-transform: uppercase;
+          font-family: Montserrat;
+          font-style: normal;
+        }
+
+        img {
+          border-radius: 50%;
+          width: 2rem;
+          height: 2rem;
+        }
+      }
+
+      nb-card-body {
+        padding: 0 10px 10px;
+
+        .site-data {
+          letter-spacing: 0.02125em;
+          font-size: 11px;
+        }
+
+        .fetched-data {
+          font-family: Montserrat;
+          font-style: normal;
+          font-size: 13px;
+          margin-left: 5px;
+          letter-spacing: 0.05em;
+          font-weight: bolder;
+        }
+        nb-icon {
+          font-size: 15px;
+          margin-right: 5px;
+        }
+
+
+      }
+
+      nb-card-footer {
+        border: none;
+        padding: 0 10px 10px;
+
+
+        .trash {
+          cursor: pointer;
+          color: #ff3d71;
+          font-size: 1.4rem;
+          margin-left: 10px;
+
+          &:hover {
+            font-size: 1.5rem;
+          }
+        }
+
+        .edit-icon {
+          cursor: pointer;
+          font-size: 1.2rem;
+
+          &:hover {
+            color: #3366ff;
+            font-size: 1.3rem;
+          }
+        }
+
+        .progress {
+          margin: 0.5em 0;
+          height: 5px;
+        }
+      }
+    }
+  }
+
+  .file {
+    cursor: pointer;
+    color: $color-primary;
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+
+  .upload-btn {
+    @include media-breakpoint-down(sm) {
+      display: none;
+    }
+  }
+
+  // @include media-breakpoint-down(sm) {
+  //   ngx-traffic {
+  //     display: none;
+  //   }
+  // }
+}
+.checkboxes {
+  display: flex;
+  flex-direction: column;
+  max-height: 20em;
+  overflow: auto;
+}
+
+.image {
+  width: 100%;
+  height: 100%;
+  border: 1px solid #ced4da;
+  border-radius: 2%;
+  cursor: pointer;
+
+  nb-card-header {
+    padding: 0;
+    display: flex;
+    justify-content: space-between;
+
+    .dots::after {
+      content: '•••';
+      font-size: 10px;
+      margin: 10px;
+    }
+  }
+
+  .image-detail {
+    display: flex;
+    flex-direction: column;
+    padding: 10px;
+    letter-spacing: 1px;
+
+
+    .image-user {
+      font-weight: 600;
+    }
+    .image-text {
+      color: #65676b;
+      font-weight: 100;
+    }
+    .image-time {
+      margin-top: 2px;
+      color: #65676b;
+      font-weight: 100;
+      font-size: 11px;
+    }
+    .image-comment {
+      color: #65676b;
+      font-weight: 100;
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+
+  }
+
+
+
+  nb-card-body {
+    padding: 0;
+    background-color: #f2f3f5;
+
+    img {
+      width: 100%;
+      height: 100%;
+    }
+
+    .img-file {
+      width: 50px;
+      height: 50px;
+    }
+  }
+}
+
+
+.file-container {
+  width: 100%;
+  padding: 10px;
+  overflow: scroll;
+  box-shadow: 0 0 4px 1px rgba(0, 0, 0, 0.3);
+}
+
+
+.image-card {
+  cursor: pointer;
+  border: 1px solid #ced4da;
+  border-radius: 2%;
+  width: fit-content;
+  // height: fit-content;
+  // margin: 0 10px;
+
+  nb-card-header {
+    padding: 0;
+    display: flex;
+    justify-content: space-between;
+
+    .dots::after {
+      content: '•••';
+      font-size: 10px;
+      margin: 10px;
+    }
+  }
+
+  .image-detail {
+    display: flex;
+    flex-direction: column;
+    padding: 10px;
+    letter-spacing: 1px;
+
+
+    .image-user {
+      font-weight: 600;
+    }
+    .image-text {
+      color: #65676b;
+      font-weight: 100;
+    }
+    .image-time {
+      margin-top: 2px;
+      color: #65676b;
+      font-weight: 100;
+      font-size: 11px;
+    }
+    .image-comment {
+      color: #65676b;
+      font-weight: 100;
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+
+  }
+
+  nb-card-body {
+    padding: 0;
+    background-color: #f2f3f5;
+
+    img {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+
+    .img-link {
+      img {
+        width: 60px;
+        height: 60px;
+        align-self: center;
+      }
+      .file-name {
+        align-self: center;
+      }
+
+    }
+
+  }
+}
+.no-site {
+  nb-icon {
+    font-size: 11em;
+    color: #8a9499;
+  }
+  h2 {
+    color: #8a9499;
+    font-size: 2.3rem;
+    margin: 20px 10px;
+  }
+  p {
+    font-size: 15px;
+    margin: 0 -10px;
+  }
+
+}
+
+.form-group {
+
+  .label {
+    font-weight: bold;
+    color: #1e22aa;
+  }
+
+  .icons {
+    width: 25%;
+    display: flex;
+    justify-content: center;
+    margin: 5px;
+
+    nb-icon {
+      font-size: 1.5rem;
+      cursor: pointer;
+      margin: auto;
+
+      &:hover {
+        font-size: 1.6rem;
+      }
+    }
+
+    .show {
+      color: #3366ff;
+    }
+    .hide {
+      color: #e40046;
+    }
+
+    button {
+      height: 35px;
+      margin: 25px 0 0 5px;
+    }
+
+  }
+}
+
+.item-add {
+  display: flex;
+
+  input {
+    border: none;
+    background: #ffffff;
+    border-bottom: solid 1px #0095ff;
+  }
+
+  .add-btn {
+    margin: auto 5px;
+    width: 12%;
+    height: 20px;
+    padding: 2px;
+    text-transform: lowercase;
+  }
+}
+agm-map {
+  height: 300px;
+}
+.pac-container {
+  z-index: 10000 !important;
+}
+
+@media only screen and (max-width: 600px) {
+  .card-dialog {
+    width: 100vw !important;
+}
+}

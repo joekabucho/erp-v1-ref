@@ -1,0 +1,51 @@
+<div class="header-container">
+  <div class="logo-container">
+    <a class="logo" href="#">
+      <img src="assets/adrian-images/adrianlogo-{{currentTheme}}.png" alt="logo">
+    </a>
+    <a (click)="toggleSidebar()" href="#" class="sidebar-toggle">
+      <nb-icon icon="menu-2-outline"></nb-icon>
+    </a>
+  </div>
+  <!-- <nb-select [selected]="currentTheme" (selectedChange)="changeTheme($event)" status="primary">
+    <nb-option *ngFor="let theme of themes" [value]="theme.value"> {{ theme.name }}</nb-option>
+  </nb-select> -->
+</div>
+
+<div class="header-container">
+  <nb-actions size="small">
+    <nb-action class="control-item" icon="email-outline" badgePosition="bottom right" badgeStatus="warning"  badgeText="{{unReadMessages.length}}" (click)="viewMessages()"></nb-action>
+    <nb-action class="control-item" icon="bell-outline" badgePosition="bottom right" badgeStatus="success"  badgeText="{{unReadNotes.length}}" (click)="viewNotifications()"></nb-action>
+    <nb-action class="log-out" icon="log-out-outline" (click)="logOut()"></nb-action>
+    <nb-action class="user-action" *nbIsGranted="['view', 'user']" (click)="openProfileForm(dialog1)">
+      <nb-user [onlyPicture]="userPictureOnly" [name]="loggedInUser?.username" [picture]="loggedInUserProfile?.image">
+      </nb-user>
+    </nb-action>
+  </nb-actions>
+</div>
+
+
+<ng-template #dialog1 let-data let-ref="dialogRef">
+  <nb-card class="profile-card" status="info">
+    <nb-card-header>Click to upload photo
+      <a (click)="ref.close()" aria-label="Back" style="float: right;" id="close-pic">
+        <nb-icon icon="close"></nb-icon>
+      </a>
+    </nb-card-header>
+    <nb-card-body>
+      <form>
+        <div class="form-group">
+          <label for="inputPicture">
+            <input type="file" id="inputPicture" style="display: none" (change)="onProfilePhotoSelected($event)">
+            <ng-container *ngIf="loggedInUserProfile.image === noImage || loggedInUserProfile.image === ''; else image">
+              <img src="assets/adrian-images/usermg1.jpg" alt="user">
+            </ng-container>
+            <ng-template #image>
+              <img src="{{loggedInUserProfile.image}}" alt="user">
+            </ng-template>
+          </label>
+        </div>
+      </form>
+    </nb-card-body>
+  </nb-card>
+</ng-template>

@@ -1,0 +1,65 @@
+@import '../../@theme/styles/themes';
+
+
+@include nb-install-component() {
+
+  .navigation {
+    margin: 10px 20px;
+
+    .link {
+      display: inline-block;
+      text-decoration: none;
+
+      nb-icon {
+        font-size: 1.25rem;
+        vertical-align: middle;
+      }
+    }
+  }
+
+  nb-card {
+    width: 100%;
+    margin: auto;
+    box-shadow: 0 0 4px 1px rgba(0, 0, 0, 0.3);
+
+
+    nb-card-header {
+      display: flex;
+      justify-content: center;
+    }
+    nb-card-body {
+      padding: 2rem 1.5rem;
+
+      .pwd-btn {
+        padding: 0;
+
+        nb-icon {
+          margin: 0 10px;
+          cursor: pointer;
+          color: #3366ff;
+          font-size: 2rem;
+        }
+      }
+
+      .label {
+        font-weight: bold;
+        color: #1e22aa;
+      }
+      .route-btn {
+        padding: 0;
+
+        nb-icon {
+          margin: 0 10px;
+          cursor: pointer;
+          color: #3366ff;
+          font-size: 2rem;
+          &:hover {
+            font-size: 2.2rem;
+          }
+        }
+      }
+
+    }
+  }
+
+}

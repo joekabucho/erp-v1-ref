@@ -1,0 +1,67 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Edit site inspection </ion-title>
+    <ion-icon name='close-circle' (click)='dismiss()' style='float: right;' size="large"></ion-icon>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <form [formGroup]="inspectionEditForm">
+    <ion-item>
+      <ion-label>Date</ion-label>
+      <input  formControlName="date" type="date"  placeholder="Select Date"/>
+    </ion-item>
+    <ion-item>
+      <ion-input placeholder="Reference number" formControlName="ref_number"></ion-input>
+    </ion-item>
+        <div class="form-group">
+          <input type="date" nbInput fullWidth placeholder="Date" formControlName="date">
+        </div>
+        <div class="form-group d-flex justify-content-between">
+          <ng-autocomplete [data]="Sites" [searchKeyword]="keywordSite" (selected)='selectSite($event)'
+                           (inputChanged)='onChangeSearch($event)' (inputFocused)='onFocusedSite($event)' [itemTemplate]="itemTemplateSite"
+                           [notFoundTemplate]="notFoundTemplate"
+                           placeholder="Select site" formControlName="site" >
+          </ng-autocomplete>
+
+          <ng-template #itemTemplateSite let-item>
+            <a [innerHTML]="item.name"></a>
+          </ng-template>
+
+          <ng-template #notFoundTemplate let-notFound>
+            <div [innerHTML]="notFound"></div>
+          </ng-template>
+        </div>
+    <ion-item>
+      <ion-input placeholder="Contractor" formControlName="contractor"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-input placeholder="Site engineer"  formControlName="site_engineer"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-input placeholder="Work description" formControlName="work_description"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-input placeholder="PPE"  formControlName="ppe"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-input placeholder="Risk treatment" formControlName="risk_treatment"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-input placeholder="Compliance to safaricom"  formControlName="compliance_to_safaricom"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-input placeholder="Provision of work equipment" formControlName="provision_of_work_equipment"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-input placeholder="Emergency response" formControlName="emergency_response"></ion-input>
+    </ion-item>
+    <ion-fab  horizontal="end" style="bottom: 80px" edge>
+      <ion-fab-button>
+        <ion-icon name="save" (click)="saveSiteInspection();dismiss()"></ion-icon>
+      </ion-fab-button>
+    </ion-fab>
+  </form>
+</ion-content>
+
+

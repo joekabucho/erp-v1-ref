@@ -1,0 +1,43 @@
+version: 2.1
+jobs:
+  build:
+    working_directory: ~/repo
+    docker:
+      - image: circleci/node:12.6.0
+    steps:
+      - checkout
+      - run:
+          name: update-npm
+          command: 'sudo npm install -g npm@latest'
+      - restore_cache: # special step to restore the dependency cache
+          # Read about caching dependencies: https://circleci.com/docs/2.0/caching/
+          key: dependency-cache-{{ checksum "package.json" }}
+      - run:
+          name: install-dependencies
+          command: npm install
+      - save_cache: # special step to save the dependency cache
+          key: dependency-cache-{{ checksum "package.json" }}
+          paths:
+            - ./node_modules
+      - add_ssh_keys:
+          fingerprints:
+            - "${arp_fprint}"
+      - deploy:
+          command:  |
+            if [[ "${CIRCLE_BRANCH}" == "develop" ]]; then
+              ssh -o "StrictHostKeyChecking no" ${INSTANCE_USER}@${IP_ADDRESS} bash --login -i" \
+              cd ~
+              cd client/develop/adrian_erp_dashboard-v2
+              sudo rm -rf package-lock.json
+              git checkout ${CIRCLE_BRANCH}
+              sudo git pull origin  ${CIRCLE_BRANCH}
+              sudo sh post_deployment_staging.sh"
+            elif [[ "${CIRCLE_BRANCH}" == "master" ]]; then
+              ssh -o "StrictHostKeyChecking no" ${INSTANCE_USER}@${IP_ADDRESS} bash --login -i" \
+              cd ~
+              cd client/prod/adrian_erp_dashboard-v2
+              sudo rm -rf package-lock.json
+              git checkout ${CIRCLE_BRANCH}
+              sudo git pull origin  ${CIRCLE_BRANCH}
+              sudo sh post_deployment.sh"
+            fi

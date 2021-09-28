@@ -1,0 +1,66 @@
+<ion-content fullscreen>
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-title style="text-align:center">Create Hazard Analysis</ion-title>
+    <ion-icon name='close-circle' (click)='dismiss()' style='float: right;' size="large"></ion-icon>
+  </ion-toolbar>
+</ion-header>
+<ion-content>
+  <form [formGroup]="hazForm">
+  <ion-item>
+    <ion-label>Job Hazards</ion-label>
+    <ion-select multiple="true" cancelText="No" okText="Okay!" formControlName="job_hazards">
+      <ion-select-option *ngFor="let jha of hazards" [value]="jha.id">{{jha.name}}</ion-select-option>
+    </ion-select>
+  </ion-item>
+  <ion-input placeholder="First Aider"  formControlName="fire_fighter"></ion-input>
+  <ion-input placeholder="Fire Fighter" formControlName="first_aider"></ion-input>
+     <ion-grid>
+       <ion-row>
+       <ion-col>
+         <ion-item>
+         <ion-label>Team members</ion-label>
+            <ion-select multiple="true" cancelText="No" okText="Okay!" formControlName="team_members">
+              <ion-select-option *ngFor="let user of attendants" [value]="user.id">{{user.firstname}} {{user.lastname}}</ion-select-option>
+            </ion-select>
+         </ion-item>
+       </ion-col>
+       <ion-col>
+           <ion-button (click)="showAttendants()">ADD</ion-button>
+       </ion-col>
+       </ion-row>
+     </ion-grid>
+    <div class="form-group d-flex justify-content-between">
+      <ng-autocomplete [data]="Supervisor" [searchKeyword]="keywordSup" (selected)='selectSup($event)'
+                       (inputChanged)='onChangeSearch($event)' (inputFocused)='onFocusedSup($event)' [itemTemplate]="itemTemplateSup"
+                       [notFoundTemplate]="notFoundTemplate"
+                       placeholder="Select Supervisor" formControlName="supervisor" >
+      </ng-autocomplete>
+
+      <ng-template #itemTemplateSup let-item>
+        <a [innerHTML]="item.first_name +''+ item.last_name"></a>
+      </ng-template>
+
+      <ng-template #notFoundTemplate let-notFound>
+        <div [innerHTML]="notFound"></div>
+      </ng-template>
+    </div>
+    <ion-item>
+      <ion-textarea placeholder="Description"  formControlName="description"></ion-textarea>
+    </ion-item>
+  <ion-item>
+  <ion-datetime placeholder="Select Date" display-timezone="utc" formControlName="date"></ion-datetime>
+  </ion-item>
+  <ion-item>
+  <ion-input placeholder="Done By"  formControlName="done_by"></ion-input>
+  </ion-item>
+    <ion-fab  horizontal="end" style="bottom: 80px" edge>
+      <ion-fab-button>
+        <ion-icon name="save" (click)="saveHazard();dismiss();"></ion-icon>
+      </ion-fab-button>
+    </ion-fab>
+  </form>
+</ion-content>
+</ion-content>
+
+

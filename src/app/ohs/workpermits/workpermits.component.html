@@ -1,0 +1,285 @@
+<div class="row m-2">
+  <div class="col-sm-12">
+    <nb-card>
+      <!-- <nb-card-header>Permit To Work
+        <input nbInput size="small" type="text" class="form-control form-control" autocomplete="on" placeholder="Search by Name" [(ngModel)]="searchPermit" (ngModelChange)="fetchDetails()">
+      </nb-card-header> -->
+
+      <nb-card-body>
+
+
+        <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" class="table table-striped table-hover">
+          <thead>
+          <tr>
+            <th *ngFor="let head of headElements" scope="col">{{head}}</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr *ngFor="let workpermit of WorkPermits; index as i;trackBy: identify">
+            <td></td>
+            <td>{{ i + 1 }}
+            <td>{{workpermit.date | date: 'shortDate'}}</td>
+            <td>{{workpermit.date | date: 'shortTime'}}</td>
+            <td>{{workpermit.ticket?.ticket_code}}</td>
+            <td>{{workpermit.safety_or_concerns}}</td>
+            <td>{{workpermit.safety_access}}</td>
+            <td>{{workpermit.scope?.name}}</td>
+            <td>{{workpermit.department?.name}}</td>
+            <td>{{workpermit.supervisor?.username}}</td>
+            <td>{{workpermit.project_manager?.username}}</td>
+            <td>{{workpermit.hod?.username}}</td>
+            <td>{{workpermit.communication_plan?.name}}</td>
+            <!-- <td>{{workpermit.ref_number}}</td> -->
+            <!-- <td>{{workpermit.ppe[0]?.ppe_names[0]?.name}}</td> -->
+            <!-- <td>{{workpermit.certifications[0]?.certificate?.name}}</td> -->
+            <!-- <td><i *ngFor="let perm of workpermit.permits">{{perm.name}},</i></td> -->
+            <!-- <td>{{workpermit.communication_plan?.name}}</td> -->
+            <td>{{workpermit.safety_officer?.username}}</td>
+            <td>
+              <button  *ngIf="workpermit?.approval === null" nbButton hero  status="primary" size="small">OPEN</button>
+              <button  *ngIf="workpermit?.approval !== null" nbButton hero  status="{{workpermit.approval?.status === 'approved' ? 'success': workpermit.approval?.status === 'rejected' ? 'danger' : workpermit.approval?.status === 'expired' ? 'warning' : 'danger'}}" size="small">{{workpermit.approval?.status}}</button>
+            </td>
+            <td><nb-icon icon="eye-outline"  (click)="openPermit(dialog1);selectedWorkpermitChecklist(workpermit.id)"></nb-icon></td>
+            <td><nb-icon icon="edit-outline" class="edit"   (click)="open(dialog,workpermit);selectedWorkpermitChecklist(workpermit.id)"></nb-icon></td>
+            <td><nb-icon icon="trash-outline" class="trash" (click)="DeleteWorkPermits(workpermit.id)"></nb-icon></td>
+          </tr>
+          </tbody>
+        </table>
+      </nb-card-body>
+
+      <nb-card-footer class="d-flex justify-content-between">
+        Total Permits: {{totalCount}}
+
+        <!-- <div class="form-group">
+          <nb-select [(selected)]="itemsPerPage" [(ngModel)]="itemsPerPage" (selectedChange)="onChange($event)" placeholder="Select fetched items">
+            <nb-option  [value]="25">25</nb-option>
+            <nb-option  [value]="50">50</nb-option>
+            <nb-option  [value]="100">100</nb-option>
+            <nb-option  [value]="1000000">All</nb-option>
+          </nb-select>
+        </div> -->
+      </nb-card-footer>
+    </nb-card>
+  </div>
+</div>
+<ion-content>
+<ion-card *ngFor="let perm of WorkPermits ; trackBy: identify">
+  <ion-item>
+    <ion-label>{{perm.ref_number}}</ion-label>
+    <ion-button  (click)="DeleteWorkPermits(perm.id)">Delete</ion-button>
+  </ion-item>
+
+  <ion-card-content>
+    <ion-list>
+      Safety officer:{{perm.safety_officer?.username}}<br>
+      Safety officer approval:
+      <button class="approval-btn" *ngIf="perm.approval === null" nbButton hero size="small" >APPROVE</button>
+      <button class="approval-btn" *ngIf="perm.approval !== null" nbButton hero
+                  disabled="{{perm.approval?.status  === 'approved'}}"
+                  status="{{perm.approval?.status  === 'approved' ? 'success': perm.approval?.status  === 'rejected' ? 'danger' : perm.approval?.status  === 'open' ? 'warning' :  perm.approval?.status  === 'expired' ? 'warning' : 'danger'}}"
+                  size="small">{{perm.approval?.status }}</button><br>
+      Hod:{{perm.hod?.username}}<br>
+      Supervisor:{{perm.supervisor?.username}}<br>
+      Project manager:{{perm.project_manager?.username}}<br>
+      Department:{{perm.department?.name}}<br>
+      Scope:{{perm.scope?.name}}<br>
+      Safety or concerns:{{perm.safety_or_concerns}}<br>
+      Safety access:{{perm.safety_access}}<br>
+      Communication Plan:{{perm.communication_plan?.name}}
+    </ion-list>
+  </ion-card-content>
+</ion-card>
+</ion-content>
+<ng-template #dialog let-data let-ref="dialogRef">
+  <nb-card status="success" style="width: 40em; max-width: 95vw !important;">
+    <nb-card-header>Edit Work Permit
+      <a (click)="ref.close()" aria-label="Back" style="float: right;"  id="close-edit">
+        <nb-icon icon="close"></nb-icon>
+      </a>
+    </nb-card-header>
+    <nb-card-body>
+      <form [formGroup]="workpermitEditForm">
+        <div class="form-group">
+          <textarea
+            type="text"
+            nbInput
+            fullWidth
+            placeholder="Safety/Environmental Concerns"
+            formControlName="safety_or_concerns">
+          </textarea>
+        </div>
+        <div class="form-group">
+          <input
+            type="text"
+            nbInput
+            fullWidth
+            placeholder="Security & Access"
+            formControlName="safety_access">
+        </div>
+        <div class="form-group d-flex justify-content-between">
+          <nb-select fullWidth  [(selected)]="department" placeholder="Department" formControlName="department"  >
+            <nb-option *ngFor="let dept of Department" [value]="dept.id">{{dept.name}}</nb-option>
+          </nb-select>
+        </div>
+        <div class="form-group d-flex justify-content-between">
+          <nb-select fullWidth  placeholder="Project Manager" formControlName="project_manager">
+            <nb-option *ngFor="let proj of ProjectManager" [value]="proj.id">{{proj.first_name}} {{proj.last_name}}</nb-option>
+          </nb-select>
+        </div>
+        <div class="form-group d-flex justify-content-between">
+          <nb-select multiple fullWidth  placeholder="Permits" formControlName="permits">
+            <nb-option *ngFor="let perm of ptwPermits" [value]="perm.id">{{perm.name}}</nb-option>
+          </nb-select>
+        </div>
+        <div class="form-group d-flex justify-content-between">
+          <nb-select fullWidth  placeholder="Head Of Department" formControlName="hod"  >
+            <nb-option *ngFor="let hod of HOD" [value]="hod.id">{{hod.first_name}} {{hod.last_name}}</nb-option>
+          </nb-select>
+        </div>
+        <div class="form-group">
+          <button nbButton status="success" size="small" style="float: right;"
+                  [class.btn-pulse]="submitted" (click)="editWorkPermits()">submit</button>
+        </div>
+      </form>
+
+    </nb-card-body>
+  </nb-card>
+</ng-template>
+<ng-template #dialog1 let-data let-ref="dialogRef">
+  <nb-card status="success" style="width: 62em; max-width: 95vw !important;" size="giant">
+    <nb-card-header> Work Permit Preview
+      <button nbButton status="primary" size="small" style="float: right;" (click)="convetToPDF()">Download</button>
+      <a (click)="ref.close()" aria-label="Back" style="float: right;"  id="close-edit">
+        <nb-icon icon="close"></nb-icon>
+      </a>
+    </nb-card-header>
+    <nb-card-body id="ptwToConvert">
+     <div class="row">
+       <div class="col-12">
+       <img style="height: 100px; width: 60em"  src="../../../assets/adrian-images/permit=header.PNG">
+       </div>
+       <br>
+     </div>
+      <br>
+      <table style="width: 60em;border-color: white;" border="2">
+        <tbody style="background-color: #1e22aa">
+        <tr>
+          <td style="color: #f5f2f0">Appendix to: Communications Procedure</td>
+          <td style="color: #f5f2f0">Reference: {{Permit?.ref_number}}</td>
+        </tr>
+        <tr>
+          <td style="color: #f5f2f0">Revision Number:02</td>
+          <td style="color: #f5f2f0">{{Permit?.date | date}}</td>
+        </tr>
+        </tbody>
+      </table>
+      <br>
+      <div class="row">
+        <div class="col-6">Date: {{Permit?.date | date}}</div>
+        <div class="col-6">Work permit: #{{Permit?.work_permit}}</div>
+      </div>
+      <div class="row">
+        <div class="col-6">Ticket Name & ID:{{Permit?.ticket?.name}} {{Permit?.ticket?.id}}</div>
+        <div class="col-6">Scope of Work: {{Permit?.scope?.name}}</div>
+      </div>
+      <br>
+      <table style="width: 60em;" border="2">
+        <tr>
+          <td style="text-align: center" colspan="4"><strong>Requester to fill this section</strong></td>
+        </tr>
+        <tr>
+          <td>Requester(name & tel .) {{Permit?.approval?.requester?.name}}</td>
+          <td>Department / role assigned:{{Permit?.department?.name}}</td>
+          <td colspan="2">Permit Start Date - hrs:{{Permit?.start_datetime | date:'short'}}<br>Permit End Date - hrs:{{Permit?.end_datetime | date:'short'}} </td>
+        </tr>
+        <tr>
+          <td style="text-align: center"  colspan="4"><strong>Certifications for work (attach copies where applicable)</strong></td>
+        </tr>
+        <tr>
+          {{Permit?.certifications[0]?.certificate?.name}}
+        </tr>
+        <tr>
+        <td style="text-align: center" colspan="4"><strong>Amenities</strong></td>
+        </tr>
+        <tr>
+          <td >Nearest Hospital:<br>(Name):{{Permit?.communication_plan?.nearest_hospital}}  (Tel):{{Permit?.communication_plan?.nearest_hospital_phone}}</td>
+          <td >Nearest Police station:<br>(Name):{{Permit?.communication_plan?.nearest_police}}  (Tel):{{Permit?.communication_plan?.nearest_police_phone}}</td>
+          <td colspan="2">Security & Access:<br>W.O/T.T:{{Permit?.safety_access}}</td>
+        </tr>
+        <tr>
+          <td style="text-align: center"  colspan="4"><strong>Permits required(permits must be valid when job is scheduled)</strong></td>
+        </tr>
+        <tr>
+          <i *ngFor="let perm of Permit?.permits " >{{perm.name}},</i>
+        </tr>
+        <tr>
+          <td style="text-align: center"  colspan="4"><strong>Protective equipment ( share clear photos of workers on site wearing them)</strong></td>
+        </tr>
+        <tr>
+          {{Permit?.ppe[0]?.ppe_names[0]?.name}}
+        </tr>
+        <tr>
+          <td style="text-align: center"  colspan="4"><strong>Safety/Environmental concerns</strong></td>
+        </tr>
+        <tr>
+          <td style="text-align: center" colspan="4">{{Permit?.safety_or_concerns}}&nbsp;</td>
+        </tr>
+      </table>
+      <p style="color: red;font-family: Roboto-LightItalic">*PPE should be specific to the task</p>
+      <p>I declare that the workers are in good health condition and free from alcohol/drug abuse and good working conditions provided </p>
+      <div class="row">
+        <div class="col-6">Supervisor(Requester){{Permit?.supervisor?.username}}</div>
+      </div>
+      <div class="row">
+        <div class="col-6">Project Manager Issuer {{Permit?.project_manager?.username}}</div>
+      </div>
+      <div class="row">
+        <div class="col-6">H.O.D Authorizer  {{Permit?.hod?.username}}</div>
+      </div>
+
+      <p style="color: red;font-family: Roboto-LightItalic;right: 150px">(Review Application,Working,Withdrawal,Closing Out & Audit)</p>
+      <table border="4" style="width: 60em;">
+        <tr>
+          <td><strong>PREPARED BY:</strong><br><strong>Phanuel Dianga (EHS Manager)</strong></td>
+          <td><strong>APPROVED BY:</strong><br><strong>Benard Njoroge (CEO)</strong></td>
+
+        </tr>
+      </table>
+    </nb-card-body>
+  </nb-card>
+</ng-template>
+<ng-template #dialog2 let-data let-ref="dialogRef">
+  <nb-card status="success" style="width: 40em; max-width: 95vw !important;">
+    <nb-card-header>Add Safety Officer Approval
+      <a (click)="ref.close()" aria-label="Back" style="float: right;"  id="close-approval">
+        <nb-icon icon="close"></nb-icon>
+      </a>
+    </nb-card-header>
+    <nb-card-body>
+      <form>
+        <div class="form-group">
+        <textarea
+          type="text"
+          nbInput
+          fullWidth
+          placeholder="Comment"
+          [(ngModel)]="comment"
+          [ngModelOptions]="{standalone: true}"></textarea>
+        </div>
+
+        <div class="form-group d-flex justify-content-between">
+          <nb-select fullWidth  placeholder="Status" [(ngModel)]="status" [ngModelOptions]="{standalone: true}" >
+            <nb-option [value]="approved">APPROVED</nb-option>
+            <nb-option [value]="rejected">REJECTED</nb-option>
+          </nb-select>
+        </div>
+
+        <div class="form-group">
+          <button nbButton status="success" size="small" style="float: right;"
+                  [class.btn-pulse]="submitted" (click)="createApproval()">submit</button>
+        </div>
+      </form>
+
+    </nb-card-body>
+  </nb-card>
+</ng-template>

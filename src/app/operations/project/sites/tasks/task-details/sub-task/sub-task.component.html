@@ -1,0 +1,261 @@
+<div class="row mb-1">
+  <div class="d-flex flex-wrap justify-content-between col-12">
+    <a href="#" (click)="back()" class="link back-link" aria-label="Back">
+      <nb-icon icon="arrow-back"></nb-icon>
+    </a>
+    <div class="d-flex flex-wrap" id="search">
+      <input nbInput size="small" type="text" class="form-control mr-2" [(ngModel)]="searchTerm" autocomplete="on" placeholder="Search">
+      <button nbButton hero status="success" size="small" (click)="uploadTaskForm(dialog)">Add Subtask</button>
+    </div>
+
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-sm-12">
+    <nb-tabset>
+      <nb-tab tabTitle="Subtasks" badgeText="{{subtasks.length}}" badgeStatus="success">
+        <div class="row">
+          <div class="d-flex col-md-12">
+
+            <div class="subtask-card">
+              <nb-card *ngFor="let subtask of subtasks | filter: searchTerm">
+                <nb-card-body>
+
+                  <ng-container *ngIf="subtask?.assign?.picture === noImage; else image">
+                    <img src="assets/adrian-images/usermg.jpg" alt="user">
+                  </ng-container>
+                  <ng-template #image>
+                    <img  src="{{subtask?.assign?.picture}}" alt="user">
+                  </ng-template>
+
+                  <div class="team-title">{{subtask.name}}</div>
+                  <div class="team-detail"><span class="team-data">KPI: </span><span class="fetched-data">{{subtask.kpi.number_of_days}} days</span></div>
+                  <div class="team-details" (click)="viewComments(subtask)">
+                    <span class="team-data">Notes: </span><span class="fetched-data">{{subtask.no_of_comments}}</span>
+                  </div>
+                  <div class="team-details" (click)="viewFiles(subtask)">
+                    <span class="team-data">Files: </span> <span class="fetched-data">{{subtask.no_of_files}}</span>
+                  </div>
+                  <div class="team-details1">
+                    <nb-icon icon="trash-outline" class="trash" (click)="confirmDelete(subtask)"></nb-icon>
+                    <nb-icon class="edit-icon" icon="edit-2-outline" (click)="editTaskForm(subtask, dialog1)"></nb-icon>
+
+
+
+                    <ng-container *ngIf="subtask.end_date === noImage; else complete">
+                      <button nbButton hero status="info" size="medium" class="task-btn" (click)="endTask(subtask)" [disabled]="subtask.no_of_files === 0">Approve task</button>
+                    </ng-container>
+                    <ng-template #complete>
+                      <button nbButton hero status="success" size="medium" class="task-btn">Task Approved</button>
+                    </ng-template>
+                    <!-- <button nbButton hero status="danger" size="medium" class="task-btn" (click)="confirmDelete(subtask)">remove task</button> -->
+                  </div>
+                  <!-- <div class="progress-wrap">
+                    <div class="d-flex justify-content-between">
+                      <span class="team-data">Progress</span>
+                      <span class="fetched-data">{{team.progress}} %</span>
+                    </div>
+                    <div class="progress">
+                      <div class="progress-bar progress-bar-striped bg-{{team.accent}}" role="progressbar" style="width: 25%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" [ngStyle]="{'width': team.progress+'%'}"></div>
+                    </div>
+                  </div> -->
+                </nb-card-body>
+
+              </nb-card>
+            </div>
+            <div class="subtask-details" *ngIf="showComments">
+              <nb-card size="large" status="info">
+                <nb-card-header>{{subtask?.name}} Notes
+                  <a (click)="closeComments()" aria-label="Back" style="float: right;" id="close-side">
+                    <nb-icon icon="close"></nb-icon>
+                  </a>
+                </nb-card-header>
+                <nb-card-body>
+                  <div class="comment" *ngFor="let com of comments">
+                    <img src="assets/adrian-images/usermg.jpg" alt="user">
+                    <div class="comment-detail">
+                      <div class="com-user">{{com.posted_by.name}}</div>
+                      <div class="com-text">{{com.comment}}</div>
+                      <div class="com-time">{{com.created_at | date: 'mediumDate'}}</div>
+                    </div>
+                  </div>
+                </nb-card-body>
+              </nb-card>
+            </div>
+
+            <div class="subtask-details" *ngIf="showFiles">
+              <nb-card size="large">
+                <nb-card-header>{{subtask?.name}} Files
+                  <a (click)="closeFiles()" aria-label="Back" style="float: right;" id="close-side">
+                    <nb-icon icon="close"></nb-icon>
+                  </a>
+                </nb-card-header>
+                <nb-card-body>
+                  <nb-card class="image-card" *ngFor="let file of files">
+                    <nb-card-header class="image-detail">
+                      <div class="image-user">{{file.posted_by.name}} <span class="image-text">posted this file.</span></div>
+                      <div class="image-time">{{file.date_posted | date: 'medium'}}</div>
+                    </nb-card-header>
+                    <nb-card-body>
+                      <ng-container *ngIf="file.upload_type.startsWith('image', 0) ; else notImage">
+                        <a href="{{file.file}}" target="_blank">
+                          <img src="{{file.file}}" alt="image">
+                        </a>
+                      </ng-container>
+                      <ng-template #notImage>
+                        <a href="{{file.file}}" target="_blank" class="d-flex img-link">
+                          <img class="img-file" src="assets/images/Filetype-icon.png" alt="file">
+                          <div class="file-name">{{file.name}}</div>
+                        </a>
+                      </ng-template>
+                    </nb-card-body>
+                    <nb-card-footer class="image-detail">
+                      <div class="image-user">comment: <span class="image-text">{{file.comment}}</span></div>
+                    </nb-card-footer>
+                  </nb-card>
+                </nb-card-body>
+              </nb-card>
+            </div>
+          </div>
+
+        </div>
+      </nb-tab>
+    </nb-tabset>
+  </div>
+  <div *ngIf="subtasks.length === 0" class="d-flex flex-column m-auto no-subtask">
+    <nb-icon icon="checkmark-circle-2-outline"></nb-icon>
+    <h2>No Subtasks</h2>
+    <p>Click add to create new Subtasks</p>
+  </div>
+</div>
+
+<ng-template #dialog let-data let-ref="dialogRef">
+  <nb-card style="width: 35em; max-width: 100vw;" status="success">
+    <nb-card-header>Add Sub Task
+      <a (click)="ref.close()" aria-label="Back" style="float: right;"  id="close-task">
+        <nb-icon icon="close"></nb-icon>
+      </a>
+    </nb-card-header>
+    <nb-card-body>
+      <form #taskForm="ngForm">
+
+        <div class="form-group m-2 mb-3">
+          <label class="label">Name</label>
+          <input
+          nbInput
+          autofocus
+          fullWidth
+          fieldSize="medium"
+          placeholder="Subtask Name"
+          [(ngModel)]="taskForm.name"
+          #name="ngModel"
+          id="input-name"
+          name="name"
+          [status]="name.dirty ? (name.invalid  ? 'danger' : 'success') : 'basic'"
+          [attr.aria-invalid]="name.invalid && name.touched ? true : null"
+          required>
+          <ng-container *ngIf="name.invalid && name.touched">
+            <p class="caption status-danger mt-2" *ngIf="name.errors?.required">
+              Sub Task Name is required!
+            </p>
+          </ng-container>
+        </div>
+
+        <div class="form-group d-flex justify-content-between m-2 mb-3">
+          <div class="w-100">
+            <label class="label">KPI</label>
+            <nb-select fullWidth  placeholder="KPI" [(ngModel)]="taskForm.kpi"  name="kpi" selected="" required>
+              <nb-option *ngFor="let onekpi of kpis" [value]="onekpi.id">{{onekpi.name}} - {{onekpi.number_of_days}} days</nb-option>
+            </nb-select>
+          </div>
+          <div class="icons mt-4">
+            <nb-icon class="show" icon="plus-square-outline" *ngIf="!addActivity" (click)="addActivity=true"></nb-icon>
+            <nb-icon class="hide" icon="close-outline" *ngIf="addActivity" (click)="addActivity=false"></nb-icon>
+          </div>
+        </div>
+        <div class="form-group item-add" *ngIf="addActivity">
+          <form class="d-flex" #kpiForm="ngForm">
+            <input type="text" nbInput fullWidth placeholder="KPI name" [(ngModel)]="kpiForm.name" #name="ngModel" name="name">
+            <input type="number" nbInput fullWidth placeholder="Number of days" [(ngModel)]="kpiForm.number_of_days" #number_of_days="ngModel" name="number_of_days">
+            <button nbButton hero status="info" size="small" class="add-btn" [disabled]="submitted || kpiForm.invalid"
+            [class.btn-pulse]="submitted" (click)="savekpi(kpiForm); addActivity=false">Add</button>
+          </form>
+        </div>
+
+        <div class="form-group m-2 mb-3">
+          <label class="label">Assinged to</label>
+          <nb-select fullWidth  placeholder="Select Technician" [(ngModel)]="taskForm.assign"  name="assign" selected="" required>
+            <nb-option *ngFor="let manager of taskManager" [value]="manager.id">{{manager.first_name}} {{manager.last_name}} - {{manager.role?.name}}, {{manager.division?.name}}</nb-option>
+          </nb-select>
+        </div>
+      </form>
+
+    </nb-card-body>
+    <nb-card-footer>
+      <button nbButton status="success" size="small" style="float: right;" [disabled]="submitted || taskForm.invalid"
+      [class.btn-pulse]="submitted" (click)="saveTask(taskForm)">submit</button>
+    </nb-card-footer>
+  </nb-card>
+</ng-template>
+
+
+
+
+
+<ng-template #dialog1 let-data let-ref="dialogRef">
+  <nb-card style="width: 35em;" status="success">
+    <nb-card-header>Edit Task
+      <a (click)="ref.close()" aria-label="Back" style="float: right;"  id="close-task">
+        <nb-icon icon="close"></nb-icon>
+      </a>
+    </nb-card-header>
+    <nb-card-body>
+      <form [formGroup]="subtaskEditForm">
+
+        <div class="form-group m-2 mb-3">
+          <label class="label">Name</label>
+          <input
+          type="text"
+          nbInput
+          fullWidth
+          placeholder="Name"
+          formControlName="name">
+        </div>
+
+        <div class="form-group m-2 mb-3">
+          <label class="label">Assinged to</label>
+          <nb-select fullWidth  placeholder="Task Manager" formControlName="assign" selected="">
+            <nb-option *ngFor="let manager of taskManager" [value]="manager.id">{{manager.first_name}} {{manager.last_name}} - {{manager.role?.name}}, {{manager.division?.name}}</nb-option>
+          </nb-select>
+        </div>
+
+        <div class="form-group d-flex justify-content-between m-2 mb-3">
+          <div class="w-100">
+            <label class="label">KPI</label>
+            <nb-select fullWidth  placeholder="Select KPI" formControlName="kpi" selected="">
+              <nb-option *ngFor="let onekpi of kpis" [value]="onekpi.id">{{onekpi.name}} - {{onekpi.number_of_days}} days</nb-option>
+            </nb-select>
+          </div>
+          <div class="icons mt-4">
+            <nb-icon class="show" icon="plus-square-outline" *ngIf="!addTask" (click)="addTask=true"></nb-icon>
+            <nb-icon class="hide" icon="close-outline" *ngIf="addTask" (click)="addTask=false"></nb-icon>
+          </div>
+        </div>
+        <div class="form-group item-add" *ngIf="addTask">
+          <form class="d-flex" #kpiForm="ngForm">
+            <input type="text" nbInput fullWidth placeholder="KPI name" [(ngModel)]="kpiForm.name" #name="ngModel" name="name">
+            <input type="number" nbInput fullWidth placeholder="Number of days" [(ngModel)]="kpiForm.number_of_days" #number_of_days="ngModel" name="number_of_days">
+            <button nbButton hero status="info" size="small" class="add-btn" [disabled]="submitted || kpiForm.invalid"
+            [class.btn-pulse]="submitted" (click)="savekpi(kpiForm); addTask=false">Add</button>
+          </form>
+        </div>
+      </form>
+
+    </nb-card-body>
+    <nb-card-footer>
+      <button nbButton status="success" size="small" style="float: right;" [disabled]="submitted || !subtaskEditForm.valid"
+      [class.btn-pulse]="submitted" (click)="editSubtask(subtask)">submit</button>
+    </nb-card-footer>
+  </nb-card>
+</ng-template>

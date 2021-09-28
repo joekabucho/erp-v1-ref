@@ -1,0 +1,377 @@
+<div class="row">
+  <div class="col-12">
+    <nb-card size="giant" style="overflow: scroll; box-shadow: 0 0 4px 1px rgba(0, 0, 0, 0.3);">
+      <nb-tabset>
+        <nb-tab tabTitle="Sites" badgeText="{{sites.length}}" badgeStatus="warning">
+          <div class="row">
+            <div class="d-flex flex-wrap justify-content-between col-12 pt-0">
+              <div class="d-flex">
+                <a href="#" (click)="back()" class="link back-link" aria-label="Back">
+                  <nb-icon icon="arrow-back"></nb-icon>
+                </a>
+              </div>
+
+              <div class="d-flex">
+                <input nbInput size="small" type="text" class="form-control " [(ngModel)]="searchTerm" autocomplete="on" placeholder="Search">
+                <div id="search" style="margin-right: 10px;"><span><nb-search type="modal-drop" tag="modal-drop"></nb-search></span></div>
+                <button nbButton hero status="success" size="small" class="site-btn " (click)="openSiteform(dialog)">Add site</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-lg-4 col-sm-6 pr-0 sites" *ngFor="let site of sites | filter: searchTerm">
+              <nb-card>
+                <nb-card-header (click)="viewDetails(site)">
+                  <div class="site-title">{{site.name}}</div>
+
+                  <ng-container *ngIf="site.manager?.picture === noImage; else pic">
+                    <img src="assets/adrian-images/usermg.jpg" alt="user">
+                  </ng-container>
+                  <ng-template #pic>
+                    <img  src="{{site.manager?.picture}}" alt="user">
+                  </ng-template>
+
+
+                </nb-card-header>
+                <nb-card-body (click)="viewDetails(site)">
+                  <div class="site-details"><span class="site-data">Assigned To: </span><span class="fetched-data">{{site.manager.name}}</span></div>
+                  <div class="site-details"><span class="site-data">Location: </span><span class="fetched-data">{{site.location.name}}</span></div>
+                  <div class="site-details">
+                    <nb-icon icon="calendar-outline"></nb-icon>
+                    <span class="site-data">Started: </span><span class="fetched-data">{{site.date_started | date: 'mediumDate'}}</span>
+                  </div>
+                </nb-card-body>
+                <nb-card-footer>
+                  <div class="d-flex justify-content-between">
+                    <div>
+                      <nb-icon class="edit-icon" icon="edit-2-outline" (click)="sendToLocalStorage(site.id);openSiteEditForm(site, dialog2)"></nb-icon>
+                      <nb-icon icon="trash-outline" class="trash" (click)="confirmDelete(site)"></nb-icon>
+                    </div>
+                    <span class="fetched-data">{{site.progress}}%</span>
+                  </div>
+                  <div class="progress d-flex justify-content-between">
+                    <div class="progress-bar progress-bar-striped bg-success" role="progressbar"
+                    aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" [ngStyle]="{'width': site.progress+'%'}">
+                    </div>
+                  </div>
+                </nb-card-footer>
+              </nb-card>
+            </div>
+            <div *ngIf="sites.length === 0" class="d-flex flex-column m-auto no-site">
+              <nb-icon icon="checkmark-circle-2-outline"></nb-icon>
+              <h2>No Sites</h2>
+              <p>Click add to create new Sites</p>
+            </div>
+          </div>
+        </nb-tab>
+        <nb-tab tabTitle="Files" badgeText="{{files.length}}" badgeStatus="warning" (click)="getFiles()">
+          <div class="col-sm-12 m-0 p-0 h-100">
+            <nb-card size="large" class="file-container">
+              <nb-card-header class="d-flex justify-content-between">
+                {{project?.name}} Files
+                <div class="d-flex">
+                  <button nbButton hero status="success" size="small" (click)="uploadFile(dialog1)" style="float: right;">Add File</button>
+                  <!-- <button nbButton hero status="warning" size="small" (click)="getBinder()" style="float: right; margin-left: 10px;">Download Binder</button> -->
+                </div>
+
+
+              </nb-card-header>
+              <nb-card-body>
+                <nb-card class="image-card" *ngFor="let file of files">
+                  <nb-card-header class="image-detail">
+                    <div class="image-user">{{file.posted_by.name}} <span class="image-text">posted this file.</span></div>
+                    <div class="image-time">{{file.date_posted | date: 'medium'}}</div>
+                  </nb-card-header>
+                  <nb-card-body>
+                    <ng-container *ngIf="file.upload_type.startsWith('image', 0) ; else notImage">
+                      <a href="{{file.file}}" target="_blank">
+                        <img src="{{file.file}}" alt="image">
+                      </a>
+                    </ng-container>
+                    <ng-template #notImage>
+                      <a href="{{file.file}}" target="_blank" class="d-flex img-link">
+                        <img class="img-file" src="assets/images/Filetype-icon.png" alt="image">
+                        <div class="file-name">{{file.name}}</div>
+                      </a>
+                    </ng-template>
+                  </nb-card-body>
+                  <nb-card-footer class="image-detail">
+                    <div class="image-user">comment: <span class="image-text">{{file.comment}}</span></div>
+                  </nb-card-footer>
+                </nb-card>
+
+              </nb-card-body>
+            </nb-card>
+          </div>
+        </nb-tab>
+
+      </nb-tabset>
+    </nb-card>
+  </div>
+</div>
+
+
+
+<ng-template #dialog let-data let-ref="dialogRef">
+  <nb-card size="giant" class="site-form" style="width: 40em;" status="success">
+    <nb-card-header>Create Site
+      <a (click)="ref.close()" aria-label="Back" style="float: right;" id="close-site">
+        <nb-icon icon="close"></nb-icon>
+      </a>
+    </nb-card-header>
+    <nb-card-body style="overflow: scroll">
+      <form #siteForm="ngForm">
+        <div class="form-group m-2 mb-3">
+          <label class="label">Name</label>
+          <input
+          nbInput
+          autofocus
+          fullWidth
+          fieldSize="medium"
+          placeholder="Site Name"
+          [(ngModel)]="siteForm.name"
+          #name="ngModel"
+          id="input-name"
+          name="name"
+          [status]="name.dirty ? (name.invalid  ? 'danger' : 'success') : 'basic'"
+          [attr.aria-invalid]="name.invalid && name.touched ? true : null"
+          required>
+          <ng-container *ngIf="name.invalid && name.touched">
+            <p class="caption status-danger mt-2" *ngIf="name.errors?.required">
+              Site Name is required!
+            </p>
+          </ng-container>
+        </div>
+
+
+        <div class="form-group d-flex justify-content-between m-2 mb-3">
+          <div class="w-100">
+            <label class="label">Location</label>
+            <nb-select fullWidth  placeholder="Select location" [(ngModel)]="siteForm.location"  name="location" selected="" required>
+              <nb-option *ngFor="let loc of locations" [value]="loc.id">{{loc.name}}</nb-option>
+            </nb-select>
+          </div>
+          <div class="icons pt-4">
+            <nb-icon class="show" icon="plus-square-outline" (click)="openLocationForm(dialog3)"></nb-icon>
+          </div>
+        </div>
+
+        <div class="form-group m-2 mb-3">
+          <label class="label">Assinged to</label>
+          <nb-select fullWidth  placeholder="Select PM" [(ngModel)]="siteForm.manager"  name="manager" selected="" required>
+            <nb-option *ngFor="let manager of siteManager" [value]="manager.id">{{manager.first_name}} {{manager.last_name}} - {{manager.division.name}}</nb-option>
+          </nb-select>
+        </div>
+        <div class="form-group m-2 mb-3">
+          <label class="label" for="inputStartDate">Date Started</label>
+          <input type="date" nbInput fullWidth id="inputStartDate" [(ngModel)]="siteForm.date_started"  name="date_started" required>
+        </div>
+        <div class="form-group m-2 mb-3 checkboxes">
+          <label class="label" for="inputSelectTeam">Select Teams</label>
+          <nb-checkbox status="success" *ngFor="let team of teams" id="inputSelectTeam" (change)="changed($event, team)">{{team.name}}</nb-checkbox>
+        </div>
+       </form>
+    </nb-card-body>
+    <nb-card-footer>
+      <button nbButton status="success" size="small" style="float: right;" [disabled]="submitted || siteForm.invalid"
+      [class.btn-pulse]="submitted" (click)="saveSite(siteForm)">submit</button>
+    </nb-card-footer>
+  </nb-card>
+</ng-template>
+
+
+<ng-template #dialog1 let-data let-ref="dialogRef">
+  <nb-card class="site-form" style="width: 25em;">
+    <nb-card-header>Add file
+      <a (click)="ref.close()" aria-label="Back" style="float: right;" id="close-file">
+        <nb-icon icon="close"></nb-icon>
+      </a>
+    </nb-card-header>
+    <nb-card-body>
+      <form #fileForm='ngForm'>
+
+        <div class="form-group">
+          <input type="file" nbInput fullWidth id="inputFile" class="p-0" (change)="onErpFileSelected($event)">
+        </div>
+
+        <div class="form-group">
+          <input
+          nbInput
+          autofocus
+          fullWidth
+          fieldSize="medium"
+          placeholder="Comment"
+          [(ngModel)]="fileForm.comment"
+          #comment="ngModel"
+          name="comment"
+          [status]="comment.dirty ? (comment.invalid  ? 'danger' : 'success') : 'basic'"
+          [attr.aria-invalid]="comment.invalid && comment.touched ? true : null"
+          required>
+          <ng-container *ngIf="comment.invalid && comment.touched">
+            <p class="caption status-danger" *ngIf="comment.errors?.required">
+              Required!
+            </p>
+          </ng-container>
+        </div>
+
+        <div class="form-group">
+          <button nbButton status="success" size="small" style="float: right;" [disabled]="submitted || fileForm.invalid"
+          [class.btn-pulse]="submitted" (click)="saveFile(fileForm)">submit</button>
+        </div>
+
+      </form>
+    </nb-card-body>
+  </nb-card>
+</ng-template>
+
+
+
+
+<ng-template #dialog2 let-data let-ref="dialogRef">
+  <nb-card size="giant" style="width: 40em; max-width: 100vw !important;" class="card-dialog col-md-6" status="success">
+    <nb-card-header>Edit Site
+      <a (click)="ref.close()" aria-label="Back" style="float: right;"  id="close-edit">
+        <nb-icon icon="close"></nb-icon>
+      </a>
+    </nb-card-header>
+    <nb-card-body>
+      <form [formGroup]="siteEditForm">
+
+        <div class="form-group m-2 mb-3">
+          <label class="label">Name</label>
+          <input
+            type="text"
+            nbInput
+            fullWidth
+            placeholder="Site Name"
+            formControlName="name">
+        </div>
+
+
+        <div class="form-group flex-wrap d-flex justify-content-between m-2 mb-3">
+          <div class="w-100">
+            <label class="label">Location</label>
+            <nb-select fullWidth  placeholder="Select location" formControlName="location" selected="">
+              <nb-option *ngFor="let loc of locations" [value]="loc.id">{{loc.name}}</nb-option>
+            </nb-select>
+          </div>
+          <div class="icons w-100">
+            <button nbButton hero status="primary" size="small" class="site-btn" (click)="ref.close()" [routerLink]="['/operations/locations/']">Add Location</button>
+          </div>
+        </div>
+
+
+        <div class="form-group m-2 mb-3">
+          <label class="label">Assinged to</label>
+          <nb-select fullWidth  placeholder="Select manager" formControlName="manager" selected="">
+            <nb-option *ngFor="let manager of siteManager" [value]="manager.id">{{manager.first_name}} {{manager.last_name}} - {{manager.division.name}} </nb-option>
+          </nb-select>
+        </div>
+
+        <div class="form-group m-2 mb-3">
+          <label class="label" for="inputStartDate">Date Started</label>
+          <input type="date" nbInput fullWidth formControlName="date_started">
+        </div>
+        <nb-accordion>
+          <nb-accordion-item>
+            <nb-accordion-item-header>Select Teams</nb-accordion-item-header>
+            <nb-accordion-item-body>
+              <nb-checkbox status="success" *ngFor="let team of selectedSites" id="inputSelectTeam" (change)="changed($event, team)" checked="true">{{team.name}}</nb-checkbox>
+              <nb-checkbox status="success" *ngFor="let team of unselectedSites" id="inputSelectTeam" (change)="changed($event, team)">{{team.name}}</nb-checkbox>
+            </nb-accordion-item-body>
+          </nb-accordion-item>
+        </nb-accordion>
+      </form>
+    </nb-card-body>
+
+    <nb-card-footer>
+      <button nbButton status="success" size="small" style="float: right;" [disabled]="submitted || !siteEditForm.valid"
+      [class.btn-pulse]="submitted" (click)="editSite()">submit</button>
+    </nb-card-footer>
+  </nb-card>
+</ng-template>
+
+
+
+
+
+<nb-card>
+  <nb-card-header>Site Locations on a map</nb-card-header>
+  <nb-card-body>
+    <ng-container>
+    <agm-map [latitude]="latitude" [longitude]="longitude" [zoom]="zoom">
+      <agm-marker  *ngFor="let site of sites"  [latitude]="site.location.latitude" [longitude]="site.location.longitude"></agm-marker>
+    </agm-map>
+    </ng-container>
+  </nb-card-body>
+
+</nb-card>
+
+<ng-template #dialog3 let-data let-ref="dialogRef" style="z-index:2;">
+  <nb-card style="width: 25em;">
+    <nb-card-header>Add Location
+      <a (click)="ref.close()" aria-label="Back" style="float: right;" id="close-location">
+        <nb-icon icon="close"></nb-icon>
+      </a>
+    </nb-card-header>
+    <nb-card-body>
+      <form #locationForm="ngForm" (ngSubmit)="saveLocation()">
+        <div class="form-group">
+          <input
+            nbInput
+            autofocus
+            fullWidth
+            fieldSize="medium"
+            placeholder="Location name"
+            (selectedPlace)="placeChangedCallback($event)"
+            [(ngModel)]="LocDetails"
+            #name="ngModel"
+            name="name"
+            ngxAutocomPlace
+            autocorrect="off" autocapitalize="off" spellcheck="off" class="form-control" #search
+            [status]="name.dirty ? (name.invalid  ? 'danger' : 'success') : 'basic'"
+            [attr.aria-invalid]="name.invalid && name.touched ? true : null"
+            required>
+          <ng-container *ngIf="name.invalid && name.touched">
+            <p class="caption status-danger" *ngIf="name.errors?.required">
+              Name is required!
+            </p>
+          </ng-container>
+        </div>
+        <div class="form-group">
+          <button nbButton status="success" size="small" style="float: right;" [disabled]="submitted || !locationForm.valid" [class.btn-pulse]="submitted">submit</button>
+        </div>
+      </form>
+    </nb-card-body>
+  </nb-card>
+</ng-template>
+<!-- <h1>This is an Angular App!</h1>
+<input type="button" value="Convert" (click)="convetToPDF()"/>
+<div class="container" id="contentToConvert" #content>
+  <nb-card class="image-card" *ngFor="let file of files">
+    <nb-card-header class="image-detail">
+      <div class="image-user">{{file.posted_by.name}} <span class="image-text">posted this file.</span></div>
+      <div class="image-time">{{file.date_posted | date: 'medium'}}</div>
+    </nb-card-header>
+    <nb-card-body>
+      <ng-container *ngIf="file.upload_type.startsWith('image', 0) ; else notImage">
+        <a href="{{file.file}}" target="_blank">
+          <img src="data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAAAUA
+    AAAFCAYAAACNbyblAAAAHElEQVQI12P4//8/w38GIAXDIBKE0DHxgljNBAAO
+        9TXL0Y4OHwAAAABJRU5ErkJggg==" alt="Red dot" />
+            </a>
+      </ng-container>
+      <ng-template #notImage>
+        <a href="{{file.file}}" target="_blank" class="d-flex img-link">
+          <img class="img-file" src="assets/images/Filetype-icon.png" alt="image">
+          <div class="file-name">{{file.name}}</div>
+        </a>
+      </ng-template>
+    </nb-card-body>
+    <nb-card-footer class="image-detail">
+      <div class="image-user">comment: <span class="image-text">{{file.comment}}</span></div>
+    </nb-card-footer>
+  </nb-card>
+
+</div> -->

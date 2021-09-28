@@ -1,0 +1,35 @@
+<nb-card size="large">
+  <nb-tabset fullWidth (changeTab)="changeTab($event)" >
+    <nb-tab tabTitle="Purchase Orders" badgeText="{{numberOfPos}}" badgeStatus="success">
+      <div class="chart-container">
+        <ngx-chart-panel-summary [summary]="poChartPanelSummary"></ngx-chart-panel-summary>
+        <!-- <ngx-chart-panel-header [type]="period"
+                                (periodChange)="setPeriodAndGetChartData($event)">
+        </ngx-chart-panel-header> -->
+        <!-- <ngx-orders-chart #ordersChart [ordersChartData]="ordersChartData"></ngx-orders-chart> -->
+        <ngx-echarts-bar></ngx-echarts-bar>
+
+      </div>
+    </nb-tab>
+    <nb-tab tabTitle="Invoices" badgeText="{{numberOfInvoice}}" badgeStatus="warning">
+      <div class="chart-container">
+        <ngx-chart-panel-summary [summary]="invoiceChartPanelSummary"></ngx-chart-panel-summary>
+        <!-- <ngx-chart-panel-header [type]="period"
+                                (periodChange)="setPeriodAndGetChartData($event)">
+        </ngx-chart-panel-header> -->
+        <ngx-echarts-bar></ngx-echarts-bar>
+
+        <!-- <ngx-profit-chart #profitChart [profitChartData]="profitChartData"></ngx-profit-chart> -->
+      </div>
+    </nb-tab>
+    <!-- <nb-tab tabTitle="Income" [lazyLoad]="true">
+      <div class="chart-container">
+        <ngx-chart-panel-summary [summary]="chartPanelSummary"></ngx-chart-panel-summary>
+        <ngx-chart-panel-header [type]="period"
+                                (periodChange)="setPeriodAndGetChartData($event)">
+        </ngx-chart-panel-header>
+        <ngx-profit-chart #profitChart [profitChartData]="profitChartData"></ngx-profit-chart>
+      </div>
+    </nb-tab> -->
+  </nb-tabset>
+</nb-card>

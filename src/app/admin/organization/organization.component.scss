@@ -1,0 +1,53 @@
+@import '../../@theme/styles/themes';
+
+@include nb-install-component() {
+
+}
+
+nb-card {
+  nb-card-header {
+    display: flex;
+    justify-content: space-between;
+
+    .title {
+      font-weight: bold;
+      font-size: 1em;
+    }
+  }
+
+  nb-card-body {
+    nb-accordion {
+      cursor: pointer;
+      border-radius: 5px;
+      -webkit-box-shadow: 1px 1px 5px 1px rgba(0, 0, 0, 0.2);
+      -moz-box-shadow: 1px 1px 5px 1px rgba(0, 0, 0, 0.2);
+      box-shadow: 1px 1px 5px 1px rgba(0, 0, 0, 0.2);
+      margin: 15px 0;
+
+      nb-accordion-item-header {
+        font-size: 0.85em;
+        border-bottom: 1px solid #ced4da;
+      }
+      nb-accordion-item-body {
+        font-size: 0.8em;
+        font-weight: bold;
+        color: #05b1fd;
+      }
+      .details {
+        color: #05b1fd;
+        nb-list-item {
+          font-size: 0.95em;
+          border-top: none;
+          padding: 0.25rem;
+        }
+      }
+    }
+  }
+
+  .checkboxes {
+    display: flex;
+    flex-direction: column;
+    max-height: 20em;
+    overflow: auto;
+  }
+}

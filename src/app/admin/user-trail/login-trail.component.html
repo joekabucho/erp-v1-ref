@@ -1,0 +1,28 @@
+<nb-card>
+  <nb-card-header>
+    <input nbInput size="small" type="text" class="form-control" [(ngModel)]="searchTerm" autocomplete="on" placeholder="Search">
+  </nb-card-header>
+  <nb-card-body class="pt-0 pb-0">
+    <div class="table-responsive">
+    <table class="table table-striped table-hover">
+      <thead>
+        <tr >
+          <th *ngFor="let head of headElements" scope="col">{{head}}</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="table-info" *ngFor="let user of usersData | filter: searchTerm | paginate : {itemsPerPage: 10, currentPage: page, totalItems: allItems}; index as i">
+          <th scope="row">{{ i + 1 }}</th>
+          <td>{{user.username}}</td>
+          <td>{{user.login | date: 'medium'}}</td>
+          <td>{{user.logout | date: 'medium'}}</td>
+          <td>{{user.ipaddress}}</td>
+        </tr>
+      </tbody>
+    </table>
+    </div>
+  </nb-card-body>
+  <nb-card-footer class="d-flex justify-content-center">
+    <pagination-controls (pageChange)="pageChanged($event)"></pagination-controls>
+  </nb-card-footer>
+</nb-card>

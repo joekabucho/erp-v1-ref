@@ -1,0 +1,40 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Add PPE</ion-title>
+    <ion-icon name='close-circle' (click)='dismiss()' style='float: right;' size="large"></ion-icon>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <form [formGroup]="ppeForm">
+    <div formArrayName="ppe_items">
+      <div *ngFor="let item of ppeItems.controls; let pointIndex=index" [formGroupName]="pointIndex">
+    <ion-item>
+      <ion-input type="file" id="inputFile{{pointIndex}}" formControlName="file" (change)="onPPEFileSelected($event)"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label>Ppe names</ion-label>
+      <ion-select  fullWidth   placeholder="PPE names"
+                   formControlName="ppe_names">
+        <ion-select-option *ngFor="let ppes of ppenames" [value]="ppes.id">{{ppes.name}}</ion-select-option>
+      </ion-select>
+    </ion-item>
+    <ion-item>
+      <span>
+
+        <ion-icon name="add-circle-outline"  (click)="addPpeItems()" size="large"></ion-icon>
+        <ion-icon name="remove-circle-outline"  (click)="deletePpeItems(pointIndex)" size="large"></ion-icon>
+      </span>
+
+    </ion-item>
+    <ion-fab  horizontal="end" style="bottom: 80px" edge>
+      <ion-fab-button>
+        <ion-icon name="save" (click)="savePPEFile(this.ppeForm.value);dismiss()"></ion-icon>
+      </ion-fab-button>
+    </ion-fab>
+      </div>
+    </div>
+  </form>
+</ion-content>
+
+

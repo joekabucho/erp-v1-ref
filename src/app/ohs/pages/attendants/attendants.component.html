@@ -1,0 +1,31 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Create Attendant</ion-title>
+    <ion-icon name='close-circle' (click)='dismiss()' style='float: right;' size="large"></ion-icon>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <form [formGroup]="attendantsForm">
+    <ion-item>
+      <ion-input placeholder="First name" formControlName="firstname"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-input placeholder="Last name" formControlName="lastname"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label>Phone number</ion-label>
+      <ion-input placeholder="254XXXXXXXX" type="number" formControlName="phone_number"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-input placeholder="ID number" type="number" formControlName="id_number"></ion-input>
+    </ion-item>
+    <ion-fab  horizontal="end" style="bottom: 80px" edge>
+      <ion-fab-button>
+        <ion-icon name="save" (click)="createAttendants();dismiss()"></ion-icon>
+      </ion-fab-button>
+    </ion-fab>
+  </form>
+</ion-content>
+
+

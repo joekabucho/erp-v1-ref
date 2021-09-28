@@ -1,0 +1,33 @@
+<ion-content fullscreen class="ion-padding">
+  <div class="row p-2">
+    <div class="col-12">
+      <a href="#" (click)="back()" class="link back-link" aria-label="Back">
+        <nb-icon icon="arrow-back"></nb-icon>
+      </a>
+    </div>
+  </div>
+  <ion-fab  horizontal="end" (click)="showModal()" style="bottom: 80px" slot="fixed" edge>
+    <ion-fab-button>
+      <ion-icon name="add" ></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+  <ion-card *ngFor="let induction of induction ; trackBy: identify" (click)="showEdit(induction.id)">
+    <ion-item>
+      <ion-label>{{induction.ticket?.ticket_code}}</ion-label>
+
+    </ion-item>
+
+    <ion-card-content>
+      <ion-list>
+        Date:{{induction.date | date: 'shortDate'}}<br>
+        Time:{{induction.date | date: 'shortTime'}}<br>
+        Name:{{induction.location?.name}}<br>
+        Activity:{{induction.activity}}<br>
+        Attendants:<li *ngFor="let Item of induction.attendants" style="display:inline-block; margin:5px;"> {{Item.firstname}}{{Item.lastname}}, </li><br>
+        Team lead:{{induction.team_lead?.username}}<br>
+        Safety officer:{{induction.safety_officer?.username}}<br>
+      </ion-list>
+    </ion-card-content>
+  </ion-card>
+</ion-content>
+

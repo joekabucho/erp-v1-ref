@@ -1,0 +1,167 @@
+@import '../@theme/styles/styles.scss';
+
+:host {
+  $auth-layout-padding: 6rem 0;
+
+  // .auth-section {
+  //   position: relative;
+  //   display: flex;
+  //   width: 70%;
+  //   margin: auto;
+  //   box-shadow: 0 0 5px 5px rgba(0, 0, 0, 0.3);
+  //   border-radius: 5px;
+  //   background-color: #ffffff;
+
+  //   @include media-breakpoint-down(sm) {
+  //     display: flex;
+  //     flex-direction: column;
+  //   }
+
+
+  //   .trapezium {
+  //     width: 100%;
+  //     z-index: 0;
+  //     background: rgba(30, 34, 170, 1);
+
+
+  //     .welcome-text {
+  //       position: absolute;
+  //       top: 10%;
+  //       left: 10%;
+  //       z-index: 1;
+  //       font-size: 30px;
+  //       color: #ffffff;
+  //     }
+
+  //     .welcome-logo {
+  //       width: 100%;
+  //       height: 100%;
+  //       z-index: 1;
+  //     }
+
+
+  //   }
+
+  // }
+  nb-card {
+    margin: auto;
+    width: 25%;
+    background: #fff;
+    border-radius: 10px;
+    overflow: hidden;
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -moz-box;
+    display: -ms-flexbox;
+    display: flex;
+    flex-wrap: wrap;
+    box-shadow: 0 0 10px 10px rgba(0, 0, 0, 0.3);
+
+    // box-shadow: 0 7px 4px #777;
+    // height: calc(100vh - 2 * #{$auth-layout-padding});
+  }
+
+  nb-card-header {
+    border: none;
+  }
+
+  .navigation {
+    display: flex;
+    justify-content: space-between;
+
+    .link {
+      display: inline-block;
+      text-decoration: none;
+
+      nb-icon {
+        font-size: 1.25rem;
+        vertical-align: middle;
+      }
+    }
+
+    img {
+      width: 6rem;
+      height: 3rem;
+    }
+  }
+
+  .links nb-icon {
+    font-size: 2.5rem;
+  }
+
+  nb-card-body {
+    display: flex;
+    width: 100%;
+    padding: 0;
+  }
+
+  nb-auth-block {
+    margin: auto;
+  }
+  .input100 {
+    font-size: 15px;
+    line-height: 1.5;
+    color: #000000;
+
+    display: block;
+    width: 100%;
+    background: #e6e6e6;
+    height: 50px;
+    border-radius: 25px;
+    padding: 0 30px 0 68px;
+  }
+
+  @include media-breakpoint-down(sm) {
+    nb-card {
+      border-radius: 0;
+      height: 100vh;
+    }
+  }
+
+  // ::ng-deep {
+  //   nb-layout .layout .layout-container .content .columns nb-layout-column {
+  //     width: 100%;
+  //     min-height: 100vh;
+  //     display: -webkit-box;
+  //     display: -webkit-flex;
+  //     display: -moz-box;
+  //     display: -ms-flexbox;
+  //     display: flex;
+  //     flex-wrap: wrap;
+  //     justify-content: center;
+  //     align-items: center;
+  //     padding: 15px;
+  //     background: #ffffff;
+  //     background: linear-gradient(-45deg, #ffffff, #e73c7e, #23a6d5, #23d5ab);
+  //     background-size: 400% 400%;
+  //     animation: gradient 15s ease infinite;
+  //     // background: rgba(30, 34, 170, 1);
+  //     // background: linear-gradient(360deg, #1E22AA 45%, #E40046 100%);
+  //     // background: linear-gradient(360deg, rgba(30, 34, 170, 1) 45%, rgba(228, 0, 70, 1) 100%);
+  //     @keyframes gradient {
+  //       0% {
+  //         background-position: 0% 50%;
+  //       }
+  //       50% {
+  //         background-position: 100% 50%;
+  //       }
+  //       100% {
+  //         background-position: 0% 50%;
+  //       }
+  //     }
+
+  //     @include media-breakpoint-down(sm) {
+  //      nb-card {
+  //        width: 420px;
+  //        height: 700px;
+  //        background: #fff;
+  //        border-radius: 10px;
+  //        overflow: hidden;
+  //        display: flex;
+  //        flex-wrap: wrap;
+  //        padding: 100px 80px 33px;
+  //      }
+  //     }
+  //   }
+  // }
+}

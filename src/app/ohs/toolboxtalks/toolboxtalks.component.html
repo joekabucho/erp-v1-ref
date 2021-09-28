@@ -1,0 +1,219 @@
+<script src="toolboxtalks.component.ts"></script>
+<div class="row m-2">
+  <div class="col-sm-12">
+    <nb-card>
+      <nb-card-body>
+
+
+        <table  datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" class="table table-striped table-hover">
+          <thead>
+          <tr>
+            <th *ngFor="let head of headElements" scope="col">{{head}}</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr *ngFor="let toolbox of ToolboxTalks; index as i; trackBy: identify">
+            <td></td>
+            <td>{{ i + 1 }}</td>
+            <td>{{toolbox.date | date: 'shortDate'}}</td>
+            <td>{{toolbox.date | date: 'shortTime'}}</td>
+            <td>{{toolbox.ref_number}}</td>
+            <td>{{toolbox.safety_officer?.username}}</td>
+            <td>{{toolbox.ticket?.ticket_code}}</td>
+            <td>{{toolbox.department?.name}}</td>
+            <td>{{toolbox.agenda}}</td>
+            <td><li *ngFor="let Item of toolbox.attendants" style="display:inline-block; margin:5px;"> {{Item.firstname}}{{Item.lastname}}</li></td>
+            <td>{{toolbox.done_by}}</td>
+            <td><nb-icon icon="edit-outline" class="edit" (click)="open(dialog,toolbox);selectedToolboxChecklist(toolbox.id)"></nb-icon></td>
+            <td><nb-icon icon="trash-outline" class="trash" (click)="DeleteToolboxTalks(toolbox.id)"></nb-icon></td>
+          </tr>
+          </tbody>
+        </table>
+
+      </nb-card-body>
+      <nb-card-footer class="d-flex">
+        Total Count: {{totalCount}}
+      </nb-card-footer>
+    </nb-card>
+  </div>
+</div>
+
+<ion-content fullscreen>
+  <ion-card   *ngFor="let toolbox of ToolboxTalks; index as i; trackBy: identify;">
+    <ion-item>
+      <ion-label>{{toolbox.ref_number}}</ion-label>
+      <ion-button  (click)="DeleteToolboxTalks(toolbox.id)">Delete</ion-button>
+    </ion-item>
+
+    <ion-card-content (click)="showEdit(toolbox.id)">
+      <ion-list>
+        Date:{{toolbox.created_at | date: 'shortDate'}}<br>
+        Time:{{toolbox.created_at | date: 'shortTime'}}<br>
+        Ticket code:{{toolbox.ticket?.ticket_code}}<br>
+        Department name:{{toolbox.department?.name}}<br>
+        Attendants:<li *ngFor="let Item of toolbox.attendants" style="display:inline-block; margin:5px;"> {{Item.firstname}}{{Item.lastname}}</li><br>
+        Agenda:{{toolbox.agenda}}<br>
+        Done by:{{toolbox.done_by}}
+      </ion-list>
+    </ion-card-content>
+  </ion-card>
+</ion-content>
+<ng-template #dialog let-data let-ref="dialogRef">
+  <nb-card status="success" style="width: 27em;" size="giant">
+    <nb-card-header>Edit Toolbox Talk
+      <a (click)="ref.close()" aria-label="Back" style="float: right;"  id="close-edit">
+        <nb-icon icon="close"></nb-icon>
+      </a>
+    </nb-card-header>
+    <nb-card-body>
+      <form [formGroup]="toolboxEditForm">
+
+        <div class="form-group">
+          <div class="form-group">
+            <label class="label" for="inputStartDate">Date Held</label>
+            <input type="datetime-local" nbInput fullWidth formControlName="date">
+          </div>
+        </div>
+        <div class="form-group d-flex justify-content-between">
+          <ng-autocomplete [data]="Tickets" [searchKeyword]="keywordTicket" (selected)='selectedTicketID($event)'
+                           (inputChanged)='onChangeSearch($event)' (inputFocused)='onFocusedTickets($event)' [itemTemplate]="itemTemplateTickets"
+                           [notFoundTemplate]="notFoundTemplate"
+                           formControlName="ticket"
+                           placeholder="Select ticket">
+          </ng-autocomplete>
+
+          <ng-template #itemTemplateTickets let-item>
+            <a [innerHTML]="item.ticket_code"></a>
+          </ng-template>
+
+          <ng-template #notFoundTemplate let-notFound>
+            <div [innerHTML]="notFound"></div>
+          </ng-template>
+        </div>
+        <div class="form-group d-flex justify-content-between">
+          <ng-autocomplete [data]="SafetyOfficer" [searchKeyword]="keywordSO" (selected)='selectSO($event)'
+                           (inputChanged)='onChangeSearch($event)' (inputFocused)='onFocusedSo($event)' [itemTemplate]="itemTemplateSO"
+                           [notFoundTemplate]="notFoundTemplate"
+                           placeholder="Safety Officer" formControlName="safety_officer">
+          </ng-autocomplete>
+
+          <ng-template #itemTemplateSO let-item>
+            <a [innerHTML]="item.first_name +''+ item.last_name"></a>
+          </ng-template>
+
+          <ng-template #notFoundTemplate let-notFound>
+            <div [innerHTML]="notFound"></div>
+          </ng-template>
+        </div>
+
+
+        <div class="form-group">
+          <textarea
+            type="text"
+            nbInput
+            fullWidth
+            placeholder="Agenda"
+            formControlName="agenda"></textarea>
+        </div>
+        <div class="form-group d-flex justify-content-between">
+          <ng-autocomplete [data]="Departments" [searchKeyword]="keywordDep" (selected)='selectDep($event)'
+                           (inputChanged)='onChangeSearch($event)' (inputFocused)='onFocusedDepartment($event)' [itemTemplate]="itemTemplateDep"
+                           [notFoundTemplate]="notFoundTemplate"
+                           placeholder="Department" formControlName="department">
+          </ng-autocomplete>
+
+          <ng-template  #itemTemplateDep let-item>
+            <a [innerHTML]="item.name"></a>
+          </ng-template>
+
+          <ng-template #notFoundTemplate let-notFound>
+            <div [innerHTML]="notFound"></div>
+          </ng-template>
+        </div>
+        <div class="form-group d-flex justify-content-between">
+          <nb-accordion>
+            <nb-accordion-item>
+              <nb-accordion-item-header>Edit Attendants</nb-accordion-item-header>
+              <nb-accordion-item-body>
+                <nb-checkbox status="primary" *ngFor="let attend of selectedAttendants" id="inputSelectTeam" (change)="changed($event, attend)" checked="true">{{attend.firstname}} {{attend.lastname}}</nb-checkbox>
+                <nb-checkbox status="primary" *ngFor="let attend of unselectedAttendants" id="inputSelectTeam" (change)="changed($event, attend)">{{attend.firstname}} {{attend.lastname}}</nb-checkbox>
+              </nb-accordion-item-body>
+            </nb-accordion-item>
+          </nb-accordion>
+          <button class="route-btn" nbSuffix nbButton ghost (click)="openAttendants(dialog3)">
+            <nb-icon icon="plus-square-outline"></nb-icon>
+          </button>
+        </div>
+        <div class="form-group">
+          <input
+            type="text"
+            nbInput
+            fullWidth
+            placeholder="Done by"
+            formControlName="done_by">
+        </div>
+        <div class="form-group">
+          <button nbButton status="success" size="small" style="float: right;" [disabled]="submitted || !toolboxEditForm.valid"
+                  [class.btn-pulse]="submitted" (click)="editToolboxTalks()">submit</button>
+        </div>
+      </form>
+
+    </nb-card-body>
+  </nb-card>
+</ng-template>
+
+
+
+<ng-template #dialog3 let-data let-ref="dialogRef">
+  <nb-card status="success" style="width: 27em;">
+    <nb-card-header>Create Attendant
+      <a (click)="ref.close()" aria-label="Back" style="float: right;"  id="close-attendant">
+        <nb-icon icon="close"></nb-icon>
+      </a>
+    </nb-card-header>
+    <nb-card-body>
+      <form [formGroup]="attendantsForm">
+
+        <div class="form-group">
+          <input
+            type="text"
+            nbInput
+            fullWidth
+            placeholder="First Name"
+            formControlName="firstname">
+        </div>
+        <div class="form-group">
+          <input
+            type="text"
+            nbInput
+            fullWidth
+            placeholder="Last Name"
+            formControlName="lastname">
+        </div>
+        <div class="form-group">
+          <input
+            type="number"
+            nbInput
+            fullWidth
+            placeholder="Phone number"
+            formControlName="phone_number">
+        </div>
+        <div class="form-group">
+          <input
+            type="number"
+            nbInput
+            fullWidth
+            placeholder="ID number"
+            formControlName="id_number">
+        </div>
+
+
+        <div class="form-group">
+          <button nbButton status="success" size="small" style="float: right;" [disabled]="submitted || !attendantsForm.valid"
+                  [class.btn-pulse]="submitted" (click)="createAttendants()">submit</button>
+        </div>
+      </form>
+
+    </nb-card-body>
+  </nb-card>
+</ng-template>

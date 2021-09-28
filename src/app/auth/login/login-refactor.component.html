@@ -1,0 +1,98 @@
+<section class="login-section">
+  <nb-layout class="login-layout">
+    <nb-layout-column>
+      <div [nbSpinner]="loading" nbSpinnerStatus="primary">
+        <div class="left-sec">
+          <img
+            src="assets/adrian-images/adrianlogo-{{currentTheme}}.png"
+            alt="logo"
+            width="100%"
+          />
+          <div>
+            <p>
+              WELCOME BACK TO THE <br />
+              <span>ADRIAN ERP</span>
+            </p>
+            <hr />
+          </div>
+        </div>
+        <div class="right-sec">
+          <div>
+            <p>Log in to your Account</p>
+
+            <form
+              aria-labelledby="title"
+              [formGroup]="loginForm"
+              (ngSubmit)="onSubmit()"
+            >
+
+              <div class="form-group">
+                <input
+                  nbInput
+                  fieldSize="medium"
+                  id="input-username"
+                  formControlName="username"
+                  placeholder="Username"
+                  [status]="form.username.dirty ? (form.username.invalid  ? 'danger' : 'success') : 'basic'"
+                  [class.is-invalid]="form.username.invalid && form.username.touched"
+                  fullWidth
+                />
+
+                <ng-container *ngIf="submitted && form.username.errors">
+                  <p
+                    class="caption status-danger"
+                    *ngIf="form.username.errors.required"
+                  >
+                    Username is Required!
+                  </p>
+                </ng-container>
+
+              </div>
+
+              <div class="form-group pass-input">
+                <input
+                  nbInput
+                  fieldSize="medium"
+                  formControlName="password"
+                  placeholder="Password"
+                  [type]="togglePassword()"
+                  aria-label="Small"
+                  aria-describedby="inputGroup-sizing-sm"
+                  fullWidth
+                />
+                <span nbSuffix nbButton ghost (click)="toggleShowPassword()">
+                  <nb-icon
+                    [icon]="showPassword ? 'eye-outline' : 'eye-off-2-outline'"
+                    pack="eva"
+                    [attr.aria-label]="showPassword ? 'hide password' : 'show password'"
+                  >
+                  </nb-icon>
+                </span>
+              </div>
+
+              <span class="label-with-link">
+                <a
+                  class="forgot-password caption-2"
+                  routerLink="../request-password"
+                  >Forgot Password?</a
+                >
+              </span>
+<br><br>
+
+              <button
+                nbButton
+                fullWidth
+                status="info"
+                shape="round"
+                size="medium"
+                class="login-btn"
+              >
+                Log In
+              </button>
+            </form>
+          </div>
+        </div>
+    </div>
+    </nb-layout-column>
+  </nb-layout>
+</section>

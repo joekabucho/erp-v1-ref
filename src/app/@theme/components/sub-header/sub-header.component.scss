@@ -1,0 +1,34 @@
+.container-fluid {
+  background-color: #f5f7f9;
+  border-bottom: 1px #cfd7df solid;
+  z-index: 1;
+  color: #192038;
+  height: 4.75rem;
+  padding: 1.25rem;
+  box-shadow: 0 0.5rem 1rem 0 rgba(44, 51, 73, 0.1);
+  width: 100%;
+
+  input {
+    width: 20%;
+    border: 1px solid #cfd7df;
+  }
+
+  nb-select {
+    border: 1px solid #cfd7df;
+    margin: -3px 5px;
+  }
+
+
+  .icon-button {
+    cursor: pointer;
+    padding: 0;
+
+    nb-icon {
+      font-size: 30px;
+      &:hover {
+        color: #475867;
+        font-size: 35px;
+      }
+    }
+  }
+}

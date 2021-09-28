@@ -1,0 +1,76 @@
+nb-card nb-card-header {
+  display: flex;
+  justify-content: space-between;
+}
+nb-card nb-card-body .edit {
+  cursor: pointer;
+  color: #00d68f;
+  font-size: 1.3rem;
+}
+nb-card nb-card-body .edit:hover {
+  font-size: 1.5rem;
+}
+nb-card nb-card-body .trash {
+  cursor: pointer;
+  color: #ff3d71;
+  font-size: 1.3rem;
+}
+nb-card nb-card-body .trash:hover {
+  font-size: 1.5rem;
+}
+nb-card nb-card-body fa-icon {
+  cursor: pointer;
+  color: #002cff;
+  font-size: 1rem;
+}
+nb-card nb-card-body fa-icon:hover {
+  font-size: 1.5rem;
+}
+
+/*
+Max width before this PARTICULAR table gets nasty
+This query will take effect for any screen smaller than 760px
+and also iPads specifically.
+*/
+@media only screen and (max-width: 760px), (min-device-width: 768px) and (max-device-width: 1024px) {
+  /* Force table to not be like tables anymore */
+  table, thead, tbody, th, td, tr {
+    display: block;
+  }
+
+  /* Hide table headers (but not display: none;, for accessibility) */
+  thead tr {
+    position: absolute;
+    top: -9999px;
+    left: -9999px;
+  }
+
+  tr {
+    border: 1px solid #ccc;
+  }
+
+  td {
+    /* Behave  like a "row" */
+    border: none;
+    border-bottom: 1px solid #eee;
+    position: relative;
+    padding-left: 50%;
+  }
+
+  td::before {
+    /* Now like a table header */
+    position: absolute;
+    /* Top/left values mimic padding */
+    top: 6px;
+    left: 6px;
+    width: 45%;
+    padding-right: 10px;
+    white-space: nowrap;
+  }
+
+  /*
+  Label the data
+  */
+}
+
+/*# sourceMappingURL=document.component.css.map */

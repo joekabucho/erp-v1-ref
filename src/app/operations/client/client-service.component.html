@@ -1,0 +1,308 @@
+<nb-tabset>
+
+  <nb-tab tabTitle="Locations" badgeText="{{locations.length}}" badgeStatus="info">
+    <div class="col-md-10 col-sm-12">
+      <nb-card status="info">
+        <nb-card-header>Locations
+          <button nbButton status="success" size="small" (click)="openLocationForm(dialog4)">Add Location</button>
+        </nb-card-header>
+        <nb-card-body>
+
+          <nb-card class="col-sm-12 p-0 work-card" *ngFor="let loc of locations">
+            <nb-card-body class="d-flex justify-content-between">
+              <div class="work-title">{{loc.name}}</div>
+              <nb-icon icon="trash-outline" class="trash" [hidden]="loggedInUser.role_name === 'PROJECT MANAGER' " (click)="confirmLocationDelete(loc)"></nb-icon>
+
+
+            </nb-card-body>
+          </nb-card>
+
+        </nb-card-body>
+      </nb-card>
+    </div>
+  </nb-tab>
+
+  <nb-tab tabTitle="Clients" badgeText="{{clients.length}}" badgeStatus="success">
+    <div class="col-md-10 col-sm-12">
+      <nb-card status="info">
+        <nb-card-header>Clients
+          <button nbButton status="success" size="small" (click)="openClient(dialog)">Add Client</button>
+        </nb-card-header>
+        <nb-card-body>
+
+          <nb-card class="col-sm-12 p-0 work-card" *ngFor="let client of clients">
+            <nb-card-body class="d-flex justify-content-between">
+              <div class="work-title">{{client.name}}</div>
+              <nb-icon icon="trash-outline" class="trash" [hidden]="loggedInUser.role_name === 'PROJECT MANAGER' " (click)="confirmClientDelete(client)"></nb-icon>
+
+
+            </nb-card-body>
+          </nb-card>
+
+        </nb-card-body>
+      </nb-card>
+    </div>
+  </nb-tab>
+
+  <nb-tab tabTitle="Services" badgeText="{{services.length}}" badgeStatus="primary">
+    <div class="col-md-10 col-sm-12">
+      <nb-card status="info">
+        <nb-card-header>Services
+          <button nbButton status="success" size="small" (click)="openService(dialog1)">Add service</button>
+        </nb-card-header>
+        <nb-card-body>
+
+          <nb-card class="col-sm-12 p-0 work-card" *ngFor="let serve of services">
+            <nb-card-body class="d-flex justify-content-between">
+              <div class="work-title">{{serve.name}}</div>
+              <div>
+                <nb-icon icon="trash-outline" class="trash" [hidden]="loggedInUser.role_name === 'PROJECT MANAGER' " (click)="confirmServiceDelete(serve)"></nb-icon>
+                <nb-icon icon="edit-outline" class="edit" [hidden]="loggedInUser.role_name === 'PROJECT MANAGER' " (click)="openEditForm(serve, dialog2)"></nb-icon>
+              </div>
+
+            </nb-card-body>
+          </nb-card>
+
+        </nb-card-body>
+      </nb-card>
+    </div>
+  </nb-tab>
+
+  <nb-tab tabTitle="KPIS" badgeText="{{kpis.length}}" badgeStatus="warning">
+    <div class="col-md-10 col-sm-12">
+      <nb-card status="info">
+        <nb-card-header>KPIS
+          <button nbButton status="success" size="small" (click)="openKPIs(dialog3)">Add KPI</button>
+        </nb-card-header>
+        <nb-card-body>
+
+          <nb-card class="col-sm-12 p-0 work-card" *ngFor="let kpi of kpis">
+            <nb-card-body class="d-flex justify-content-between">
+              <div class="work-title">KPI:{{kpi?.name}} &nbsp;&nbsp;  | &nbsp; &nbsp; number of days:{{kpi?.number_of_days}} &nbsp;&nbsp; | &nbsp;&nbsp;  Service:{{kpi?.service?.name}}</div>
+              <div>
+                <nb-icon icon="trash-outline" class="trash" [hidden]="loggedInUser.role_name === 'PROJECT MANAGER' "></nb-icon>
+                <nb-icon icon="edit-outline" class="edit" [hidden]="loggedInUser.role_name === 'PROJECT MANAGER' "></nb-icon>
+              </div>
+
+            </nb-card-body>
+          </nb-card>
+
+        </nb-card-body>
+      </nb-card>
+    </div>
+  </nb-tab>
+</nb-tabset>
+
+
+
+
+
+  <ng-template #dialog let-data let-ref="dialogRef">
+    <nb-card style="width: 25em;">
+      <nb-card-header>Add Client
+        <a (click)="ref.close()" aria-label="Back" style="float: right;" id="close-client">
+          <nb-icon icon="close"></nb-icon>
+        </a>
+      </nb-card-header>
+      <nb-card-body>
+        <form #clientForm="ngForm" (ngSubmit)="saveClient(clientForm)">
+          <div class="form-group">
+            <input
+            nbInput
+            autofocus
+            fullWidth
+            fieldSize="medium"
+            placeholder="Client name"
+            [(ngModel)]="clientForm.name"
+            #name="ngModel"
+            id="input-name"
+            name="name"
+            [status]="name.dirty ? (name.invalid  ? 'danger' : 'success') : 'basic'"
+            [attr.aria-invalid]="name.invalid && name.touched ? true : null"
+            required>
+            <ng-container *ngIf="name.invalid && name.touched">
+              <p class="caption status-danger" *ngIf="name.errors?.required">
+                Name is required!
+              </p>
+            </ng-container>
+          </div>
+          <div class="form-group">
+            <button nbButton status="success" size="small" style="float: right;" [disabled]="submitted || !clientForm.valid" [class.btn-pulse]="submitted">submit</button>
+          </div>
+        </form>
+      </nb-card-body>
+    </nb-card>
+  </ng-template>
+
+
+  <ng-template #dialog1 let-data let-ref="dialogRef">
+    <nb-card style="width: 25em;">
+      <nb-card-header>Add Service
+        <a (click)="ref.close()" aria-label="Back" style="float: right;" id="close-service">
+          <nb-icon icon="close"></nb-icon>
+        </a>
+      </nb-card-header>
+      <nb-card-body>
+        <form #serviceForm="ngForm" (ngSubmit)="saveService(serviceForm)">
+          <div class="form-group">
+            <input
+            nbInput
+            autofocus
+            fullWidth
+            fieldSize="medium"
+            placeholder="Service Name"
+            [(ngModel)]="serviceForm.name"
+            #name="ngModel"
+            id="input-name"
+            name="name"
+            [status]="name.dirty ? (name.invalid  ? 'danger' : 'success') : 'basic'"
+            [attr.aria-invalid]="name.invalid && name.touched ? true : null"
+            required>
+            <ng-container *ngIf="name.invalid && name.touched">
+              <p class="caption status-danger" *ngIf="name.errors?.required">
+                Service is required!
+              </p>
+            </ng-container>
+          </div>
+          <div class="form-group">
+            <button nbButton status="success" size="small" style="float: right;" [disabled]="submitted || !serviceForm.valid" [class.btn-pulse]="submitted">submit</button>
+          </div>
+        </form>
+      </nb-card-body>
+    </nb-card>
+  </ng-template>
+
+
+
+
+  <ng-template #dialog2 let-data let-ref="dialogRef">
+    <nb-card style="width: 27em;">
+      <nb-card-header>Edit Service
+        <a (click)="ref.close()" aria-label="Back" style="float: right;"  id="close-edit">
+          <nb-icon icon="close"></nb-icon>
+        </a>
+      </nb-card-header>
+      <nb-card-body>
+        <form [formGroup]="serviceEditForm">
+
+          <div class="form-group">
+            <input
+            type="text"
+            nbInput
+            fullWidth
+            placeholder="Name"
+            formControlName="name">
+          </div>
+
+          <div class="form-group">
+            <nb-select fullWidth  placeholder="Select kpi" formControlName="kpi" selected="" >
+              <nb-option *ngFor="let onekpi of kpis" [value]="onekpi.id">{{onekpi.name}} - {{onekpi.number_of_days}} days</nb-option>
+            </nb-select>
+          </div>
+
+          <div class="form-group">
+            <button nbButton status="success" size="small" style="float: right;" [disabled]="submitted || !serviceEditForm.valid"
+            [class.btn-pulse]="submitted" (click)="editService()">submit</button>
+          </div>
+        </form>
+
+      </nb-card-body>
+    </nb-card>
+  </ng-template>
+
+<ng-template #dialog3 let-data let-ref="dialogRef">
+  <nb-card style="width: 25em;">
+    <nb-card-header>Add KPI
+      <a (click)="ref.close()" aria-label="Back" style="float: right;" id="close-kpi">
+        <nb-icon icon="close"></nb-icon>
+      </a>
+    </nb-card-header>
+    <nb-card-body>
+      <form #kpiServiceForm="ngForm" (ngSubmit)="saveServiceKPI(kpiServiceForm)">
+        <div class="form-group">
+          <input
+            nbInput
+            autofocus
+            fullWidth
+            fieldSize="medium"
+            placeholder="KPI Name"
+            [(ngModel)]="kpiServiceForm.name"
+            #name="ngModel"
+            id="kpi-name"
+            name="name"
+            [status]="name.dirty ? (name.invalid  ? 'danger' : 'success') : 'basic'"
+            [attr.aria-invalid]="name.invalid && name.touched ? true : null"
+            required>
+          <ng-container *ngIf="name.invalid && name.touched">
+            <p class="caption status-danger" *ngIf="name.errors?.required">
+              KPI name is required!
+            </p>
+          </ng-container>
+        </div>
+        <div class="form-group">
+        <input
+          nbInput
+          autofocus
+          fullWidth
+          fieldSize="medium"
+          placeholder="Number Of Days"
+          [(ngModel)]="kpiServiceForm.number_of_days"
+          #name="ngModel"
+          id="input-number_of_days"
+          name="number_of_days"
+      >
+        </div>
+        <div class="form-group">
+        <div class="form-group d-flex justify-content-between">
+          <nb-select fullWidth  placeholder="KPI" [(ngModel)]="kpiServiceForm.service"  name="kpi" selected="" required>
+            <nb-option *ngFor="let kpiserve of services" [value]="kpiserve.id">{{kpiserve.name}}</nb-option>
+          </nb-select>
+        </div>
+        </div>
+
+        <div class="form-group">
+          <button nbButton status="success" size="small" style="float: right;" [disabled]="submitted || !kpiServiceForm.valid" [class.btn-pulse]="submitted">submit</button>
+        </div>
+      </form>
+    </nb-card-body>
+  </nb-card>
+</ng-template>
+
+<ng-template #dialog4 let-data let-ref="dialogRef" style="z-index:2;">
+  <nb-card style="width: 25em;">
+    <nb-card-header>Add Location
+      <a (click)="ref.close()" aria-label="Back" style="float: right;" id="close-location">
+        <nb-icon icon="close"></nb-icon>
+      </a>
+    </nb-card-header>
+    <nb-card-body>
+      <form #locationForm="ngForm" (ngSubmit)="saveLocation()">
+        <div class="form-group">
+          <input
+            nbInput
+            autofocus
+            fullWidth
+            fieldSize="medium"
+            placeholder="Location name"
+            (selectedPlace)="placeChangedCallback($event)"
+            [(ngModel)]="LocDetails"
+            #name="ngModel"
+            name="name"
+            ngxAutocomPlace
+            autocorrect="off" autocapitalize="off" spellcheck="off" class="form-control" #search
+            [status]="name.dirty ? (name.invalid  ? 'danger' : 'success') : 'basic'"
+            [attr.aria-invalid]="name.invalid && name.touched ? true : null"
+            required>
+          <ng-container *ngIf="name.invalid && name.touched">
+            <p class="caption status-danger" *ngIf="name.errors?.required">
+              Name is required!
+            </p>
+          </ng-container>
+        </div>
+        <div class="form-group">
+          <button nbButton status="success" size="small" style="float: right;" [disabled]="submitted || !locationForm.valid" [class.btn-pulse]="submitted">submit</button>
+        </div>
+      </form>
+    </nb-card-body>
+  </nb-card>
+</ng-template>

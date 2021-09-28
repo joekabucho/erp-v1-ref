@@ -1,0 +1,97 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Incident Reporting</ion-title>
+    <ion-icon name='close-circle' (click)='dismiss()' style='float: right;' size="large"></ion-icon>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <form [formGroup]="incidentForm">
+    <div class="form-group d-flex justify-content-between">
+      <ng-autocomplete [data]="teamLead" [searchKeyword]="keywordTeamLead" (selected)='selectTeam($event)'
+                       (inputChanged)='onChangeSearch($event)' (inputFocused)='onFocusedTeam($event)' [itemTemplate]="itemTemplateTeam"
+                       [notFoundTemplate]="notFoundTemplate"
+                       placeholder="Team Lead" formControlName="team_lead">
+      </ng-autocomplete>
+
+      <ng-template #itemTemplateTeam let-item>
+        <a [innerHTML]="item.first_name +''+ item.last_name"></a>
+      </ng-template>
+
+      <ng-template #notFoundTemplate let-notFound>
+        <div [innerHTML]="notFound"></div>
+      </ng-template>
+    </div>
+  <ion-item>
+    <ion-input placeholder="Name of worker" formControlName="name_of_worker"></ion-input>
+  </ion-item>
+  <ion-item>
+    <ion-label position="floating">Description</ion-label>
+    <ion-textarea formControlName="description"></ion-textarea>
+  </ion-item>
+  <ion-item>
+    <ion-label>Gender</ion-label>
+    <ion-select multiple="true" cancelText="No" okText="Okay!" formControlName="gender">
+      <ion-select-option [value]="male">MALE</ion-select-option>
+      <ion-select-option [value]="female">FEMALE</ion-select-option>
+      <ion-select-option [value]="other">OTHER</ion-select-option>
+      <ion-select-option [value]="none">NONE</ion-select-option>
+    </ion-select>
+  </ion-item>
+  <ion-item>
+    <ion-label>Time</ion-label>
+    <ion-datetime display-format="h:mm A" picker-format="h:mm A" formControlName="time"></ion-datetime>
+  </ion-item>
+  <ion-item>
+    <ion-label>Date</ion-label>
+    <ion-datetime  formControlName="date_of_incident" placeholder="Select Date"></ion-datetime>
+  </ion-item>
+  <ion-item>
+    <ion-checkbox formControlName="injury_to_worker" color="primary" slot="start"></ion-checkbox>
+    <ion-label>Injury to worker</ion-label>
+  </ion-item>
+    <ion-item>
+      <ion-input placeholder="occupation" formControlName="occupation"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-checkbox formControlName="equipment_damage" color="primary" slot="start"></ion-checkbox>
+      <ion-label>Equipment Damage</ion-label>
+    </ion-item>
+  <ion-item>
+    <ion-input placeholder="Name of person reporting"  formControlName="name_of_person_reporting_incident"></ion-input>
+  </ion-item>
+  <ion-item>
+    <ion-input placeholder="Primary Witness" formControlName="primary_witness"></ion-input>
+  </ion-item>
+    <ion-item>
+      <ion-input placeholder="Secondary Witness" formControlName="secondary_witness"></ion-input>
+    </ion-item>
+  <ion-item>
+    <ion-input placeholder="Immediate action taken"  formControlName="immediate_action_taken"></ion-input>
+  </ion-item>
+  <ion-item>
+    <ion-input placeholder="Post incident action"  formControlName="post_incident_action"></ion-input>
+    </ion-item>
+  <ion-item>
+    <ion-input placeholder="Victim taken to" formControlName="victim_taken_to"></ion-input>
+  </ion-item>
+  <ion-item>
+    <ion-input placeholder="LTA" type="number"  formControlName="lta"></ion-input>
+  </ion-item>
+  <ion-item>
+    <ion-input placeholder="LTI" type="number"  formControlName="lti"></ion-input>
+  </ion-item>
+  <ion-item>
+    <ion-checkbox color="primary" slot="start" formControlName="non_lti"></ion-checkbox>
+    <ion-label>Non LTI</ion-label>
+  </ion-item>
+    <ion-fab  horizontal="end" style="bottom: 80px" edge>
+      <ion-fab-button>
+        <ion-icon name="save" (click)="createIncidents();dismiss()"></ion-icon>
+      </ion-fab-button>
+    </ion-fab>
+  </form>
+
+</ion-content>
+
+

@@ -1,0 +1,65 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Add  communication plan </ion-title>
+    <ion-icon name='close-circle' (click)='dismiss()' style='float: right;' size="large"></ion-icon>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <form [formGroup]="communicationForm">
+      <ion-item>
+        <ion-label>Date</ion-label>
+        <ion-datetime  formControlName="date" placeholder="Select Date"></ion-datetime>
+      </ion-item>
+      <ion-item>
+        <ion-input placeholder="Name" formControlName="name"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-input placeholder="First aider" formControlName="first_aider"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-input placeholder="First aider phone" type="number" formControlName="first_aider_phone"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-input placeholder="Fire marshall" formControlName="fire_marshall"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-input placeholder="Fire marshall phone" type="number" formControlName="fire_marshall_phone"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-input placeholder="Nearest police" formControlName="nearest_police"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-input placeholder="Nearest police phone" type="number" formControlName="nearest_police_phone"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-input placeholder="What do in an emergency" formControlName="what_do_in_an_emergency"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-input placeholder="what do in an accident" formControlName="what_do_in_an_accident"></ion-input>
+      </ion-item>
+    <div class="form-group d-flex justify-content-between">
+      <ng-autocomplete [data]="projectManager" [searchKeyword]="keywordPM" (selected)='selectPM($event)'
+                       (inputChanged)='onChangeSearch($event)' (inputFocused)='onFocusedPM($event)' [itemTemplate]="itemTemplatePM"
+                       [notFoundTemplate]="notFoundTemplate"
+                       placeholder="Select project manager" formControlName="project_manager">
+      </ng-autocomplete>
+
+      <ng-template #itemTemplatePM let-item>
+        <a [innerHTML]="item.first_name +''+ item.last_name"></a>
+      </ng-template>
+
+      <ng-template #notFoundTemplate let-notFound>
+        <div [innerHTML]="notFound"></div>
+      </ng-template>
+    </div>
+    <ion-fab  horizontal="end" style="bottom: 80px" edge>
+      <ion-fab-button>
+        <ion-icon name="save" (click)="createCommunications();dismiss()"></ion-icon>
+      </ion-fab-button>
+    </ion-fab>
+  </form>
+
+</ion-content>
+
+

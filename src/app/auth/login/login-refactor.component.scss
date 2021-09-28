@@ -1,0 +1,119 @@
+@import '../../@theme/styles/styles.scss';
+
+.login-section {
+  width: 1200px;
+  max-width: 100%;
+  display: inline-block;
+  position: relative;
+  left: 50%;
+  transform: translateX(-50%);
+
+  ::ng-deep {
+    nb-layout {
+      nb-layout-column {
+        padding: 0 !important;
+        background: none;
+        background-color: white;
+
+        > div {
+          box-shadow: 0 0 20px rgba(0, 0, 0, 0.8);
+          -webkit-box-shadow: 0 0 20px rgba(0, 0, 0, 0.8);
+          -moz-box-shadow: 0 0 20px rgba(0, 0, 0, 0.8);
+          display: flex;
+          position: relative;
+          top: 50%;
+          transform: translateY(-50%);
+          .left-sec {
+            background-color: #1e23aa;
+            position: relative;
+            img {
+              width: 120px;
+            }
+            div {
+              text-align: center;
+              position: relative;
+              top: 40%;
+              transform: translateY(-50%);
+              p {
+                color: white;
+                margin: 0;
+
+                span {
+                  display: inline-block;
+                  font-weight: 900;
+                  font-size: 30px;
+                  letter-spacing: 5px;
+                  margin-top: 10px;
+                }
+              }
+
+              > hr {
+                display: inline-block;
+                border: 2px solid white;
+                border-radius: 10px;
+                color: white;
+                width: 30px;
+                margin: 0;
+              }
+            }
+          }
+          .left-sec,
+          .right-sec {
+            padding: 30px;
+            height: 500px;
+            width: 50%;
+            position: relative;
+          }
+          .right-sec {
+            background-color: white;
+            position: relative;
+
+            > div {
+              position: relative;
+              width: 400px;
+              max-width: 100%;
+              top: 40%;
+              left: 50%;
+              transform: translate(-50%, -40%);
+              > p {
+                text-align: center;
+                font-size: 25px;
+                color: #1e23aa;
+              }
+
+              > form {
+                input {
+                  border: none;
+                  border-radius: 0;
+                  border-left: 4px solid #1e23aa;
+                }
+
+                .pass-input {
+                  display: flex;
+                  justify-content: space-between;
+                  align-items: center;
+                  background-color: #f7f9fc;
+                  padding: 0 6px 0 0;
+                }
+
+                .login-btn {
+                  background-color: #1e23aa;
+                }
+              }
+            }
+          }
+
+          @include media-breakpoint-down(sm) {
+            display: block;
+            transform: none;
+            top: 0;
+            .left-sec,
+            .right-sec {
+              width: 100%;
+            }
+          }
+        }
+      }
+    }
+  }
+}

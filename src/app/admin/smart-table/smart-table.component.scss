@@ -1,0 +1,113 @@
+@import '../../@theme/styles/themes';
+
+
+@include nb-install-component() {
+  .user-section {
+    display: flex;
+
+    .users-table {
+      width: 100%;
+
+      nb-card {
+        transform: translate3d(0, 0, 0);
+        box-shadow: 0 0 3px 1px rgba(0, 0, 0, 0.3);
+
+        nb-card-header {
+          display: flex;
+          border-bottom: none;
+          justify-content: space-between;
+        }
+
+        nb-card-body {
+
+          .edit-icon {
+            cursor: pointer;
+            font-size: 1.2rem;
+            margin: 0 0 0 10px;
+
+            &:hover {
+              color: #00d68f;
+              font-size: 1.3rem;
+            }
+          }
+
+          .trash {
+            cursor: pointer;
+            color: #ff3d71;
+            font-size: 1.3rem;
+            &:hover {
+              font-size: 1.5rem;
+            }
+          }
+        }
+        nb-card-footer {
+          .label {
+            font-weight: bold;
+            color: #1e22aa;
+          }
+        }
+      }
+
+    }
+  .user-profile {
+    margin-left: 15px;
+    width: 400px;
+
+
+    .image-card {
+      border-radius: 10px;
+      box-shadow: 0 0 2px 1px rgba(0, 0, 0, 0.3);
+
+
+      nb-card-header {
+        padding: 0;
+        img {
+          width: 100%;
+          height: 8em;
+          border-radius: 10px;
+          flex-direction: column;
+        }
+      }
+      nb-card-body {
+        overflow: visible;
+        display: flex;
+        justify-content: center;
+        flex-direction: column;
+        align-items: center;
+
+        .form-group {
+          height: 4em;
+        }
+
+        img {
+          cursor: pointer;
+          width: 7rem;
+          height: 7rem;
+          border-radius: 50%;
+          transform: translateY(-2em);
+          margin: -40px;
+          border: 1px solid #edf1f7;
+        }
+        button {
+          width: 100px;
+          height: 30px;
+          padding: 0;
+        }
+      }
+      nb-card-footer {
+        .fecthed-data {
+          font-weight: bolder;
+          font-size: 0.8em;
+          margin-bottom: 5px;
+        }
+        .description {
+          font-family: Montserrat;
+          font-style: italic;
+        }
+      }
+    }
+
+  }
+}
+
+}

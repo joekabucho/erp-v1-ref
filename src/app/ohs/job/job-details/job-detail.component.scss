@@ -1,0 +1,279 @@
+.approval-btn:disabled,
+.approval-btn[disabled] {
+  color: #ffffff !important;
+  background-color: #00d68f !important;
+}
+
+nb-tabset {
+  nb-tab {
+    height: 45em;
+    overflow: auto;
+  }
+
+}
+.detail-card {
+  cursor: pointer;
+  -webkit-box-shadow: 1px 1px 2px 2px rgba(0, 0, 0, 0.2);
+  -moz-box-shadow: 1px 1px 2px 2px rgba(0, 0, 0, 0.2);
+  box-shadow: 1px 1px 2px 2px rgba(0, 0, 0, 0.2);
+
+  &:hover {
+    -webkit-box-shadow: 0 0 5px 6px rgba(0, 0, 0, 0.2);
+    -moz-box-shadow: 0 0 5px 6px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 0 5px 6px rgba(0, 0, 0, 0.2);
+    transition: all 0.2s ease-in-out;
+  }
+  nb-card-header {
+    display: flex;
+    justify-content: center;
+    padding: 5px;
+    border-bottom: none;
+
+    .detail {
+      font-weight: bold;
+      font-style: normal;
+      font-size: 0.75em;
+      color: #ffaa00;
+    }
+  }
+  fa-icon {
+    cursor: pointer;
+    color: #002cff;
+    font-size: 1rem;
+    &:hover {
+      font-size: 1.5rem;
+    }
+  }
+  nb-card-body {
+    display: flex;
+    justify-content: center;
+    padding: 10px;
+
+    .fetched-data {
+      font-style: normal;
+      font-size: 1em;
+      font-family: Montserrat;
+      text-transform: capitalize;
+    }
+    nb-icon {
+      font-size: 1.25em;
+      margin: 0 5px;
+    }
+
+  }
+}
+.image-card {
+  -webkit-box-shadow: 1px 1px 2px 2px rgba(0, 0, 0, 0.2);
+  -moz-box-shadow: 1px 1px 2px 2px rgba(0, 0, 0, 0.2);
+  box-shadow: 1px 1px 2px 2px rgba(0, 0, 0, 0.2);
+  cursor: pointer;
+  width: fit-content;
+
+  nb-card-body {
+    padding: 0;
+    height: fit-content;
+
+    img {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+  }
+
+  .safety {
+    width: 100%;
+    height: 100%;
+  }
+}
+
+.permit-card {
+  -webkit-box-shadow: 1px 1px 2px 2px rgba(0, 0, 0, 0.2);
+  -moz-box-shadow: 1px 1px 2px 2px rgba(0, 0, 0, 0.2);
+  box-shadow: 1px 1px 2px 2px rgba(0, 0, 0, 0.2);
+  cursor: pointer;
+
+  .permit-details {
+    margin: 5px;
+    border-bottom: 1px solid #edf1f7;
+    box-sizing: border-box;
+    height: fit-content;
+    display: flex;
+    justify-content: space-between;
+    padding: 10px;
+
+    .fetched-data {
+      font-weight: bolder;
+      margin-left: 10px;
+    }
+  }
+}
+
+.comment {
+  font-weight: 600;
+}
+.comment-text {
+  color: #65676b;
+  font-weight: 100;
+}
+
+.certificate-card {
+  padding: 0;
+  background-color: #f2f3f5;
+
+  .image-detail {
+    display: flex;
+    flex-direction: column;
+    padding: 10px;
+    letter-spacing: 1px;
+
+    .image-user {
+      font-weight: 600;
+    }
+    .image-text {
+      color: #65676b;
+      font-weight: 100;
+    }
+    .image-time {
+      margin-top: 2px;
+      color: #65676b;
+      font-weight: 100;
+      font-size: 11px;
+    }
+    .image-comment {
+      color: #65676b;
+      font-weight: 100;
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+  }
+
+  nb-card-body {
+    padding: 0;
+  }
+
+  img {
+    width: 100%;
+    height: 100%;
+    display: block;
+  }
+
+  .img-link {
+    img {
+      width: 60px;
+      height: 60px;
+      align-self: center;
+    }
+    .file-name {
+      align-self: center;
+    }
+  }
+}
+
+.image-modal {
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+
+  nb-icon {
+    font-size: 40px;
+    margin: 10px;
+    float: right;
+    cursor: pointer;
+  }
+
+  img {
+    width: 100%;
+    height: 100%;
+    display: block;
+    object-fit: contain;
+  }
+}
+
+agm-map {
+  height: 600px;
+}
+
+
+.edit {
+  cursor: pointer;
+  color: #00d68f;
+  font-size: 1.3rem;
+  &:hover {
+    font-size: 1.5rem;
+  }
+}
+.trash {
+  cursor: pointer;
+  color: #ff3d71;
+  font-size: 1.3rem;
+  &:hover {
+    font-size: 1.5rem;
+  }
+}
+ion-content {
+  display: none;
+}
+
+/*
+Max width before this PARTICULAR table gets nasty
+This query will take effect for any screen smaller than 760px
+and also iPads specifically.
+*/
+@media
+only screen and (max-width: 760px),
+(min-device-width: 768px) and (max-device-width: 1024px) {
+
+  nb-card {
+    display: none;
+  }
+  .link {
+    display: none;
+  }
+  .row {
+    display: none;
+  }
+  ion-content {
+    display: block;
+    overflow-y: scroll;
+    position: fixed;
+  }
+  .color {
+    color: white;
+  }
+  .card {
+    background:linear-gradient( to bottom right, #738ae6, #5c5edd);
+    border-radius: 5px 50px 5px 5px; /*TL TR BR BL*/
+
+  }
+  .card1 {
+    background:linear-gradient( to bottom right, #fe95b6, #ff5287);
+    border-radius: 5px 50px 5px 5px; /*TL TR BR BL*/
+
+  }
+  .card2 {
+    background:linear-gradient( to bottom right, #6f72ca, #1e1466);
+    border-radius: 5px 50px 5px 5px; /*TL TR BR BL*/
+
+  }
+  .card3 {
+    background:linear-gradient( to bottom right, #fa7d82, #ffb295);
+    border-radius: 5px 50px 5px 5px; /*TL TR BR BL*/
+
+  }
+  .card4 {
+    background:linear-gradient( to bottom right, #fe95b6, #ff5287);
+    border-radius: 5px 50px 5px 5px; /*TL TR BR BL*/
+
+  }
+  .card5 {
+    background:linear-gradient( to bottom right, #6f72ca, #1e1466);
+    border-radius: 5px 50px 5px 5px; /*TL TR BR BL*/
+
+  }
+  .card6 {
+    background:linear-gradient( to bottom right, #994143, #ffb295);
+    border-radius: 5px 50px 5px 5px; /*TL TR BR BL*/
+
+  }
+}

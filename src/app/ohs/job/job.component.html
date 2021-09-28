@@ -1,0 +1,200 @@
+<div class="row m-2">
+  <div class="col-md-12 col-sm-12">
+    <nb-card class="ticket-card">
+      <!-- <nb-card-header class="d-flex justify-content-between">
+        <div class="d-flex">
+          Jobs Tickets
+          <div class="form-group ml-4">
+            <nb-select placeholder="Year" [(selected)]="currentYear" [(ngModel)]="currentYear" (selectedChange)="onChangeYear($event)">
+              <nb-option *ngFor="let year of years" [value]="year">{{year}}</nb-option>
+              <nb-option value="all">All</nb-option>
+            </nb-select>
+          </div>
+        </div>
+        <input nbInput size="small" type="text" class="form-control form-control" autocomplete="on" placeholder="Search Ticket code, Name or Reference" [(ngModel)]="searchTicket" (ngModelChange)="fetchDetails(searchTicket)">
+      </nb-card-header> -->
+      <nb-card-body>
+        <table class="table table-striped table-hover" datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger">
+          <thead>
+
+            <tr>
+              <th *ngFor="let head of headElements" scope="col">{{head}}</th>
+            </tr>
+
+
+          </thead>
+          <tbody>
+          <tr *ngFor="let job of jobTickets; index as i; trackBy: identify">
+            <td></td>
+            <td style="width: 5px;">{{ i + 1 }}</td>
+            <td ><a routerLink="/ohs/job-detail/{{job.id}}" (click)="setTicketToView(job.id)">{{job.ticket_code}}</a></td>
+            <td>{{job.created_at | date: 'shortDate'}}</td>
+            <td>{{job.created_at | date: 'shortTime'}}</td>
+            <td>{{job.name}}</td>
+            <td>{{job.ticket_type?.name}}</td>
+            <td><li *ngFor="let scopes of job.scope">{{scopes.name}}</li></td>
+            <td>{{job.safety_officer?.name}}</td>
+            <td>{{job.assigned_to?.username}}</td>
+            <td>
+              <button  *ngIf="job?.ohs_approval === null" nbButton hero status="primary" size="small" (click)="openApproval(dialog2, job)">APPROVE</button>
+              <button  class="approval-btn" *ngIf="job?.ohs_approval !== null" nbButton hero size="small" disabled="{{job.ohs_approval?.status === 'approved'}}"
+                       status="{{job.ohs_approval?.status === 'approved' ? 'success': job.ohs_approval?.status === 'rejected' ? 'danger' : job.ohs_approval?.status === 'open' ? 'warning' :
+                       job.ohs_approval?.status === 'expired' ? 'warning' : 'danger'}}"
+                       (click)="openApproval(dialog2, job)">{{job.ohs_approval?.status}}</button>
+            </td>
+            <td><nb-icon icon="edit-outline" class="edit" (click)="openJobForm(dialog, job)"></nb-icon></td>4
+            4
+          </tr>
+          </tbody>
+        </table>
+      </nb-card-body>
+      <nb-card-footer class="d-flex justify-content-start">
+        Total Tickets: {{totalCount}}
+        <!-- <div class="form-group p-1 pr-2">
+          <button nbButton hero size="small" status="info" (click)="pageChangedPrevious()" [hidden]="previousPage === null">Previous</button>
+        </div>
+        <div class="form-group">
+          <nb-select [(selected)]="itemsPerPage" [(ngModel)]="itemsPerPage" (selectedChange)="onChange($event)" placeholder="Select fetched items">
+            <nb-option  [value]="25">25</nb-option>
+            <nb-option  [value]="50">50</nb-option>
+            <nb-option  [value]="100">100</nb-option>
+            <nb-option  [value]="1000000">All</nb-option>
+          </nb-select>
+        </div>
+        <div class="form-group p-1 pl-2">
+          <button nbButton hero size="small" status="success" (click)="pageChangedNext()" [hidden]="nextPage === null">Next</button>
+        </div> -->
+      </nb-card-footer>
+
+    </nb-card>
+  </div>
+
+</div>
+
+
+<ng-template #dialog let-data let-ref="dialogRef">
+  <nb-card status="success" style="width: 40em;">
+    <nb-card-header>Edit Job
+      <a (click)="ref.close()" aria-label="Back" id="close-edit" style="float: right;">
+        <nb-icon icon="close"></nb-icon>
+      </a>
+    </nb-card-header>
+    <nb-card-body>
+      <form [formGroup]="jobForm">
+        <div class="form-group m-2">
+          <label class="label" for="inputName">Name</label>
+          <input type="text" nbInput fullWidth id="inputName" placeholder="Name" formControlName="name">
+        </div>
+        <div class="form-group m-2 mb-4">
+          <label class="label">Safety Officer</label>
+          <nb-select fullWidth  placeholder="Select Safety official" formControlName="safety_officer" selected="">
+            <nb-option *ngFor="let user of safetyOfficers" [value]="user.id">{{user.first_name}} {{user.last_name}}</nb-option>
+          </nb-select>
+        </div>
+        <div class="form-group m-2 mb-4">
+          <label class="label">Team Lead</label>
+          <nb-select fullWidth  placeholder="Select Team lead" formControlName="team_lead" selected="">
+            <nb-option *ngFor="let user of teamleads" [value]="user.id">{{user.first_name}} {{user.last_name}}</nb-option>
+          </nb-select>
+        </div>
+        <div class="form-group m-2 mb-4">
+          <label class="label">Technician</label>
+          <nb-select fullWidth  placeholder="Select Technician" formControlName="assigned_to" selected="">
+            <nb-option *ngFor="let user of technicans" [value]="user.id">{{user.first_name}} {{user.last_name}} - {{user.division?.name}}</nb-option>
+          </nb-select>
+        </div>
+        <div class="form-group m-2 mb-4">
+          <label class="label">Scope of work</label>
+          <nb-select fullWidth multiple placeholder="Select scope" formControlName="scope" selected="">
+            <nb-option *ngFor="let scope of works" [value]="scope.id">{{scope.name}}</nb-option>
+          </nb-select>
+        </div>
+        <!-- <div class="form-group">
+          <ngx-search-map></ngx-search-map>
+        </div> -->
+      </form>
+    </nb-card-body>
+    <nb-card-footer>
+      <button nbButton status="success" size="small" style="float: right;"
+              [class.btn-pulse]="submitted" (click)="editTicket()">submit</button>
+    </nb-card-footer>
+  </nb-card>
+</ng-template>
+<ng-template #dialog2 let-data let-ref="dialogRef">
+  <nb-card status="success" style="width: 27em;">
+    <nb-card-header>Add Safety Officer Approval
+      <a (click)="ref.close()" aria-label="Back" style="float: right;"  id="close-approval">
+        <nb-icon icon="close"></nb-icon>
+      </a>
+    </nb-card-header>
+    <nb-card-body>
+      <form>
+
+        <div class="form-group d-flex justify-content-between">
+          <nb-select fullWidth  placeholder="Status" [(ngModel)]="status" [ngModelOptions]="{standalone: true}" >
+            <nb-option [value]="approved">APPROVED</nb-option>
+            <nb-option [value]="rejected">REJECTED</nb-option>
+          </nb-select>
+        </div>
+        <div class="form-group">
+          <textarea
+            *ngIf="status === rejected"
+            type="text"
+            nbInput
+            fullWidth
+            placeholder="Comment"
+            [(ngModel)]="comment"
+            [ngModelOptions]="{standalone: true}"></textarea>
+        </div>
+
+        <div class="form-group">
+          <button nbButton status="success" size="small" style="float: right;"
+                  [class.btn-pulse]="submitted" (click)="createApproval()">submit</button>
+        </div>
+      </form>
+
+    </nb-card-body>
+  </nb-card>
+</ng-template>
+
+
+<ion-content fullscreen >
+  <router-outlet (activate)="onActivate($event)" >
+  <ion-refresher slot="fixed" (ionRefresh)="getTickets($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+
+  <ion-card *ngFor="let job of jobTickets ; trackBy: identify">
+    <ion-item>
+      <ion-label>{{job.ticket_code}}</ion-label>
+      <button  *ngIf="job?.ohs_approval === null" nbButton hero status="primary" size="small" (click)="showModal(job.id,job)">APPROVE</button>
+      <button  class="approval-btn" *ngIf="job?.ohs_approval !== null" nbButton hero size="small" disabled="{{job.ohs_approval?.status === 'approved'}}"
+               status="{{job.ohs_approval?.status === 'approved' ? 'success': job.ohs_approval?.status === 'rejected' ? 'danger' : job.ohs_approval?.status === 'expired' ? 'warning' : 'danger'}}"
+               (click)="showModal(job.id,job)">{{job.ohs_approval?.status}}</button>
+    </ion-item>
+
+    <ion-card-content routerLink="/ohs/job-detail/{{job.id}}" (click)="setTicketToView(job.id)">
+      <ion-list>
+        Date:{{job.created_at | date: 'shortDate'}}<br>
+        Time:{{job.created_at | date: 'shortTime'}}<br>
+        Name:{{job.name}}<br>
+        Type:{{job.ticket_type?.name}}<br>
+        Scope:<li *ngFor="let Item of job.scope" style="display:inline-block; margin:5px;"> {{Item.name}}, </li><br>
+        Safety Officer:{{job.safety_officer?.name}}<br>
+        Technician:{{job.assigned_to?.username}}attendants
+      </ion-list>
+    </ion-card-content>
+  </ion-card>
+  <div class="wrapper justify-content-between">
+    <button class="btn btn-outline-danger" size="small" [hidden]="previousPage === null" (click)="pageChangedPrevious()">previous</button>
+    <button class="btn btn-outline-primary" size="small" [hidden]="nextPage === null" (click)="pageChangedNext()">Load More</button>
+  </div>
+
+  <br>
+  <br>
+  <br>
+  <br>
+  <br>
+  <br>
+  </router-outlet>
+</ion-content>

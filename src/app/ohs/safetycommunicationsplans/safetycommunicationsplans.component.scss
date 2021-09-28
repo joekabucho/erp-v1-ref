@@ -1,0 +1,162 @@
+nb-card {
+  nb-card-header {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  nb-card-body {
+
+    .edit {
+      cursor: pointer;
+      color: #00d68f;
+      font-size: 1.3rem;
+      &:hover {
+        font-size: 1.5rem;
+      }
+    }
+    .trash {
+      cursor: pointer;
+      color: #ff3d71;
+      font-size: 1.3rem;
+      &:hover {
+        font-size: 1.5rem;
+      }
+    }
+
+    .work-card {
+      cursor: pointer;
+      -webkit-box-shadow: 1px 1px 2px 2px rgba(0, 0, 0, 0.2);
+      -moz-box-shadow: 1px 1px 2px 2px rgba(0, 0, 0, 0.2);
+      box-shadow: 1px 1px 2px 2px rgba(0, 0, 0, 0.2);
+
+      &:hover {
+        -webkit-box-shadow: 0 0 5px 6px rgba(0, 0, 0, 0.2);
+        -moz-box-shadow: 0 0 5px 6px rgba(0, 0, 0, 0.2);
+        box-shadow: 0 0 5px 6px rgba(0, 0, 0, 0.2);
+        transition: all 0.2s ease-in-out;
+      }
+
+      .work-title {
+        font-size: 1em;
+        font-weight: bold;
+        font-family: Montserrat;
+        font-style: normal;
+        color: #ffaa00;
+        text-decoration: underline;
+      }
+
+      .work-data {
+        margin-right: 5px;
+        letter-spacing: 0.02125em;
+        font-size: 11px;
+      }
+
+      .fetched-data {
+        font-family: Montserrat;
+        font-style: normal;
+        font-size: 13px;
+        margin-left: 5px;
+        letter-spacing: 0.05em;
+        font-weight: bolder;
+      }
+    }
+
+  }
+}
+
+.form-group {
+  margin: 20px 10px;
+
+  .icons {
+    width: 15%;
+    display: flex;
+    justify-content: center;
+
+    nb-icon {
+      font-size: 1.5rem;
+      cursor: pointer;
+      margin: auto;
+
+      &:hover {
+        font-size: 1.6rem;
+      }
+    }
+
+    .show {
+      color: #3366ff;
+    }
+    .hide {
+      color: #e40046;
+    }
+
+  }
+}
+
+.item-add {
+  display: flex;
+
+  input {
+    border: none;
+    background: #ffffff;
+    border-bottom: solid 1px #0095ff;
+  }
+
+  .add-btn {
+    margin: auto 5px;
+    width: 12%;
+    height: 20px;
+    padding: 0;
+    text-transform: lowercase;
+  }
+}
+
+table {
+  table-layout: auto;
+  margin-top: 10px;
+
+  thead {
+    tr {
+      background: #1e22aa;
+      color: #fff;
+
+      th {
+        position: sticky;
+        font-size: 14px;
+        top: 0;
+      }
+    }
+  }
+  tbody {
+    overflow: auto;
+    tr {
+      td {
+        font-size: 14px;
+        overflow: hidden;
+        overflow-y: hidden;
+      }
+    }
+  }
+}
+
+ion-content {
+  display: none;
+}
+/*
+Max width before this PARTICULAR table gets nasty
+This query will take effect for any screen smaller than 760px
+and also iPads specifically.
+*/
+@media only screen and (max-width: 760px), (min-device-width: 768px) and (max-device-width: 1024px) {
+
+  nb-card {
+    display: none;
+  }
+  .ticket-card nb-card-header {
+    display: flex;
+    flex-direction: column;
+  }
+
+  ion-content {
+    display: block;
+  }
+}

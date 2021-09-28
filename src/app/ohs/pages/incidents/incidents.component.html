@@ -1,0 +1,29 @@
+<ion-content fullscreen class="ion-padding">
+  <div class="row p-2">
+    <div class="col-12">
+      <a href="#" (click)="back()" class="link back-link" aria-label="Back">
+        <nb-icon icon="arrow-back"></nb-icon>
+      </a>
+    </div>
+  </div>
+  <ion-fab  horizontal="end" (click)="showModal()" style="bottom: 80px" slot="fixed" edge>
+    <ion-fab-button>
+      <ion-icon name="add" ></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+  <ion-card *ngFor="let inc of incident ; trackBy: identify" (click)="showEdit(inc.id)">
+    <ion-item>
+      <ion-label>{{inc.ticket?.ticket_code}}</ion-label>
+
+    </ion-item>
+
+    <ion-card-content>
+      <ion-list>
+        Time:{{inc.time}}<br>
+        Date:{{inc.date_of_incident}} <br>
+        Name:{{inc.name_of_worker}}<br>
+        Location:{{inc.location_of_incident?.name}}
+      </ion-list>
+    </ion-card-content>
+  </ion-card>
+</ion-content>

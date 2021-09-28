@@ -1,0 +1,44 @@
+<a href="#" (click)="back()" class="link back-link m-2" aria-label="Back">
+  <nb-icon icon="arrow-back"></nb-icon>
+</a>
+<div class="row">
+  <div class="col-md-12 col-lg-4 col-xxxl-4">
+    <nb-card>
+      <nb-tabset fullWidth>
+        <nb-tab tabTitle="Recent" badgeText="{{recent?.length}}" badgeStatus="success">
+          <nb-list>
+            <nb-list-item class="contact" *ngFor="let m of recent" (click)="selectRecent(m)">
+              <nb-user [name]="m.author?.name" [onlyPicture]="userPictureOnly" [picture]="m.picture" size="medium" (click)="selectRecent(m)"></nb-user>
+              <span class="caption">{{ m.created_at | date: 'short' }}</span>
+              <nb-checkbox [checked]="m.read">{{m.read ? 'read' : 'unread'}}</nb-checkbox>
+            </nb-list-item>
+          </nb-list>
+        </nb-tab>
+        <nb-tab tabTitle="Contacts" badgeText="{{contacts?.length}}" badgeStatus="warning">
+          <nb-list>
+            <nb-list-item class="contact" *ngFor="let c of contacts" (click)="selectContact(c)">
+              <nb-user [name]="c.username" [title]="c.team.name" [onlyPicture]="userPictureOnly" [picture]="c.picture" size="medium" (click)="selectContact(c)"></nb-user>
+              <nb-icon icon="message-circle-outline" pack="eva" (click)="selectContact(c)"></nb-icon>
+              <!-- <div class="sms-detail"> -->
+                <!-- <div class="numberCircle" *ngIf="c.allSms > 0" (click)="selectContact(c)">{{c.allSms}}</div> -->
+                <!-- <nb-icon icon="message-circle-outline" pack="eva" (click)="selectContact(c)"></nb-icon>
+              </div> -->
+            </nb-list-item>
+          </nb-list>
+        </nb-tab>
+      </nb-tabset>
+    </nb-card>
+  </div>
+  <div class="col-md-12 col-lg-8 col-xxxl-8">
+    <nb-chat title="{{selectedContact?.username}}{{selectedContact?.name}}" status="info">
+      <nb-chat-message *ngFor="let msg of messages"
+        [message]="msg.content"
+        [reply]="msg.reply"
+        [sender]="msg.author.name"
+        [date]="msg.created_at"
+        [avatar]="userDetails?.image">
+      </nb-chat-message>
+      <nb-chat-form (send)="sendMessage($event)"></nb-chat-form>
+    </nb-chat>
+  </div>
+</div>

@@ -1,0 +1,131 @@
+<div class="row">
+  <div class="col-md-6 col-sm-12">
+    <nb-card status="info">
+      <nb-card-header>
+        <div class="title">Divisions</div>
+        <button nbButton status="success" size="small" (click)="showDivForm(dialog)">Add Division</button>
+      </nb-card-header>
+      <nb-card-body>
+        <nb-accordion *ngFor="let div of divisions">
+          <nb-accordion-item #item>
+            <nb-accordion-item-header>{{div.name}} </nb-accordion-item-header>
+            <nb-accordion-item-body class="details">
+              Departments:
+              <nb-list>
+                <nb-list-item *ngFor="let dept of div.departments">{{dept.name}}</nb-list-item>
+              </nb-list>
+            </nb-accordion-item-body>
+          </nb-accordion-item>
+        </nb-accordion>
+      </nb-card-body>
+    </nb-card>
+  </div>
+  <div class="col-md-6 col-sm-12">
+    <nb-card status="info">
+      <nb-card-header>
+        <div class="title">Companies</div>
+        <button nbButton status="success" size="small" (click)="showCompForm(dialog0)">Add Company</button>
+      </nb-card-header>
+      <nb-card-body>
+        <nb-accordion *ngFor="let comp of companies">
+          <nb-accordion-item #item>
+            <nb-accordion-item-header>{{comp.name}}</nb-accordion-item-header>
+            <nb-accordion-item-body class="details">
+              Divisons:
+              <nb-list>
+                <nb-list-item *ngFor="let division of comp.divisions">{{division.name}}</nb-list-item>
+              </nb-list>
+            </nb-accordion-item-body>
+          </nb-accordion-item>
+        </nb-accordion>
+      </nb-card-body>
+    </nb-card>
+  </div>
+</div>
+
+<ng-template #dialog0 let-data let-ref="dialogRef">
+  <nb-card style="width: 25em;">
+    <nb-card-header>Add Company
+      <a (click)="ref.close()" aria-label="Back" id="close-comp" style="float: right;">
+        <nb-icon icon="close"></nb-icon>
+      </a>
+    </nb-card-header>
+    <nb-card-body>
+      <form #compForm="ngForm" (ngSubmit)="saveCompany(compForm)" aria-labelledby="title">
+        <div class="form-group">
+          <input
+          nbInput
+          autofocus
+          fullWidth
+          fieldSize="large"
+          placeholder="Company name"
+          [(ngModel)]="compForm.name"
+          #name="ngModel"
+          id="input-name"
+          name="name"
+          [status]="name.dirty ? (name.invalid  ? 'danger' : 'success') : 'basic'"
+          [attr.aria-invalid]="name.invalid && name.touched ? true : null"
+          required>
+          <ng-container *ngIf="name.invalid && name.touched">
+            <p class="caption status-danger" *ngIf="name.errors?.required">
+              Company Name is required!
+            </p>
+          </ng-container>
+        </div>
+        <div class="form-group">
+          <button nbButton status="success" size="small" style="float: right;" [disabled]="submitted || compForm.invalid"
+          [class.btn-pulse]="submitted">submit</button>
+        </div>
+      </form>
+    </nb-card-body>
+  </nb-card>
+</ng-template>
+
+<ng-template #dialog let-data let-ref="dialogRef">
+  <nb-card style="width: 25em;">
+    <nb-card-header>Add Division
+      <a (click)="ref.close()" aria-label="Back" id="close-div" style="float: right;">
+        <nb-icon icon="close"></nb-icon>
+      </a>
+    </nb-card-header>
+    <nb-card-body>
+      <form #divForm="ngForm" (ngSubmit)="saveDivision(divForm)" aria-labelledby="title">
+        <div class="form-group">
+          <input
+          nbInput
+          autofocus
+          fullWidth
+          fieldSize="medium"
+          placeholder="Divison name"
+          [(ngModel)]="divForm.name"
+          #name="ngModel"
+          id="input-name"
+          name="name"
+          [status]="name.dirty ? (name.invalid  ? 'danger' : 'success') : 'basic'"
+          [attr.aria-invalid]="name.invalid && name.touched ? true : null"
+          required>
+          <ng-container *ngIf="name.invalid && name.touched">
+            <p class="caption status-danger" *ngIf="name.errors?.required">
+              Division Name is required!
+            </p>
+          </ng-container>
+        </div>
+        <div class="form-group">
+          <nb-select fullWidth  id="input-companyName" placeholder="Select company"  [(ngModel)]="divForm.company"  name="company" selected="" required>
+            <nb-option *ngFor="let company of companies" [value]="company.id">{{company.name}}</nb-option>
+          </nb-select>
+        </div>
+        <!-- <div class="form-group">
+          <nb-select fullWidth  id="input-hodName" placeholder="Select HOD"  [(ngModel)]="divForm.hod"  name="hod" selected="" required>
+            <nb-option *ngFor="let user of hod" [value]="user.id">{{user.username}}</nb-option>
+          </nb-select>
+        </div> -->
+
+        <div class="form-group">
+          <button nbButton status="success" size="small" style="float: right;" [disabled]="submitted || divForm.invalid"
+          [class.btn-pulse]="submitted">submit</button>
+        </div>
+      </form>
+    </nb-card-body>
+  </nb-card>
+</ng-template>

@@ -1,0 +1,127 @@
+.casual-date {
+    cursor: pointer;
+    color: #3366ff;
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+
+.casual-details {
+  border-radius: 5px;
+  -webkit-box-shadow: 1px 1px 5px 1px rgba(0, 0, 0, 0.2);
+  -moz-box-shadow: 1px 1px 5px 1px rgba(0, 0, 0, 0.2);
+  box-shadow: 1px 1px 5px 1px rgba(0, 0, 0, 0.2);
+  cursor: pointer;
+
+
+  &:hover {
+    -webkit-box-shadow: 4px 4px 5px 5px rgba(0, 0, 0, 0.2);
+    -moz-box-shadow: 4px 4px 5px 5px rgba(0, 0, 0, 0.2);
+    box-shadow: 4px 4px 5px 5px rgba(0, 0, 0, 0.2);
+    transition: all 0.3s ease-in-out;
+    visibility: visible;
+    animation-duration: 0.5s;
+    animation-name: slideInUp;
+    -webkit-transition: all 0.3s ease-in-out;
+  }
+
+  img {
+    height: 80px;
+    width: 80px;
+    border-radius: 50%;
+  }
+
+  .casual-text {
+    font-size: 12px;
+    letter-spacing: 0.02125em;
+  }
+
+  .fetched-data {
+    font-size: 14px;
+    font-weight: bolder;
+    text-transform: capitalize;
+    margin-left: 10px;
+
+  }
+
+
+}
+
+
+.nb-trash {
+  cursor: pointer;
+  color: #ff3d71;
+  font-size: 1.2rem;
+
+  &:hover {
+    font-size: 1.3rem;
+  }
+}
+
+.edit-icon {
+  cursor: pointer;
+  font-size: 1.2rem;
+  margin: 0 0 0 10px;
+
+  &:hover {
+    color: #3366ff;
+    font-size: 1.3rem;
+  }
+}
+.week {
+  color: #3366ff;
+  &:hover {
+    color: #3366ff;
+    text-decoration: underline;
+    cursor: pointer;
+  }
+}
+
+.technician {
+  color: #3366ff;
+  text-transform: capitalize;
+  &:hover {
+    color: #3366ff;
+    text-decoration: underline;
+    cursor: pointer;
+  }
+}
+
+.label {
+  font-weight: bold;
+  color: #1e22aa;
+}
+
+.inputWrapper {
+  width: 150px;
+  overflow: hidden;
+  position: relative;
+  cursor: pointer;
+  height: 40px;
+  background-color: #00d68f;
+  color: #ffffff;
+  text-align: center;
+  text-transform: uppercase;
+  padding: 7px;
+  border-radius: 5px;
+  margin-letf: 10px;
+}
+.fileInput {
+  cursor: pointer;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  right: 0;
+  z-index: 99;
+  font-size: 50px;
+  opacity: 0;
+  -moz-opacity: 0;
+}
+
+
+.dates-table {
+  border: 1px solid rgba(0, 0, 0, 0.125);
+  padding: 0;
+  margin: 1rem 1.25rem;
+}

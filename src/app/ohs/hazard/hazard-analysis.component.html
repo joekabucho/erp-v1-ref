@@ -1,0 +1,222 @@
+<div class="row m-2">
+  <div class="col-sm-12">
+
+    <nb-card>
+      <!-- <nb-card-header>Hazards Analysis
+        <input nbInput size="small" type="text" class="form-control form-control" autocomplete="on" placeholder="Search by Name" [(ngModel)]="searchItem" (ngModelChange)="fetchDetails()">
+
+
+      </nb-card-header> -->
+      <nb-card-body>
+
+        <table class="table table-striped table-hover" datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger">
+          <thead>
+            <tr>
+              <th *ngFor="let head of headElements" scope="col">{{head}}</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let haz of hazards; index as i">
+              <td></td>
+              <td>{{ i + 1 }}</td>
+              <td>{{haz.date | date: 'shortDate'}}</td>
+              <td>{{haz.date | date: 'shortTime'}}</td>
+              <td>{{haz.ticket?.ticket_code}}</td>
+              <td><li *ngFor="let jha of haz?.job_hazards">{{jha.name}}</li></td>
+              <td><li *ngFor="let jha of haz?.job_hazards">{{jha.consequence}}</li></td>
+              <td><li *ngFor="let jha of haz?.job_hazards">{{jha.control}}</li></td>
+              <td>{{haz.description}}</td>
+              <td>{{haz.fire_fighter}}</td>
+              <td>{{haz.first_aider}}</td>
+              <td>{{haz.supervisor?.username}}</td>
+              <td><li *ngFor="let member of haz?.team_members" style="display:inline-block; margin:5px;">{{member.fistname}} {{member.lastname}},</li></td>
+              <td>{{haz.done_by}}</td>
+              <td><nb-icon  icon="edit-outline" class="edit" (click)="openHazEditform(dialog3, haz)"></nb-icon></td>
+              <td><nb-icon icon="trash-outline" class="trash" (click)="confirmDelete(haz)"></nb-icon></td>
+            </tr>
+          </tbody>
+        </table>
+
+      </nb-card-body>
+
+      <nb-card-footer class="d-flex">
+        Total Count: {{totalCount}}
+        <!-- <div class="form-group">
+          <nb-select [(selected)]="itemsPerPage" [(ngModel)]="itemsPerPage" (selectedChange)="onChange($event)" placeholder="Select fetched items">
+            <nb-option  [value]="25">25</nb-option>
+            <nb-option  [value]="50">50</nb-option>
+            <nb-option  [value]="100">100</nb-option>
+            <nb-option  [value]="100000000">All</nb-option>
+          </nb-select>
+        </div> -->
+        <!-- <pagination-controls (pageChange)="pageChanged($event)"></pagination-controls> -->
+      </nb-card-footer>
+    </nb-card>
+  </div>
+</div>
+
+
+<ion-content fullscreen>
+  <ion-card   *ngFor="let haz of hazards; index as i; trackBy: identify">
+    <ion-item>
+      <ion-label>{{haz.ticket?.ticket_code}}</ion-label>
+      <ion-button  (click)="confirmDelete(haz)">Delete</ion-button>
+    </ion-item>
+
+    <ion-card-content (click)="showEdit(haz.id)">
+      <ion-list>
+        Date:{{haz.date | date: 'shortDate'}}<br>
+        Time:{{haz.date | date: 'shortTime'}}<br>
+        Description:{{haz.description}}<br>
+        Team members:<li *ngFor="let member of haz?.team_members" style="display:inline-block; margin:5px;">{{member.fistname}} {{member.lastname}},</li>
+        Fire fighter:{{haz.fire_fighter}}<br>
+        First aider:{{haz.first_aider}}<br>
+        Done by:{{haz.done_by}}
+      </ion-list>
+    </ion-card-content>
+  </ion-card>
+</ion-content>
+
+
+<ng-template #dialog2 let-data let-ref="dialogRef">
+  <nb-card status="success" style="width: 27em;">
+    <nb-card-header>Create Attendant
+      <a (click)="ref.close()" aria-label="Back" style="float: right;"  id="close-attendant">
+        <nb-icon icon="close"></nb-icon>
+      </a>
+    </nb-card-header>
+    <nb-card-body>
+      <form [formGroup]="attendantsForm">
+
+        <div class="form-group">
+          <input
+            type="text"
+            nbInput
+            fullWidth
+            placeholder="First Name"
+            formControlName="firstname">
+        </div>
+        <div class="form-group">
+          <input
+            type="text"
+            nbInput
+            fullWidth
+            placeholder="Last Name"
+            formControlName="lastname">
+        </div>
+        <div class="form-group">
+          <input
+            type="number"
+            nbInput
+            fullWidth
+            placeholder="Phone number"
+            formControlName="phone_number">
+        </div>
+        <div class="form-group">
+          <input
+            type="number"
+            nbInput
+            fullWidth
+            placeholder="ID number"
+            formControlName="id_number">
+        </div>
+
+
+        <div class="form-group">
+          <button nbButton status="success" size="small" style="float: right;" [disabled]="submitted || !attendantsForm.valid"
+                  [class.btn-pulse]="submitted" (click)="createAttendants()">submit</button>
+        </div>
+      </form>
+
+    </nb-card-body>
+  </nb-card>
+</ng-template>
+
+<ng-template #dialog3 let-data let-ref="dialogRef">
+  <nb-card status="success" style="width: 35em;" size="large">
+    <nb-card-header>Edit Hazard Analysis
+      <a (click)="ref.close()" aria-label="Back" id="close-edit" style="float: right;">
+        <nb-icon icon="close"></nb-icon>
+      </a>
+    </nb-card-header>
+<nb-card-body>
+  <form [formGroup]="hazEditForm">
+    <div class="form-group">
+      <label class="label">Job Hazards</label>
+      <nb-select  multiple  fullWidth  placeholder="Select Hazards" formControlName="job_hazards" >
+        <nb-option *ngFor="let jha of jobHazards" [value]="jha.id">{{jha.name}}</nb-option>
+      </nb-select>
+    </div>
+    <div class="form-group d-flex justify-content-between">
+      <ng-autocomplete [data]="Tickets" [searchKeyword]="keywordTicket" (selected)='selectedTicketSup($event)'
+                      (inputFocused)='onFocusedTickets($event)' [itemTemplate]="itemTemplateTickets"
+                       [notFoundTemplate]="notFoundTemplate"
+                       formControlName="ticket"
+                       placeholder="Select ticket">
+      </ng-autocomplete>
+
+      <ng-template #itemTemplateTickets let-item>
+        <a [innerHTML]="item.ticket_code"></a>
+      </ng-template>
+
+      <ng-template #notFoundTemplate let-notFound>
+        <div [innerHTML]="notFound"></div>
+      </ng-template>
+    </div>
+    <div class="form-group">
+      <label class="label">Description</label>
+      <input type="text" nbInput fullWidth  placeholder="Description" formControlName="description">
+    </div>
+    <div class="form-group">
+      <label class="label">Fire fighter</label>
+      <input type="text" nbInput fullWidth placeholder="Fire fighter" formControlName="fire_fighter">
+    </div>
+    <div class="form-group">
+      <label class="label">First Aider</label>
+      <input type="text" nbInput fullWidth placeholder="First aider" formControlName="first_aider">
+    </div>
+    <div class="form-group">
+      <label class="label">Team members</label>
+      <div class="form-group d-flex justify-content-between">
+        <nb-select  multiple  fullWidth  placeholder="Team members" formControlName="team_members">
+          <nb-option *ngFor="let user of Attendees" [value]="user.id">{{user.firstname}} {{user.lastname}}</nb-option>
+        </nb-select>
+        <button class="route-btn" nbSuffix nbButton ghost (click)="openAttendants(dialog3)">
+          <nb-icon icon="plus-square-outline"></nb-icon>
+        </button>
+      </div>
+    </div>
+    <div class="form-group d-flex justify-content-between">
+      <ng-autocomplete [data]="supervisors" [searchKeyword]="keywordSO" (selected)='selectSup($event)'
+                       (inputFocused)='onFocusedSup($event)' [itemTemplate]="itemTemplateSup"
+                       [notFoundTemplate]="notFoundTemplate"
+                       placeholder="Select supervisor" formControlName="supervisor">
+      </ng-autocomplete>
+
+      <ng-template #itemTemplateSup let-item>
+        <a [innerHTML]="item.first_name +''+ item.last_name"></a>
+      </ng-template>
+
+      <ng-template #notFoundTemplate let-notFound>
+        <div [innerHTML]="notFound"></div>
+      </ng-template>
+    </div>
+    <div class="form-group">
+      <input type="datetime-local" nbInput fullWidth placeholder="Date" formControlName="date">
+    </div>
+    <div class="form-group">
+      <input
+        type="text"
+        nbInput
+        fullWidth
+        placeholder="Done by"
+        formControlName="done_by">
+    </div>
+  </form>
+</nb-card-body>
+<nb-card-footer>
+  <button nbButton status="success" size="small" style="float: right;" [disabled]="submitted || !hazEditForm.valid"
+          [class.btn-pulse]="submitted" (click)="editHazard()">submit</button>
+</nb-card-footer>
+</nb-card>
+</ng-template>

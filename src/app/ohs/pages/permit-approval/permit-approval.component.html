@@ -1,0 +1,30 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Create Permit Approval</ion-title>
+    <ion-icon name='close-circle' (click)='dismiss()' style='float: right;' size="large"></ion-icon>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-item>
+    <ion-label>Approval</ion-label>
+    <ion-select  cancelText="No" okText="Okay!" placeholder="Status" [(ngModel)]="status" [ngModelOptions]="{standalone: true}">
+      <ion-select-option [value]="approved">APPROVED</ion-select-option>
+      <ion-select-option [value]="rejected">REJECTED</ion-select-option>
+    </ion-select>
+  </ion-item>
+  <ion-item>
+    <ion-textarea   *ngIf="status === rejected"
+                    type="text"
+                    nbInput
+                    fullWidth
+                    placeholder="Comment"
+                    [(ngModel)]="comment"
+                    [ngModelOptions]="{standalone: true}"></ion-textarea>
+  </ion-item>
+  <ion-fab  edge>
+    <ion-fab-button>
+      <ion-icon name="save" (click)="createApproval();dismiss()" ></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+</ion-content>

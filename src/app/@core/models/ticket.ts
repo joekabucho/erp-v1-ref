@@ -1,0 +1,33 @@
+export class Ticket {
+  acces_grant_time: any;
+  access_request_time: any;
+  assigned_to: any;
+  challenges: any;
+  clears: any;
+  close_date: any;
+  created_at: any;
+  created_by: any;
+  date_started: any;
+  description: any;
+  estate: any;
+  eta: any;
+  fault_coordinates: any;
+  id: any;
+  incident_type: any;
+  link_type: any;
+  location: any;
+  name: any;
+  no_of_clients: any;
+  reference: any;
+  reported_time: any;
+  ring: any;
+  root_cause: any;
+  safety_officer: any;
+  security_grant_time: any;
+  security_request_time: any;
+  status: any;
+  team_lead: any;
+  ticket_code: any;
+  ticket_type: any;
+  scope: any;
+}

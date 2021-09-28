@@ -1,0 +1,80 @@
+@import '../../@theme/styles/themes';
+
+.role-section {
+  // display: flex;
+
+  .role {
+    width: 100%;
+
+    nb-list-item {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+
+      .view {
+        margin: 5px;
+        color: #3366ff;
+        font-size: 10px;
+        cursor: pointer;
+        &:hover {
+          text-decoration: underline;
+        }
+      }
+
+      nb-icon {
+        font-size: 15px;
+        color: #3366ff;
+        &:hover {
+          font-size: 20px;
+        }
+      }
+
+      .trash {
+        cursor: pointer;
+        color: #fe4056;
+        margin: 5px 0;
+        &:hover {
+          font-size: 20px;
+        }
+      }
+    }
+  }
+  .permission {
+    width: 500px;
+    margin: 0 15px;
+    nb-card {
+      overflow: auto;
+      box-shadow: 0 0 3px 1px rgba(0, 0, 0, 0.3);
+
+      .role-details {
+        display: flex;
+        flex-direction: column;
+        margin-bottom: 20px;
+
+        .role-description {
+          color: #ffaa00;
+          text-decoration: underline;
+          .trash {
+            cursor: pointer;
+            color: #ff3d71;
+            font-size: 1.3rem;
+            float: right;
+            &:hover {
+              font-size: 1.5rem;
+            }
+          }
+        }
+
+        .perm-details {
+          display: flex;
+          flex-direction: column;
+          margin: 0 20px;
+        }
+      }
+    }
+  }
+  .checkboxes {
+    display: flex;
+    flex-direction: column;
+  }
+}

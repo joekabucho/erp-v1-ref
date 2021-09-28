@@ -1,0 +1,48 @@
+<ion-content fullscreen class="ion-padding">
+  <div class="row p-2">
+    <div class="col-12">
+      <a href="#" (click)="back()" class="link back-link" aria-label="Back">
+        <nb-icon icon="arrow-back"></nb-icon>
+      </a>
+    </div>
+  </div>
+  <ion-fab horizontal="end" vertical="bottom" slot="fixed">
+    <ion-fab-button>
+      <ion-icon name="add"></ion-icon>
+    </ion-fab-button>
+    <ion-fab-list side="top">
+      <ion-item (click)="showPpeCreate()">
+        <ion-label position="floating">PPE</ion-label>
+        <ion-input></ion-input>
+        <ion-icon name="add" slot="end"></ion-icon>
+      </ion-item>
+      <ion-item (click)="showSseCreate()">
+        <ion-label position="floating">SSE</ion-label>
+        <ion-input></ion-input>
+        <ion-icon name="add" slot="end"></ion-icon>
+      </ion-item>
+    </ion-fab-list>
+  </ion-fab>
+  <ion-card *ngFor="let ppes of ppe" (click)="showPpeEdit(ppes.id)">
+    <img src="{{ppes.file}}" style="height: 200px; width: 300px;"/>
+    <ion-card-header>
+      <ion-card-title>PPE</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      Created at:{{ppes.created_at | date: 'medium'}} <br>
+      Created by:{{ppes.created_by?.username}}
+    </ion-card-content>
+  </ion-card>
+
+  <ion-card *ngFor="let sses of sse" (click)="showSseEdit(sses.id)">
+    <img src="{{sses.file}}"  style="height: 200px; width: 300px;"/>
+    <ion-card-header>
+      <ion-card-title>SSE</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      Created at:{{sses.created_at | date: 'medium'}} <br>
+      Created by:{{sses.created_by?.username}}
+    </ion-card-content>
+  </ion-card>
+</ion-content>
+

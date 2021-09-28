@@ -1,0 +1,298 @@
+<div class="row m-2">
+  <div class="col-sm-12">
+    <nb-card>
+      <!-- <nb-card-header>Incidents Report
+
+        <input nbInput size="small" type="text" class="form-control form-control mr-2" autocomplete="on" placeholder="Search by Name" [(ngModel)]="searchItem" (ngModelChange)="fetchDetails()">
+
+
+
+      </nb-card-header> -->
+      <nb-card-body>
+
+
+        <table  datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" class="table table-striped table-hover">
+          <thead>
+          <tr>
+            <th *ngFor="let head of headElements" scope="col">{{head}}</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr *ngFor="let incident of Incidents; index as i;trackBy: identify">
+            <td></td>
+            <td>{{ i + 1 }}</td>
+            <td>{{incident.team_lead.username}}</td>
+            <td>{{incident.ticket?.ticket_code}}</td>
+            <td>{{incident.name_of_worker}}</td>
+            <td>{{incident.department?.name}}</td>
+            <td>{{incident.description}}</td>
+            <td>{{incident.gender}}</td>
+            <td>{{incident.time}}</td>
+            <td>{{incident.date_of_incident}}</td>
+            <td>{{incident.injury_to_worker}}</td>
+            <td>{{incident.occupation}}</td>
+            <td>{{incident.location_of_incident?.name}}</td>
+            <td>{{incident.equipment_damage}}</td>
+            <td>{{incident.name_of_person_reporting_incident}}</td>
+            <td>{{incident.primary_witness}}</td>
+            <td>{{incident.secondary_witness}}</td>
+            <td>{{incident.immediate_action_taken}}</td>
+            <td>{{incident.post_incident_action}}</td>
+            <td>{{incident.victim_taken_to}}</td>
+            <td>{{incident.report_sent_by.username}}</td>
+            <td>{{incident.report_sent_to.username}}</td>
+            <td>{{incident.lta}}</td>
+            <td>{{incident.lti}}</td>
+            <td>{{incident.non_lti}}</td>
+
+            <td><nb-icon icon="edit-outline" class="edit" (click)="open(dialog , incident);selectedToolboxChecklist(incident.id)"></nb-icon></td>
+            <td><nb-icon icon="trash-outline" class="trash" (click)="DeleteToolboxTalks(incident.id)"></nb-icon></td>
+          </tr>
+          </tbody>
+        </table>
+
+      </nb-card-body>
+      <nb-card-footer class="d-flex justify-content-between">
+        Total Count: {{totalCount}}
+      </nb-card-footer>
+    </nb-card>
+  </div>
+</div>
+
+
+<ion-content fullscreen>
+  <ion-card *ngFor="let incident of Incidents; index as i;trackBy: identify">
+    <ion-item>
+      <ion-label>{{incident.ticket?.ticket_code}}</ion-label>
+      <ion-button  (click)="DeleteToolboxTalks(incident.id)">Delete</ion-button>
+    </ion-item>
+
+    <ion-card-content (click)="showEdit(incident.id)">
+      <ion-list>
+        Date:{{incident.date_of_incident}}<br>
+        Time:{{incident.time}}<br>
+        Name:{{incident.name_of_worker}}<br>
+        Primary witness:{{incident.primary_witness}}<br>
+        Secondary witness:{{incident.secondary_witness}}<br>
+        Immediate action:{{incident.immediate_action_taken}}<br>
+        Post incident:{{incident.post_incident_action}}<br>
+        Victim taken to:{{incident.victim_taken_to}}
+      </ion-list>
+    </ion-card-content>
+  </ion-card>
+</ion-content>
+<ng-template #dialog let-data let-ref="dialogRef">
+  <nb-card status="success" style="width: 27em;" size="giant">
+    <nb-card-header>Edit Safety Incident notification
+      <a (click)="ref.close()" aria-label="Back" style="float: right;"  id="close-edit">
+        <nb-icon icon="close"></nb-icon>
+      </a>
+    </nb-card-header>
+    <nb-card-body>
+      <form [formGroup]="incidentEditForm">
+
+        <div class="form-group d-flex justify-content-between">
+          <ng-autocomplete [data]="teamleads" [searchKeyword]="keywordTeamLead" (selected)='selectTeam($event)'
+                           (inputChanged)='onChangeSearch($event)' (inputFocused)='onFocusedTeam($event)' [itemTemplate]="itemTemplateTeam"
+                           [notFoundTemplate]="notFoundTemplate"
+                           placeholder="Team Lead" formControlName="team_lead">
+          </ng-autocomplete>
+
+          <ng-template #itemTemplateTeam let-item>
+            <a [innerHTML]="item.first_name +''+ item.last_name"></a>
+          </ng-template>
+
+          <ng-template #notFoundTemplate let-notFound>
+            <div [innerHTML]="notFound"></div>
+          </ng-template>
+        </div>
+        <div class="form-group d-flex justify-content-between">
+          <ng-autocomplete [data]="Tickets" [searchKeyword]="keywordTicket" (selected)='selectedTicketID($event)'
+                           (inputChanged)='onChangeSearch($event)' (inputFocused)='onFocusedTickets($event)' [itemTemplate]="itemTemplateTickets"
+                           [notFoundTemplate]="notFoundTemplate"
+                           formControlName="ticket"
+                           placeholder="Select ticket">
+          </ng-autocomplete>
+
+          <ng-template #itemTemplateTickets let-item>
+            <a [innerHTML]="item.ticket_code"></a>
+          </ng-template>
+
+          <ng-template #notFoundTemplate let-notFound>
+            <div [innerHTML]="notFound"></div>
+          </ng-template>
+        </div>
+        <div class="form-group">
+          <input
+            type="text"
+            nbInput
+            fullWidth
+            placeholder="Name of worker"
+            formControlName="name_of_worker">
+        </div>
+
+        <div class="form-group d-flex justify-content-between">
+          <ng-autocomplete [data]="Departments" [searchKeyword]="keywordDep" (selected)='selectDep($event)'
+                           (inputChanged)='onChangeSearch($event)' (inputFocused)='onFocusedDepartment($event)' [itemTemplate]="itemTemplateDep"
+                           [notFoundTemplate]="notFoundTemplate"
+                           placeholder="Department" formControlName="department">
+          </ng-autocomplete>
+
+          <ng-template  #itemTemplateDep let-item>
+            <a [innerHTML]="item.name"></a>
+          </ng-template>
+
+          <ng-template #notFoundTemplate let-notFound>
+            <div [innerHTML]="notFound"></div>
+          </ng-template>
+        </div>
+        <textarea
+          type="text"
+          nbInput
+          fullWidth
+          placeholder="Description"
+          formControlName="description"></textarea>
+        <div class="form-group d-flex justify-content-between">
+          <nb-select fullWidth  placeholder="Gender" formControlName="gender" >
+            <nb-option [value]="male">MALE</nb-option>
+            <nb-option [value]="female">FEMALE</nb-option>
+            <nb-option [value]="other">OTHER</nb-option>
+            <nb-option [value]="none">NONE</nb-option>
+          </nb-select>
+        </div>
+        <div class="form-group">
+          <div class="form-group">
+            <label class="label" for="inputStartDlate">Time</label>
+            <input type="time" nbInput fullWidth formControlName="time">
+          </div>
+        </div>
+        <div class="form-group">
+          <div class="form-group">
+            <label class="label" for="inputStartDate">Date Of Incident</label>
+            <input type="date" nbInput fullWidth formControlName="date_of_incident">
+          </div>
+        </div>
+        <div class="form-group">
+          <div class="form-group">
+            <nb-checkbox status="basic"  formControlName="injury_to_worker">Injury to worker</nb-checkbox>
+          </div>
+        </div>
+        <input
+          type="text"
+          nbInput
+          fullWidth
+          placeholder="Occupation"
+          formControlName="occupation">
+        <div class="form-group">
+          <input
+            type="text"
+            nbInput
+            fullWidth
+            placeholder="Activity"
+            formControlName="activity">
+        </div>
+        <div class="form-group d-flex justify-content-between">
+          <ng-autocomplete [data]="Locations" [searchKeyword]="keywordLoc" (selected)='selectLoc($event)'
+                           (inputChanged)='onChangeSearch($event)' (inputFocused)='onFocusedLoc($event)' [itemTemplate]="itemTemplateLoc"
+                           [notFoundTemplate]="notFoundTemplate"
+                           placeholder="Location of incident" formControlName="location_of_incident">
+          </ng-autocomplete>
+
+          <ng-template #itemTemplateLoc let-item>
+            <a [innerHTML]="item.name"></a>
+          </ng-template>
+
+          <ng-template #notFoundTemplate let-notFound>
+            <div [innerHTML]="notFound"></div>
+          </ng-template>
+        </div>
+            <nb-checkbox status="basic"  formControlName="equipment_damage">Equipment damage</nb-checkbox>
+        <div class="form-group">
+        <input
+          type="text"
+          nbInput
+          fullWidth
+          placeholder="Name of person reporting incident"
+          formControlName="name_of_person_reporting_incident">
+        </div>
+          <div class="form-group">
+        <input
+          type="text"
+          nbInput
+          fullWidth
+          placeholder="Primary witness"
+          formControlName="primary_witness">
+          </div>
+            <div class="form-group">
+
+        <input
+          type="text"
+          nbInput
+          fullWidth
+          placeholder="Secondary witness"
+          formControlName="secondary_witness">
+            </div>
+              <div class="form-group">
+        <input
+          type="text"
+          nbInput
+          fullWidth
+          placeholder="Immediate action taken"
+          formControlName="immediate_action_taken">
+              </div>
+                <div class="form-group">
+        <input
+          type="text"
+          nbInput
+          fullWidth
+          placeholder="Post incident action"
+          formControlName="post_incident_action">
+                </div>
+        <div class="form-group">
+          <input
+          type="text"
+          nbInput
+          fullWidth
+          placeholder="Victim taken to"
+          formControlName="victim_taken_to">
+        </div>
+        <div class="form-group d-flex justify-content-between">
+          <ng-autocomplete [data]="safetyWorker" [searchKeyword]="keywordSO" (selected)='selectSO($event)'
+                           (inputChanged)='onChangeSearch($event)' (inputFocused)='onFocusedSo($event)' [itemTemplate]="itemTemplateSO"
+                           [notFoundTemplate]="notFoundTemplate"
+                           placeholder="Report to be sent to" formControlName="report_sent_to">
+          </ng-autocomplete>
+
+          <ng-template #itemTemplateSO let-item>
+            <a [innerHTML]="item.first_name +''+ item.last_name"></a>
+          </ng-template>
+
+          <ng-template #notFoundTemplate let-notFound>
+            <div [innerHTML]="notFound"></div>
+          </ng-template>
+        </div>
+        <div class="form-group">
+          <input
+            type="number"
+            nbInput
+            fullWidth
+            placeholder="LTA"
+            formControlName="lta">
+        </div>
+        <div class="form-group">
+          <input
+            type="number"
+            nbInput
+            fullWidth
+            placeholder="LTI"
+            formControlName="lti">
+        </div>
+        <nb-checkbox status="basic"  formControlName="non_lti" (checkedChange)="toggle($event)" [checked]="checked" >Non LTI</nb-checkbox>
+        <div class="form-group">
+          <button nbButton status="success" size="small" style="float: right;" [disabled]="submitted || !incidentEditForm.valid"
+                  [class.btn-pulse]="submitted" (click)="editIncidents()">submit</button>
+        </div>
+      </form>
+    </nb-card-body>
+  </nb-card>
+</ng-template>

@@ -1,0 +1,380 @@
+<nav class="navigation">
+  <a href="#" (click)="back()" class="link back-link" aria-label="Back">
+    <nb-icon icon="arrow-back"></nb-icon>
+  </a>
+</nav>
+<nb-card status="success">
+  <nb-card-header>
+    User details
+  </nb-card-header>
+  <nb-card-body>
+    <form [formGroup]="userForm">
+      <!-- (ngSubmit)="saveUser()" -->
+      <div class="row">
+        <div class="col-sm-12 col-md-6">
+          <div class="form-group">
+            <nb-checkbox status="success" [checked]="is_subcon" (change)="changed($event)"></nb-checkbox>
+            <span class="label">Subcontructor</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-sm-12 col-md-6">
+          <div class="form-group">
+            <input
+            type="text"
+            nbInput
+            fullWidth
+            placeholder="First Name"
+            formControlName="first_name"
+            [status]="userForm.get('first_name').dirty ? (userForm.get('first_name').invalid  ? 'danger' : 'success') : 'basic'"
+            [class.is-invalid]="userForm.get('first_name').invalid && userForm.get('first_name').touched">
+            <ng-container *ngIf="submitted && userForm.get('first_name').errors">
+              <p class="caption status-danger" *ngIf="userForm.get('first_name').errors.required">
+                First Name is Required!
+              </p>
+            </ng-container>
+          </div>
+        </div>
+        <div class="col-sm-12 col-md-6">
+          <div class="form-group">
+            <input
+            type="text"
+            nbInput
+            fullWidth
+            placeholder="Last Name"
+            formControlName="last_name"
+            [status]="userForm.get('last_name').dirty ? (userForm.get('last_name').invalid  ? 'danger' : 'success') : 'basic'"
+            [class.is-invalid]="userForm.get('last_name').invalid && userForm.get('last_name').touched">
+            <ng-container *ngIf="submitted && userForm.get('last_name').errors">
+              <p class="caption status-danger" *ngIf="userForm.get('last_name').errors.required">
+                Last Name is Required!
+              </p>
+            </ng-container>
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-sm-12 col-md-6">
+          <div class="form-group">
+            <input
+            type="text"
+            nbInput
+            fullWidth
+            placeholder="Username"
+            formControlName="username"
+            [status]="userForm.get('username').dirty ? (userForm.get('username').invalid  ? 'danger' : 'success') : 'basic'"
+            [class.is-invalid]="userForm.get('username').invalid && userForm.get('username').touched">
+            <ng-container *ngIf="submitted && userForm.get('username').errors">
+              <p class="caption status-danger" *ngIf="userForm.get('username').errors.required">
+                Username is Required!
+              </p>
+            </ng-container>
+          </div>
+        </div>
+        <div class="col-sm-12 col-md-6">
+          <div class="form-group">
+            <input
+            type="email"
+            nbInput
+            fullWidth
+            placeholder="Email"
+            formControlName="email"
+            pattern=".+@.+\..+"
+            [status]="userForm.get('email').dirty ? (userForm.get('email').invalid  ? 'danger' : 'success') : 'basic'"
+            [class.is-invalid]="userForm.get('email').invalid && userForm.get('email').touched">
+            <ng-container *ngIf="submitted && userForm.get('email').errors">
+              <p class="caption status-danger" *ngIf="userForm.get('email').errors.required">
+                Username is Required!
+              </p>
+              <p class="caption status-danger" *ngIf="userForm.get('email').errors.pattern">
+                Email should be the real one!
+              </p>
+            </ng-container>
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-sm-12 col-md-6">
+          <div class="form-group">
+            <input type="password"
+            [type]="getInputType()"
+            nbInput
+            fullWidth
+            placeholder="Password"
+            formControlName="password"
+            [status]="userForm.get('password').dirty ? (userForm.get('password').invalid  ? 'danger' : 'success') : 'basic'"
+            [ngClass]="{ 'is-invalid': userForm.get('password').invalid && userForm.get('password').touched }">
+            <ng-container *ngIf="submitted && userForm.get('password').errors">
+              <p class="caption status-danger" *ngIf="userForm.get('password').errors.required">
+                Password is Required!
+              </p>
+              <p class="caption status-danger" *ngIf="userForm.get('password').errors.minlength">
+                Password must be atleast 8 characters!
+              </p>
+            </ng-container>
+          </div>
+        </div>
+        <div class="col-sm-12 col-md-6">
+          <div class="form-group">
+            <div class="input-group">
+              <div class="col p-0">
+                <input type="password"
+                [type]="getInputType()"
+                nbInput
+                fullWidth
+                placeholder="Confirm Password"
+                formControlName="confirm_password"
+                [status]="userForm.get('confirm_password').dirty ? (userForm.get('confirm_password').invalid  ? 'danger' : 'success') : 'basic'"
+                [ngClass]="{ 'is-invalid': userForm.get('confirm_password').invalid && userForm.get('confirm_password').touched }">
+              </div>
+              <div class="input-group-append">
+                <button class="pwd-btn" nbSuffix nbButton ghost (click)="toggleShowPassword()">
+                  <nb-icon [icon]="showPassword ? 'eye-outline' : 'eye-off-2-outline'" pack="eva"
+                    [attr.aria-label]="showPassword ? 'hide password' : 'show password'">
+                  </nb-icon>
+                </button>
+              </div>
+            </div>
+
+            <ng-container *ngIf="submitted && userForm.get('confirm_password').errors">
+              <p class="caption status-danger" *ngIf="userForm.get('confirm_password').errors.required">
+                Confirm password is Required!
+              </p>
+              <p class="caption status-danger" *ngIf="userForm.get('confirm_password').errors.mustMatch">
+                Passwords must match!
+              </p>
+            </ng-container>
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-sm-12 col-md-6">
+          <div class="form-group">
+            <label class="label">Phone No.</label>
+            <input
+            type="number"
+            nbInput
+            fullWidth
+            placeholder="Phone Number"
+            formControlName="phone_number"
+            [status]="userForm.get('phone_number').dirty ? (userForm.get('phone_number').invalid  ? 'danger' : 'success') : 'basic'"
+            [class.is-invalid]="userForm.get('phone_number').invalid && userForm.get('phone_number').touched">
+            <ng-container *ngIf="submitted && userForm.get('phone_number').errors">
+              <p class="caption status-danger" *ngIf="userForm.get('phone_number').errors.required">
+                Phone Number is Required!
+              </p>
+            </ng-container>
+          </div>
+        </div>
+        <div class="col-sm-12 col-md-6" [hidden]='is_subcon'>
+          <div class="form-group">
+            <label class="label">Employee No.</label>
+            <input
+            type="text"
+            nbInput
+            fullWidth
+            placeholder="Employee Number"
+            formControlName="employee_number"
+            [status]="userForm.get('employee_number').dirty ? (userForm.get('employee_number').invalid  ? 'danger' : 'success') : 'basic'"
+            [class.is-invalid]="userForm.get('employee_number').invalid && userForm.get('employee_number').touched">
+            <ng-container *ngIf="submitted && userForm.get('employee_number').errors">
+              <p class="caption status-danger" *ngIf="userForm.get('employee_number').errors.required">
+                Employee Number is Required!
+              </p>
+            </ng-container>
+          </div>
+        </div>
+        
+        <div class="col-sm-12 col-md-6" [hidden]='!is_subcon'>
+          <div class="form-group">
+            <label class="label">Company Name</label>
+            <div class="input-group">
+              <div class="col p-0">
+                <nb-select fullWidth  placeholder="Select company" formControlName="user_company" selected="">
+                  <nb-option *ngFor="let comp of company" [value]="comp.id">{{comp.name}}</nb-option>
+                </nb-select>
+              </div>
+
+              <div class="input-group-append">
+                <button class="route-btn" nbSuffix nbButton ghost (click)="openComp(dialog2)">
+                  <nb-icon icon="plus-square-outline"></nb-icon>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row" [hidden]='is_subcon'>
+        <div class="col-sm-12 col-md-6">
+          <div class="form-group">
+            <label class="label">Division</label>
+            <div class="input-group">
+              <div class="col p-0">
+                <nb-select fullWidth  placeholder="Select Division" formControlName="division" selected="">
+                  <nb-option *ngFor="let div of divisions" [value]="div.id">{{div.name}}</nb-option>
+                </nb-select>
+              </div>
+
+              <!-- <div class="input-group-append">
+                <button class="route-btn" nbSuffix nbButton ghost (click)="toOrgDivision()">
+                  <nb-icon icon="plus-square-outline"></nb-icon>
+                </button>
+              </div> -->
+            </div>
+          </div>
+        </div>
+
+
+        <div class="col-sm-12 col-md-6">
+          <div class="form-group">
+            <label class="label">Team</label>
+            <div class="input-group">
+              <div class="col p-0">
+                <nb-select fullWidth  placeholder="Select Team" formControlName="team" selected="">
+                  <nb-option *ngFor="let team of teams" [value]="team.id">{{team.name}}</nb-option>
+                </nb-select>
+              </div>
+
+              <!-- <div class="input-group-append">
+                <button class="route-btn" nbSuffix nbButton ghost (click)="toOrgDepartment()">
+                  <nb-icon icon="plus-square-outline"></nb-icon>
+                </button>
+              </div> -->
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-sm-12 col-md-6">
+          <div class="form-group">
+            <label class="label">Role</label>
+            <div class="input-group">
+              <div class="col p-0">
+                <nb-select fullWidth  placeholder="Select Role" formControlName="role" selected="">
+                  <nb-option *ngFor="let role of roles" [value]="role.id">{{role.name}}</nb-option>
+                </nb-select>
+              </div>
+
+              <!-- <div class="input-group-append">
+                <button class="route-btn" nbSuffix nbButton ghost (click)="toRoles()">
+                  <nb-icon icon="plus-square-outline"></nb-icon>
+                </button>
+              </div> -->
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-12 col-md-6">
+          <div class="form-group">
+            <label class="label">Location</label>
+            <div class="input-group">
+              <div class="col p-0">
+                <nb-select fullWidth  placeholder="Select Location" formControlName="location" selected="">
+                  <nb-option *ngFor="let loc of Location" [value]="loc.id">{{loc.name}}</nb-option>
+                </nb-select>
+              </div>
+
+              <div class="input-group-append">
+                <button class="route-btn" nbSuffix nbButton ghost (click)="openLocation(dialog1)">
+                  <nb-icon icon="plus-square-outline"></nb-icon>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+        </div>
+
+
+      <div class="form-group">
+        <button nbButton fullWidth status="info" size="medium" (click)="saveUser()"
+        [disabled]="submitted || !userForm.valid"
+        [class.btn-pulse]="submitted">Submit</button>
+      </div>
+    </form>
+  </nb-card-body>
+</nb-card>
+
+<ng-template #dialog1 let-data let-ref="dialogRef" style="z-index:2;">
+  <nb-card style="width: 25em;">
+    <nb-card-header>Add Location
+      <a (click)="ref.close()" aria-label="Back" style="float: right;" id="close-location">
+        <nb-icon icon="close"></nb-icon>
+      </a>
+    </nb-card-header>
+    <nb-card-body>
+      <form #locationForm="ngForm" (ngSubmit)="saveLocation()">
+        <div class="form-group">
+          <input
+            nbInput
+            autofocus
+            fullWidth
+            fieldSize="medium"
+            placeholder="Location name"
+            (selectedPlace)="placeChangedCallback($event)"
+            [(ngModel)]="LocDetails"
+            #name="ngModel"
+            name="name"
+            ngxAutocomPlace
+             autocorrect="off" autocapitalize="off" spellcheck="off" class="form-control" #search
+            [status]="name.dirty ? (name.invalid  ? 'danger' : 'success') : 'basic'"
+            [attr.aria-invalid]="name.invalid && name.touched ? true : null"
+            required>
+          <ng-container *ngIf="name.invalid && name.touched">
+            <p class="caption status-danger" *ngIf="name.errors?.required">
+              Name is required!
+            </p>
+          </ng-container>
+        </div>
+        <div class="form-group">
+          <button nbButton status="success" size="small" style="float: right;" [disabled]="submitted || !locationForm.valid" [class.btn-pulse]="submitted">submit</button>
+        </div>
+      </form>
+    </nb-card-body>
+  </nb-card>
+</ng-template>
+
+
+
+<ng-template #dialog2 let-data let-ref="dialogRef">
+  <nb-card style="width: 25em;">
+    <nb-card-header>Add Company
+      <a (click)="ref.close()" aria-label="Back" id="close-comp" style="float: right;">
+        <nb-icon icon="close"></nb-icon>
+      </a>
+    </nb-card-header>
+    <nb-card-body>
+      <form #compForm="ngForm" (ngSubmit)="saveCompany(compForm)" aria-labelledby="title">
+        <div class="form-group">
+          <input
+          nbInput
+          autofocus
+          fullWidth
+          fieldSize="large"
+          placeholder="Company name"
+          [(ngModel)]="compForm.name"
+          #name="ngModel"
+          id="input-name"
+          name="name"
+          [status]="name.dirty ? (name.invalid  ? 'danger' : 'success') : 'basic'"
+          [attr.aria-invalid]="name.invalid && name.touched ? true : null"
+          required>
+          <ng-container *ngIf="name.invalid && name.touched">
+            <p class="caption status-danger" *ngIf="name.errors?.required">
+              Company Name is required!
+            </p>
+          </ng-container>
+        </div>
+        <div class="form-group">
+          <button nbButton status="success" size="small" style="float: right;" [disabled]="submitted || compForm.invalid"
+          [class.btn-pulse]="submitted">submit</button>
+        </div>
+      </form>
+    </nb-card-body>
+  </nb-card>
+</ng-template>

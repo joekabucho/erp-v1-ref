@@ -1,0 +1,441 @@
+<div class="row mb-3">
+  <div class="col-12">
+    <a href="#" (click)="back()" class="link back-link" aria-label="Back">
+      <nb-icon icon="arrow-back"></nb-icon>
+    </a>
+  </div>
+</div>
+<div class="row">
+  <div class="col-md-6  col-sm-12">
+    <nb-card size="large" class="upload-details">
+      <nb-card-header class="d-flex justify-content-between flex-wrap">
+
+          <div>
+            <div class="task-title">{{task?.name}}</div>
+            <ng-container *ngIf="task?.end_date === notComplete; else complete">
+              <button nbTooltip="Complete the task progress to 100%" nbTooltipStatus="primary" nbButton hero  status="info" class="comp-btn" (click)="endTask()" [disabled]="task?.progress < 100">complete</button>
+            </ng-container>
+            <ng-template #complete>
+              <button nbButton hero status="success" class="comp-btn">completed</button>
+            </ng-template>
+          </div>
+
+
+          <div class="d-flex mt-2">
+            <ng-container *ngIf="task?.assign?.picture === noImage; else image">
+              <img src="assets/adrian-images/usermg.jpg" alt="user">
+            </ng-container>
+            <ng-template #image>
+              <img  src="{{task?.assign?.picture}}" alt="user">
+            </ng-template>
+
+            <div class="d-flex flex-column m-1">
+              <label class="label">Assinged to</label>
+              <p>{{task?.assign?.name}}</p>
+            </div>
+          </div>
+
+
+          <div class="d-flex mt-2" *ngIf="task?.safety_officer !== noImage">
+            <ng-container *ngIf="task?.safety_officer?.picture === noImage; else image">
+              <img src="assets/adrian-images/usermg.jpg" alt="user">
+            </ng-container>
+            <ng-template #image>
+              <img  src="{{task?.safety_officer?.picture}}" alt="user">
+            </ng-template>
+
+            <div class="d-flex flex-column m-1">
+              <label class="label">Safety officer</label>
+              <p>{{task?.safety_officer?.name}}</p>
+            </div>
+          </div>
+
+          <nb-icon icon="edit-2-outline" (click)="editTaskForm(dialog2)"></nb-icon>
+
+
+
+
+
+
+
+      </nb-card-header>
+      <nb-card-body style="display: flex;" class="d-flex flex-wrap justify-content-between">
+        <div class="col-md-5 col-sm-12 p-0" style="border-right: 1px solid #ced4da;">
+          <div class="progress-wrap">
+            <div class="d-flex justify-content-between">
+              <span class="task-data">Progress</span>
+              <span class="fetched-data">{{task?.progress}}%</span>
+            </div>
+            <div class="progress">
+              <div class="progress-bar progress-bar-striped bg-info" role="progressbar"
+              aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" [ngStyle]="{'width': task?.progress+ '%'}"></div>
+            </div>
+
+
+          </div>
+          <div class="task-info">
+            <div class="task-data"><nb-icon icon="clock-outline"></nb-icon><span>Number of days taken:</span></div>
+            <div class="fetched-data">{{task?.days_running}} days running</div>
+          </div>
+          <div class="task-info">
+            <div class="task-data"><nb-icon icon="calendar-outline"></nb-icon><span>Started at:</span></div>
+            <div class="fetched-data">{{task?.date_started | date: 'longDate'}}</div>
+          </div>
+          <div class="task-info">
+            <div class="task-data"><nb-icon icon="calendar-outline"></nb-icon><span>Updated at:</span></div>
+            <div class="fetched-data">{{task?.updated_at | date: 'longDate'}}</div>
+          </div>
+          <div class="task-info">
+            <div class="task-data"><nb-icon icon="calendar-outline"></nb-icon><span>Due date:</span></div>
+            <div class="fetched-data">{{task?.due_date | date: 'longDate'}}</div>
+          </div>
+        </div>
+        <div class="col-md-7 col-sm-12">
+          <div class="upload-info" (click)="viewSubtasks()">
+            <nb-icon icon="arrow-forward"></nb-icon><span class="upload-text">View Subtasks</span>
+          </div>
+          <div class="upload-info" (click)="openFileModal(dialog)">
+            <nb-icon icon="plus-outline"></nb-icon><span class="upload-text">Add File</span>
+          </div>
+          <div class="upload-info" (click)="openNumberModal(dialog1)">
+            <nb-icon icon="plus-outline"></nb-icon><span class="upload-text">Input Number</span>
+          </div>
+          <div class="upload-info1">
+            <form #commentForm="ngForm">
+              <textarea type="text"
+              nbInput
+              fullWidth
+              fieldSize="giant"
+              placeholder="Add Notes"
+              [(ngModel)]="commentForm.name"
+              #name="ngModel"
+              name="name">
+              </textarea>
+              <button nbButton hero status="primary" size="small" (click)="saveComment(commentForm)">submit</button>
+            </form>
+          </div>
+        </div>
+      </nb-card-body>
+    </nb-card>
+  </div>
+  <div class="col-md-6 col-sm-12">
+    <nb-card size="large" class="view-details">
+      <nb-card-header>
+        <div class="task-title">{{task?.name}}</div>
+      </nb-card-header>
+      <nb-card-body>
+        <nb-tabset>
+          <nb-tab tabTitle="Files" badgeText="{{files.length}}" badgeStatus="success">
+            <nb-card class="image" *ngFor="let file of files">
+              <nb-card-header>
+                <div class="image-detail">
+                  <div class="image-user">{{file.posted_by.name}} <span class="image-text">posted this file.</span></div>
+                  <div class="image-time">{{file.date_posted | date: 'medium'}}</div>
+                </div>
+                <div class="dots"></div>
+              </nb-card-header>
+              <nb-card-body>
+                <ng-container *ngIf="file.upload_type.startsWith('image', 0) ; else notImage">
+                  <a href="{{file.file}}" target="_blank">
+                    <img src="{{file.file}}" alt="image">
+                  </a>
+                </ng-container>
+                <ng-template #notImage>
+                  <a href="{{file.file}}" target="_blank" class="d-flex img-link">
+                    <img class="img-file" src="assets/images/Filetype-icon.png" alt="image">
+                    <div class="file-name">{{file.name}}</div>
+                  </a>
+                </ng-template>
+              </nb-card-body>
+              <nb-card-footer class="image-detail">
+                <div class="image-user">comment: <span class="image-text">{{file.comment}}</span></div>
+              </nb-card-footer>
+            </nb-card>
+          </nb-tab>
+
+          <nb-tab tabTitle="Inputs" badgeText="{{numberInputs.length}}" badgeStatus="success">
+            <ol>
+              <li class="num-list" *ngFor="let num of numberInputs">{{num.number}} {{num.metric.name}} - {{num.field_name.name}}</li>
+            </ol>
+          </nb-tab>
+
+          <nb-tab tabTitle="Notes" badgeText="{{comments.length}}" badgeStatus="success">
+            <div class="comment" *ngFor="let com of comments">
+
+              <ng-container *ngIf="userDetails?.id === com.posted_by.id; else pic">
+                <ng-container *ngIf="userDetails?.image === noImage || userDetails?.image === ''; else image">
+                  <img src="assets/adrian-images/usermg.jpg" alt="user">
+                </ng-container>
+                <ng-template #image>
+                  <img  src="{{userDetails.image}}" alt="user">
+                </ng-template>
+              </ng-container>
+              <ng-template #pic>
+                <img src="assets/adrian-images/usermg.jpg" alt="user">
+              </ng-template>
+
+              <!-- <img src="assets/images/haron.jpeg" alt="user"> -->
+              <div class="comment-detail">
+                <div class="com-user">{{com.posted_by.name}}</div>
+                <div class="com-text">{{com.comment}}</div>
+                <div class="com-time">{{com.created_at | date: 'mediumDate'}}</div>
+              </div>
+            </div>
+          </nb-tab>
+
+        </nb-tabset>
+      </nb-card-body>
+    </nb-card>
+  </div>
+</div>
+
+<ng-template #dialog let-data let-ref="dialogRef">
+  <nb-card class="site-form" style="width: 30em;" status="success">
+    <nb-card-header>Add file
+      <a (click)="ref.close()" aria-label="Back" style="float: right;" id="close-file">
+        <nb-icon icon="close"></nb-icon>
+      </a>
+    </nb-card-header>
+    <nb-card-body>
+      <form #fileForm='ngForm'>
+
+        <div class="form-group m-2 mb-3">
+          <input type="file" nbInput fullWidth id="inputFile" class="p-0" (change)="onErpFileSelected($event)">
+        </div>
+
+        <div class="form-group d-flex justify-content-between m-2 mb-3">
+          <div class="w-100">
+            <label class="label">Description</label>
+            <nb-select fullWidth  placeholder="Select File Type" [(ngModel)]="fileForm.file_type"  name="file_type" selected="" required>
+              <nb-option *ngFor="let type of fileType" [value]="type.id">{{type.name}}</nb-option>
+            </nb-select>
+          </div>
+          <div class="icons mt-4">
+            <nb-icon class="show" icon="plus-square-outline" *ngIf="!addType" (click)="addType=true"></nb-icon>
+            <nb-icon class="hide" icon="close-outline" *ngIf="addType" (click)="addType=false"></nb-icon>
+          </div>
+        </div>
+        <div class="form-group item-add" *ngIf="addType">
+          <form class="d-flex" #fTypeForm="ngForm">
+            <input fullwidth type="text" nbInput fullWidth placeholder="Add file Type" [(ngModel)]="fTypeForm.name" #name="ngModel" name="name">
+            <button nbButton hero status="info" size="small" class="add-btn"
+            [class.btn-pulse]="submitted" (click)="saveFileType(fTypeForm); addType=false">Add</button>
+          </form>
+        </div>
+
+        <div class="form-group m-2 mb-3">
+          <label class="label">Comment</label>
+          <input
+          nbInput
+          autofocus
+          fullWidth
+          fieldSize="medium"
+          placeholder="Comment"
+          [(ngModel)]="fileForm.comment"
+          #comment="ngModel"
+          name="comment"
+          [status]="comment.dirty ? (comment.invalid  ? 'danger' : 'success') : 'basic'"
+          [attr.aria-invalid]="comment.invalid && comment.touched ? true : null"
+          required>
+          <ng-container *ngIf="comment.invalid && comment.touched">
+            <p class="caption status-danger mt-4" *ngIf="comment.errors?.required">
+              Required!
+            </p>
+          </ng-container>
+        </div>
+
+      </form>
+
+      <!-- <form #numberForm='ngForm'>
+        <div class="form-group">
+          <input
+          type="number"
+          nbInput
+          autofocus
+          fullWidth
+          fieldSize="medium"
+          placeholder="Enter Amount"
+          [(ngModel)]="numberForm.number"
+          #number="ngModel"
+          name="number"
+          [status]="number.dirty ? (number.invalid  ? 'danger' : 'success') : 'basic'"
+          [attr.aria-invalid]="number.invalid && number.touched ? true : null">
+        </div>
+      </form> -->
+
+      <div class="form-group">
+        <button nbButton status="success" size="small" style="float: right;" [disabled]="submitted || fileForm.invalid"
+        [class.btn-pulse]="submitted" (click)="saveFile(fileForm, dialog1)">submit</button>
+        <!-- [class.btn-pulse]="submitted" (click)="saveFile(fileForm); saveNumFile(numberForm)">submit</button> -->
+
+      </div>
+
+    </nb-card-body>
+  </nb-card>
+</ng-template>
+
+
+<ng-template #dialog1 let-data let-ref="dialogRef">
+  <nb-card class="site-form" style="width: 30em;" status="success">
+    <nb-card-header>Number
+      <a (click)="ref.close()" aria-label="Back" style="float: right;" id="close-num">
+        <nb-icon icon="close"></nb-icon>
+      </a>
+    </nb-card-header>
+    <nb-card-body>
+      <form #numberForm='ngForm'>
+
+        <div class="form-group d-flex justify-content-between m-2 mb-3">
+          <div class="w-100">
+            <label class="label">Name</label>
+            <nb-select fullWidth  placeholder="Select Field Name" [(ngModel)]="numberForm.field_name"  name="field_name" selected="" required>
+              <nb-option *ngFor="let num of numberFields" [value]="num.id">{{num.name}}</nb-option>
+            </nb-select>
+          </div>
+          <div class="icons mt-4">
+            <nb-icon class="show" icon="plus-square-outline" *ngIf="!addActivity" (click)="addActivity=true"></nb-icon>
+            <nb-icon class="hide" icon="close-outline" *ngIf="addActivity" (click)="addActivity=false"></nb-icon>
+          </div>
+        </div>
+        <div class="form-group item-add" *ngIf="addActivity">
+          <form class="d-flex" #fieldForm="ngForm">
+            <input fullwidth type="text" nbInput fullWidth placeholder="Add field name" [(ngModel)]="fieldForm.name" #name="ngModel" name="name">
+            <button nbButton hero status="info" size="small" class="add-btn"
+            [class.btn-pulse]="submitted" (click)="saveNumFieldName(fieldForm); addActivity=false">Add</button>
+          </form>
+        </div>
+
+        <div class="form-group d-flex justify-content-between m-2 mb-3">
+          <div class="w-100">
+            <label class="label">Metric</label>
+            <nb-select fullWidth  placeholder="Select Metric" [(ngModel)]="numberForm.metric"  name="metric" selected="" required>
+              <nb-option *ngFor="let met of metrics" [value]="met.id">{{met.name}}</nb-option>
+            </nb-select>
+          </div>
+          <div class="icons mt-4">
+            <nb-icon class="show" icon="plus-square-outline" *ngIf="!addItem" (click)="addItem=true"></nb-icon>
+            <nb-icon class="hide" icon="close-outline" *ngIf="addItem" (click)="addItem=false"></nb-icon>
+          </div>
+        </div>
+        <div class="form-group item-add" *ngIf="addItem">
+          <form class="d-flex" #metForm="ngForm">
+            <input type="text" nbInput fullWidth placeholder="Add Metric" [(ngModel)]="metForm.name" #name="ngModel" name="name">
+            <nb-select fullWidth  placeholder="Field Name" [(ngModel)]="metForm.field_name"  name="field_name" selected="" required>
+              <nb-option *ngFor="let num of numberFields" [value]="num.id">{{num.name}}</nb-option>
+            </nb-select>
+            <button nbButton hero status="info" size="small" class="add-btn"
+            [class.btn-pulse]="submitted" (click)="saveMet(metForm); addItem=false">Add</button>
+          </form>
+        </div>
+
+        <div class="form-group m-2 mb-3">
+          <label class="label">Input</label>
+          <input
+          type="number"
+          nbInput
+          autofocus
+          fullWidth
+          fieldSize="medium"
+          placeholder="Number"
+          [(ngModel)]="numberForm.number"
+          #number="ngModel"
+          name="number"
+          [status]="number.dirty ? (number.invalid  ? 'danger' : 'success') : 'basic'"
+          [attr.aria-invalid]="number.invalid && number.touched ? true : null"
+          required>
+          <ng-container *ngIf="number.invalid && number.touched">
+            <p class="caption status-danger mt-2" *ngIf="number.errors?.required">
+              Required!
+            </p>
+          </ng-container>
+        </div>
+
+        <div class="form-group">
+          <button nbButton status="success" size="small" style="float: right;" [disabled]="submitted || numberForm.invalid"
+          [class.btn-pulse]="submitted" (click)="saveNumber(numberForm)">submit</button>
+        </div>
+      </form>
+    </nb-card-body>
+  </nb-card>
+</ng-template>
+
+
+
+<ng-template #dialog2 let-data let-ref="dialogRef">
+  <nb-card style="width: 35em;" size="large" status="success">
+    <nb-card-header>Edit Task
+      <a (click)="ref.close()" aria-label="Back" style="float: right;"  id="close-task">
+        <nb-icon icon="close"></nb-icon>
+      </a>
+    </nb-card-header>
+    <nb-card-body>
+      <form [formGroup]="taskEditForm">
+
+        <div class="form-group m-2 mb-3">
+          <label class="label">Name</label>
+          <input
+          type="text"
+          nbInput
+          fullWidth
+          placeholder="Task name"
+          formControlName="name">
+        </div>
+
+        <div class="form-group m-2 mb-3">
+          <label class="label">Assinged to</label>
+          <nb-select fullWidth  placeholder="Select Technician" formControlName="assign" selected="">
+            <nb-option *ngFor="let manager of taskManager" [value]="manager.id">{{manager.first_name}} {{manager.last_name}} - {{manager.role.name}}, {{manager.division.name}}</nb-option>
+          </nb-select>
+        </div>
+
+
+        <div class="form-group m-2 mb-3">
+          <label class="label">Safety Officer</label>
+          <nb-select fullWidth  placeholder="Select safety officer" formControlName="safety_officer" selected="">
+            <nb-option *ngFor="let manager of safetyOfficials" [value]="manager.id">{{manager.first_name}} {{manager.last_name}}</nb-option>
+          </nb-select>
+        </div>
+
+
+
+        <div class="form-group d-flex justify-content-between m-2 mb-3">
+          <div class="w-100">
+            <label class="label">KPI</label>
+            <nb-select fullWidth  placeholder="Select KPI" formControlName="kpi" selected="" >
+              <nb-option *ngFor="let onekpi of kpis" [value]="onekpi.id">{{onekpi.name}} - {{onekpi.number_of_days}} days</nb-option>
+            </nb-select>
+          </div>
+
+          <div class="icons mt-4">
+            <nb-icon class="show" icon="plus-square-outline" *ngIf="!addActivity" (click)="addActivity=true"></nb-icon>
+            <nb-icon class="hide" icon="close-outline" *ngIf="addActivity" (click)="addActivity=false"></nb-icon>
+          </div>
+        </div>
+
+        <div class="form-group item-add" *ngIf="addActivity">
+          <form class="d-flex" #kpiForm="ngForm">
+            <input type="text" nbInput fullWidth placeholder="KPI name" [(ngModel)]="kpiForm.name" #name="ngModel" name="name">
+            <input type="number" nbInput fullWidth placeholder="Number of days" [(ngModel)]="kpiForm.number_of_days" #number_of_days="ngModel" name="number_of_days">
+            <button nbButton hero status="info" size="small" class="add-btn" [disabled]="submitted || kpiForm.invalid"
+            [class.btn-pulse]="submitted" (click)="savekpi(kpiForm); addActivity=false">Add</button>
+          </form>
+        </div>
+
+
+
+        <div class="form-group m-2 mb-3">
+          <label class="label">Tag</label>
+          <nb-select fullWidth  placeholder="Select Priority" formControlName="priority" selected="">
+            <nb-option *ngFor="let tag of priorities" [value]="tag">{{tag}}</nb-option>
+          </nb-select>
+        </div>
+
+      </form>
+
+    </nb-card-body>
+    <nb-card-footer>
+      <button nbButton status="success" size="small" style="float: right;" [disabled]="submitted || !taskEditForm.valid"
+      [class.btn-pulse]="submitted" (click)="editTask(task)">submit</button>
+    </nb-card-footer>
+  </nb-card>
+</ng-template>

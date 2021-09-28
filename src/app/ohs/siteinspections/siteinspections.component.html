@@ -1,0 +1,390 @@
+<div class="row m-2">
+  <div class="col-sm-12">
+    <nb-card>
+      <nb-card-header>Site Inspections
+        <div class="d-flex" style="width: 30%;">
+          <button nbButton status="success" size="small" (click)="create(dialog1)">Add Site Management Checklist</button>
+          <input nbInput size="small" type="text" class="form-control form-control ml-2" autocomplete="on" placeholder="Search by Name" [(ngModel)]="searchItem" (ngModelChange)="fetchDetails()">
+        </div>
+      </nb-card-header>
+      <nb-card-body>
+
+
+        <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" class="table table-striped table-hover">
+          <thead>
+          <tr>
+            <th *ngFor="let head of headElements" scope="col">{{head}}</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr *ngFor="let site of siteInspection; index as i;trackBy: identify">
+            <td></td>
+            <td>{{ i + 1 }}</td>
+            <td>{{site.ref_number}}</td>
+            <td>{{site.created_at | date: 'shortDate'}}</td>
+            <td>{{site.created_at | date: 'shortTime'}}</td>
+            <td>{{site.site?.name}}</td>
+            <td>{{site.contractor}}</td>
+            <td>{{site.site_engineer}}</td>
+            <td>{{site.work_description}}</td>
+            <td>{{site.ppe}}</td>
+            <td>{{site.risk_treatment}}</td>
+            <td>{{site.compliance_to_safaricom}}</td>
+            <td>{{site.provision_of_work_equipment}}</td>
+            <td>{{site.emergency_response}}</td>
+            <td><nb-icon icon="edit-outline" class="edit" (click)="openEditForm(dialog, site)"></nb-icon></td>
+            <td><nb-icon icon="trash-outline" class="trash" (click)="confirmDelete(site.id)"></nb-icon></td>
+          </tr>
+          </tbody>
+        </table>
+
+      </nb-card-body>
+      <nb-card-footer class="d-flex p-1">
+        <div class="form-group">
+          <nb-select [(selected)]="itemsPerPage" [(ngModel)]="itemsPerPage" (selectedChange)="onChange($event)" placeholder="Select fetched items">
+            <nb-option  [value]="25">25</nb-option>
+            <nb-option  [value]="50">50</nb-option>
+            <nb-option  [value]="100">100</nb-option>
+            <nb-option  [value]="100000000">All</nb-option>
+          </nb-select>
+        </div>
+      </nb-card-footer>
+    </nb-card>
+  </div>
+</div>
+
+<ion-content fullscreen>
+  <ion-fab  horizontal="end" style="bottom: 80px" slot="fixed" edge>
+    <ion-fab-button>
+      <ion-icon name="add" (click)="showModal()"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+  <ion-card  *ngFor="let site of siteInspection; index as i;trackBy: identify">
+    <ion-item>
+      <ion-label>{{site.site?.name}}</ion-label>
+      <ion-button  (click)="confirmDelete(site.id)">Delete</ion-button>
+    </ion-item>
+    <ion-card-content (click)="showEdit(site.id)">
+      <ion-list>
+        Date:{{site.created_at | date: 'shortDate'}}<br>
+        Time:{{site.created_at | date: 'shortTime'}}<br>
+        Contractor:{{site.contractor}}<br>
+        Site engineer:{{site.site_engineer}}<br>
+        Treatment:{{site.risk_treatment}}<br>
+        Emergency response:{{site.emergency_response}}<br>
+      </ion-list>
+    </ion-card-content>
+  </ion-card>
+</ion-content>
+
+<ng-template #dialog let-data let-ref="dialogRef">
+  <nb-card status="success" style="width: 40em; max-width: 95vw !important;" size="giant">
+    <nb-card-header>Edit Site Management Checklist
+      <a (click)="ref.close()" aria-label="Back" id="close-edit" style="float: right;">
+        <nb-icon icon="close"></nb-icon>
+      </a>
+    </nb-card-header>
+    <nb-card-body>
+      <form [formGroup]="inspectionEditForm">
+        <div class="form-group">
+          <input type="date" nbInput fullWidth placeholder="Date" formControlName="date">
+        </div>
+        <div class="form-group d-flex justify-content-between">
+          <ng-autocomplete [data]="Sites" [searchKeyword]="keywordSite" (selected)='selectSite($event)'
+                           (inputChanged)='onChangeSearch($event)' (inputFocused)='onFocusedSite($event)' [itemTemplate]="itemTemplateSite"
+                           [notFoundTemplate]="notFoundTemplate"
+                           placeholder="Select site" formControlName="site" >
+          </ng-autocomplete>
+
+          <ng-template #itemTemplateSite let-item>
+            <a [innerHTML]="item.name"></a>
+          </ng-template>
+
+          <ng-template #notFoundTemplate let-notFound>
+            <div [innerHTML]="notFound"></div>
+          </ng-template>
+          <button class="route-btn" nbSuffix nbButton ghost (click)="openSite(dialog3)">
+            <nb-icon icon="plus-square-outline"></nb-icon>
+          </button>
+        </div>
+        <div class="form-group">
+          <label class="label">Contractor</label>
+          <input type="text" nbInput fullWidth placeholder="Contractor" formControlName="contractor">
+        </div>
+        <div class="form-group">
+          <label class="label">Site Engineer</label>
+          <input type="text" nbInput fullWidth placeholder="Site Engineer" formControlName="site_engineer">
+        </div>
+        <div class="form-group">
+          <label class="label">Description of Work</label>
+          <textarea type="text" nbInput fullWidth placeholder="Work description" formControlName="work_description">
+          </textarea>
+        </div>
+        <div class="form-group justify-content-between d-flex">
+          <label class="label">Safety induction done?</label>
+          <nb-radio [value]="'yes'" formControlName="work_description">Yes
+          </nb-radio>
+          <nb-radio [value]="'no'" formControlName="work_description">No
+          </nb-radio>
+        </div>
+        <div class="form-group justify-content-between d-flex">
+          <label class="label">Toolbox talk done?</label>
+          <nb-radio [value]="'yes'" formControlName="work_description">Yes
+          </nb-radio>
+          <nb-radio [value]="'no'" formControlName="work_description">No
+          </nb-radio>
+        </div>
+        <div class="form-group justify-content-between d-flex">
+          <label class="label">Job hazard analysis done?</label>
+          <nb-radio [value]="yes" formControlName="work_description">Yes
+          </nb-radio>
+          <nb-radio [value]="no" formControlName="work_description">No
+          </nb-radio>
+        </div>
+        <div class="form-group justify-content-between d-flex">
+          <label class="label">Appropriate ppe provided?</label>
+          <nb-radio [value]="yes" formControlName="work_description">Yes
+          </nb-radio>
+          <nb-radio [value]="no" formControlName="work_description">No
+          </nb-radio>
+        </div>
+        <div class="form-group justify-content-between d-flex">
+          <label class="label">Worn out PPEs?</label>
+          <nb-radio [value]="yes" formControlName="work_description">Yes
+          </nb-radio>
+          <nb-radio [value]="no" formControlName="work_description">No
+          </nb-radio>
+        </div>
+        <div class="form-group justify-content-between d-flex">
+          <label class="label">Are PPEs clean?</label>
+          <nb-radio [value]="yes" formControlName="work_description">Yes
+          </nb-radio>
+          <nb-radio [value]="no" formControlName="work_description">No
+          </nb-radio>
+        </div>
+        <div class="form-group">
+          <label class="label">Competence trainings;</label>
+        </div>
+        <div class="form-group justify-content-between d-flex">
+          <label class="label">Work at height?</label>
+          <nb-radio [value]="yes" formControlName="work_description">Yes
+          </nb-radio>
+          <nb-radio [value]="no" formControlName="work_description">No
+          </nb-radio>
+        </div>
+        <div class="form-group justify-content-between d-flex">
+          <label class="label">Pole climbing?</label>
+          <nb-radio [value]="yes" formControlName="work_description">Yes
+          </nb-radio>
+          <nb-radio [value]="no" formControlName="work_description">No
+          </nb-radio>
+        </div>
+        <div class="form-group justify-content-between d-flex">
+          <label class="label">Electrical safety?</label>
+          <nb-radio [value]="yes" formControlName="work_description">Yes
+          </nb-radio>
+          <nb-radio [value]="no" formControlName="work_description">No
+          </nb-radio>
+        </div>
+        <div class="form-group">
+          <label class="label">Compliance trainings;</label>
+        </div>
+        <div class="form-group justify-content-between d-flex">
+          <label class="label">First aid</label>
+          <nb-radio [value]="yes" formControlName="work_description">Yes
+          </nb-radio>
+          <nb-radio [value]="no" formControlName="work_description">No
+          </nb-radio>
+        </div>
+        <div class="form-group justify-content-between d-flex">
+          <label class="label">Fire safety</label>
+          <nb-radio [value]="yes" formControlName="work_description">Yes
+          </nb-radio>
+          <nb-radio [value]="no" formControlName="work_description">No
+          </nb-radio>
+        </div>
+        <div class="form-group justify-content-between d-flex">
+          <label class="label">Occupational health and safety</label>
+          <nb-radio [value]="yes" formControlName="work_description">Yes
+          </nb-radio>
+          <nb-radio [value]="no" formControlName="work_description">No
+          </nb-radio>
+        </div>
+        <div class="form-group justify-content-between d-flex">
+          <label class="label">Permit to work acquired</label>
+          <nb-radio [value]="yes" formControlName="work_description">Yes
+          </nb-radio>
+          <nb-radio [value]="no" formControlName="work_description">No
+          </nb-radio>
+        </div>
+        <div class="form-group justify-content-between d-flex">
+          <label class="label">Is the OSH app being used?</label>
+          <nb-radio [value]="yes" formControlName="work_description">Yes
+          </nb-radio>
+          <nb-radio [value]="no" formControlName="work_description">No
+          </nb-radio>
+        </div>
+        <div class="form-group">
+          <button nbButton status="success" size="small" style="float: right;" [disabled]="submitted || !inspectionForm.valid"
+          [class.btn-pulse]="submitted" (click)="saveSiteInspection()">submit</button>
+        </div>
+      </form>
+    </nb-card-body>
+  </nb-card>
+</ng-template>
+
+<ng-template #dialog1 let-data let-ref="dialogRef">
+  <nb-card status="success" style="width: 40em; max-width: 95vw !important;" size="giant">
+    <nb-card-header>Create Site Management Checklist
+      <a (click)="ref.close();flush();" aria-label="Back" id="close-edit" style="float: right;">
+        <nb-icon icon="close"></nb-icon>
+      </a>
+    </nb-card-header>
+    <nb-card-body>
+      <form [formGroup]="inspectionForm">
+        <div class="form-group">
+          <input type="date" nbInput fullWidth placeholder="Date" formControlName="date">
+        </div>
+        <div class="form-group d-flex justify-content-between">
+          <ng-autocomplete [data]="Sites" [searchKeyword]="keywordSite" (selected)='selectSite($event)'
+                           (inputChanged)='onChangeSearch($event)' (inputFocused)='onFocusedSite($event)' [itemTemplate]="itemTemplateSite"
+                           [notFoundTemplate]="notFoundTemplate"
+                           placeholder="Select site" formControlName="site" >
+          </ng-autocomplete>
+
+          <ng-template #itemTemplateSite let-item>
+            <a [innerHTML]="item.name"></a>
+          </ng-template>
+
+          <ng-template #notFoundTemplate let-notFound>
+            <div [innerHTML]="notFound"></div>
+          </ng-template>
+          <button class="route-btn" nbSuffix nbButton ghost (click)="openSite(dialog3)">
+            <nb-icon icon="plus-square-outline"></nb-icon>
+          </button>
+        </div>
+        <div class="form-group">
+          <label class="label">Contractor</label>
+          <input type="text" nbInput fullWidth placeholder="Contractor" formControlName="contractor">
+        </div>
+        <div class="form-group">
+          <label class="label">Site Engineer</label>
+          <input type="text" nbInput fullWidth placeholder="Site Engineer" formControlName="site_engineer">
+        </div>
+        <div class="form-group">
+          <label class="label">Description of Work</label>
+          <textarea type="text" nbInput fullWidth placeholder="Work description" formControlName="work_description">
+          </textarea>
+        </div>
+        <div class="form-group justify-content-between d-flex">
+          <label class="label">Safety induction done?</label>
+          <nb-radio [value]="yes" formControlName="work_description">Yes
+          </nb-radio>
+          <nb-radio [value]="no" formControlName="work_description">No
+          </nb-radio>
+        </div>
+        <div class="form-group justify-content-between d-flex">
+          <label class="label">Toolbox talk done?</label>
+          <nb-radio [value]="yes" formControlName="work_description">Yes
+          </nb-radio>
+          <nb-radio [value]="no" formControlName="work_description">No
+          </nb-radio>
+        </div>
+        <div class="form-group justify-content-between d-flex">
+          <label class="label">Job hazard analysis done?</label>
+          <nb-radio [value]="yes" formControlName="work_description">Yes
+          </nb-radio>
+          <nb-radio [value]="no" formControlName="work_description">No
+          </nb-radio>
+        </div>
+        <div class="form-group justify-content-between d-flex">
+          <label class="label">Appropriate ppe provided?</label>
+          <nb-radio [value]="yes" formControlName="work_description">Yes
+          </nb-radio>
+          <nb-radio [value]="no" formControlName="work_description">No
+          </nb-radio>
+        </div>
+        <div class="form-group justify-content-between d-flex">
+          <label class="label">Worn out PPEs?</label>
+          <nb-radio [value]="yes" formControlName="work_description">Yes
+          </nb-radio>
+          <nb-radio [value]="no" formControlName="work_description">No
+          </nb-radio>
+        </div>
+        <div class="form-group justify-content-between d-flex">
+          <label class="label">Are PPEs clean?</label>
+          <nb-radio [value]="yes" formControlName="work_description">Yes
+          </nb-radio>
+          <nb-radio [value]="no" formControlName="work_description">No
+          </nb-radio>
+        </div>
+        <div class="form-group">
+          <strong class="label">Competence trainings;</strong>
+        </div>
+        <div class="form-group justify-content-between d-flex">
+          <label class="label">Work at height?</label>
+          <nb-radio [value]="yes" formControlName="work_description">Yes
+          </nb-radio>
+          <nb-radio [value]="no" formControlName="work_description">No
+          </nb-radio>
+        </div>
+        <div class="form-group justify-content-between d-flex">
+          <label class="label">Pole climbing?</label>
+          <nb-radio [value]="yes" formControlName="work_description">Yes
+          </nb-radio>
+          <nb-radio [value]="no" formControlName="work_description">No
+          </nb-radio>
+        </div>
+        <div class="form-group justify-content-between d-flex">
+          <label class="label">Electrical safety?</label>
+          <nb-radio [value]="yes" formControlName="work_description">Yes
+          </nb-radio>
+          <nb-radio [value]="no" formControlName="work_description">No
+          </nb-radio>
+        </div>
+        <div class="form-group">
+          <strong class="label">Compliance trainings;</strong>
+        </div>
+        <div class="form-group justify-content-between d-flex">
+          <label class="label">First aid</label>
+          <nb-radio [value]="yes" formControlName="work_description">Yes
+          </nb-radio>
+          <nb-radio [value]="no" formControlName="work_description">No
+          </nb-radio>
+        </div>
+        <div class="form-group justify-content-between d-flex">
+          <label class="label">Fire safety</label>
+          <nb-radio [value]="yes" formControlName="work_description">Yes
+          </nb-radio>
+          <nb-radio [value]="no" formControlName="work_description">No
+          </nb-radio>
+        </div>
+        <div class="form-group justify-content-between d-flex">
+          <label class="label">Occupational health and safety</label>
+          <nb-radio [value]="yes" formControlName="work_description">Yes
+          </nb-radio>
+          <nb-radio [value]="no" formControlName="work_description">No
+          </nb-radio>
+        </div>
+        <div class="form-group justify-content-between d-flex">
+          <label class="label">Permit to work acquired</label>
+          <nb-radio [value]="yes" formControlName="work_description">Yes
+          </nb-radio>
+          <nb-radio [value]="no" formControlName="work_description">No
+          </nb-radio>
+        </div>
+        <div class="form-group justify-content-between d-flex">
+          <label class="label">Is the OSH app being used?</label>
+          <nb-radio [value]="yes" formControlName="work_description">Yes
+          </nb-radio>
+          <nb-radio [value]="no" formControlName="work_description">No
+          </nb-radio>
+        </div>
+        <div class="form-group">
+          <button nbButton status="success" size="small" style="float: right;"
+                  [class.btn-pulse]="submitted" (click)="createSiteInspection()">submit</button>
+        </div>
+      </form>
+    </nb-card-body>
+  </nb-card>
+</ng-template>

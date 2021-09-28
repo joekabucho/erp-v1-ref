@@ -1,0 +1,116 @@
+<div class="row">
+  <div class="col-sm-12 col-md-12">
+    <nb-card size="giant" status="primary">
+      <nb-card-header class="d-flex justify-content-between">
+        <div class="d-flex">
+          {{casualDates.length}} Weeks
+          <div class="form-group ml-4">
+            <nb-select placeholder="Year" [(selected)]="currentYear" [(ngModel)]="currentYear" (selectedChange)="onChangeYear($event)">
+              <nb-option *ngFor="let year of years" [value]="year">{{year}}</nb-option>
+            </nb-select>
+          </div>
+        </div>
+
+        <div class="d-flex">
+          <input nbInput size="small" type="text" class="form-control mr-2" [(ngModel)]="searchDates" autocomplete="on" placeholder="Search">
+          <div class="inputWrapper">
+            Import
+            <input class="fileInput" type="file" name="file1" (change)="onChange($event)"/>
+          </div>
+          <br>
+          <div class="inputWrapper">
+            Export
+            <input class="fileInput" name="file1" (click)="openAggregatedReport(dialog1)"/>
+          </div>
+        </div>
+
+      </nb-card-header>
+      <nb-card-body>
+        <table class="table table-striped table-hover">
+          <thead>
+            <tr>
+              <th *ngFor="let head of casualDateElements" scope="col">{{head}}</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let date of casualDates | filter: searchDates; index as i">
+              <th scope="row" (click)="viewCasualDetails(date)" class="week">week:{{ date.week}}</th>
+              <td>
+                <li *ngFor="let item of date.created_by | keyvalue" class="technician" (click)="viewByTechnicians(item.key, date)">{{item.value}}</li>
+              </td>
+              <td>{{date.total_num_casuals}}</td>
+              <td style="color: #00d68f;">{{date.total_num_of_paid_casuals}}</td>
+              <td style="color: #ff3d71;">{{date.total_num_of_unpaid_casuals}}</td>
+            </tr>
+          </tbody>
+        </table>
+      </nb-card-body>
+    </nb-card>
+  </div>
+
+</div>
+<ng-template #dialog1 let-data let-ref="dialogRef">
+  <nb-card status="success" style="width: 62em; max-width: 95vw !important;" size="giant">
+    <nb-card-header class="d-flex justify-content-between">
+      <div class="d-flex">
+      Casuals Aggregated Report Preview
+      <div class="form-group ml-4">
+        <nb-select placeholder="Weeks" [(selected)]="weekSelected"  (selectedChange)="onChangeWeek()">
+          <nb-option *ngFor="let week of weeks" [value]="week">Week {{week}}</nb-option>
+        </nb-select>
+      </div>
+      </div>
+      <div class="d-flex">
+      <button nbButton status="primary" size="small"  (click)="exportexcel()">Download</button>
+      <a (click)="ref.close()" aria-label="Back"   id="close-edit">
+        <nb-icon icon="close"></nb-icon>
+      </a>
+      </div>
+    </nb-card-header>
+    <nb-card-body>
+      <table class="table table-striped table-hover" id="excel-table">
+        <thead>
+
+        <tr>
+          <th scope="col">NO.</th>
+          <th scope="col">NAME</th>
+          <th scope="col">ID NO.</th>
+          <th scope="col">TEL NO.</th>
+          <th scope="col">DATES WORKED</th>
+          <th scope="col">TOTAL WEEKLY AMOUNT</th>
+
+        </tr>
+
+
+        </thead>
+        <tbody>
+        <tr *ngFor="let agg of aggregatedReport;index as i;">
+          <td style="width: 5px;">{{ i + 1 }}</td>
+          <td>{{agg.casual?.name}}</td>
+          <td>{{agg.casual?.id_number}}</td>
+          <td>{{agg.casual?.contact_number}}</td>
+          <td>
+            <table>
+               <tr>
+                 <th  scope="col">DATE</th>
+                 <th  scope="col">TIME IN</th>
+                 <th  scope="col">TIME OUT</th>
+                 <th  scope="col">PAID</th>
+                 <th  scope="col">AMOUNT</th>
+               </tr>
+              <tr *ngFor="let dates of agg.dates_worked">
+                <td>{{dates.date}}</td>
+                <td>{{dates.time_in}}</td>
+                <td>{{dates.time_out}}</td>
+                <td>{{dates.is_paid}}</td>
+                <td>{{dates.amount}}</td>
+              </tr>
+             </table>
+          </td>
+          <td>{{agg.total_week_amount}}</td>
+        </tr>
+        </tbody>
+      </table>
+    </nb-card-body>
+  </nb-card>
+</ng-template>

@@ -1,0 +1,120 @@
+<div class="user-section">
+  <div class="users-table">
+    <nb-card status="info">
+      <nb-card-header>
+        <div>{{usersData.length}} Users</div>
+
+        <!-- <div class="form-group m-2 mb-3">
+          <label class="label">Division</label>
+        </div> -->
+
+        <nb-select placeholder="Division" (selectedChange)="onDivisionChange($event)" selected="" class="mr-2 ml-4">
+          <nb-option [value]="null">All</nb-option>
+          <nb-option *ngFor="let div of divisions" [value]="div.id">{{div.name}}</nb-option>
+        </nb-select>
+        <nb-select placeholder="Team" (selectedChange)="onTeamChange($event)" selected="" class="mr-2 ml-2">
+          <nb-option [value]="null">All</nb-option>
+          <nb-option *ngFor="let team of teams" [value]="team.id">{{team.name}}</nb-option>
+        </nb-select>
+        <nb-select placeholder="Role" (selectedChange)="onRoleChange($event)" selected="" class="mr-2 ml-2">
+          <nb-option [value]="null">All</nb-option>
+          <nb-option *ngFor="let role of roles" [value]="role.id">{{role.name}}</nb-option>
+        </nb-select>
+        <input nbInput size="small" type="text" class="form-control ml-auto" [(ngModel)]="searchTerm" autocomplete="on" placeholder="Search">
+        <button nbButton hero size="small" class="ml-4" status="success" (click)="addUser()">Create user</button>
+      </nb-card-header>
+      <nb-card-body class="pt-0 pb-0">
+        <div class="table-responsive">
+        <table class="table table-striped table-hover">
+          <thead>
+            <!-- <tr class="table-info"> -->
+            <tr>
+              <th *ngFor="let head of headElements" scope="col">{{head}}</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let user of usersData | filter: searchTerm | paginate : {itemsPerPage: itemsPerPage, currentPage: page}; index as i">
+              <th scope="row">{{ i + 1 }}</th>
+              <td>{{user.employee_number}}</td>
+              <td>{{user.first_name}}</td>
+              <td>{{user.last_name}}</td>
+              <td>{{user.role?.name}}</td>
+              <td>{{user.division?.name}}</td>
+              <td>{{user.team?.name}}</td>
+              <td>{{user.phone_number}}</td>
+              <td><nb-icon class="edit-icon" icon="edit-2-outline" (click)="toggle(user)"></nb-icon></td>
+              <td><nb-icon class="trash" icon="trash-2-outline" (click)="confirmDelete(user)"></nb-icon></td>
+            </tr>
+          </tbody>
+        </table>
+        </div>
+      </nb-card-body>
+      <nb-card-footer class="d-flex justify-content-between">
+        <div class="form-group d-flex flex-column">
+          <label class="label">Select Items</label>
+          <nb-select [(selected)]="itemsPerPage" [(ngModel)]="itemsPerPage" (selectedChange)="onChange($event)" placeholder="Select items">
+            <nb-option [value]="null">All</nb-option>
+            <nb-option [value]="10">10</nb-option>
+            <nb-option [value]="20">20</nb-option>
+            <nb-option [value]="50">50</nb-option>
+            <nb-option [value]="100">100</nb-option>
+            <nb-option [value]="2000">200</nb-option>
+          </nb-select>
+        </div>
+        <pagination-controls (pageChange)="page = $event"></pagination-controls>
+      </nb-card-footer>
+    </nb-card>
+  </div>
+
+  <div class="user-profile" *ngIf="show">
+    <nb-card class="image-card">
+      <nb-card-header>
+        <img src="assets/adrian-images/user-background.png" alt="logo">
+      </nb-card-header>
+      <nb-card-body>
+        <form>
+          <div class="form-group">
+            <label for="inputPicture">
+              <input type="file" id="inputPicture" style="display: none" (change)="onProfilePhotoSelected($event)">
+              <ng-container *ngIf="userProfile.image === noImage || userProfile.image === ''; else image">
+                <img src="assets/adrian-images/usermg1.jpg" alt="user">
+              </ng-container>
+              <ng-template #image>
+                <img src="{{userProfile.image}}" alt="user">
+              </ng-template>
+            </label>
+          </div>
+        </form>
+          <p>{{userProfile.username}}</p>
+        <button nbButton hero status="primary" (click)="editUser()">Edit user</button>
+      </nb-card-body>
+      <nb-card-footer>
+        <div class="row">
+          <div class="col-sm-4 user-details">
+            <div class="fecthed-data">0</div>
+            <div class="description">Tasks Assigned</div>
+          </div>
+          <div class="col-sm-4 user-details">
+            <div class="fecthed-data">0</div>
+            <div class="description">Tasks Completed</div>
+          </div>
+          <div class="col-sm-4 user-details">
+            <div class="fecthed-data">0</div>
+            <div class="description">Files</div>
+          </div>
+        </div>
+      </nb-card-footer>
+    </nb-card>
+
+    <!-- <nb-card>
+      <nb-card-header>Team mates</nb-card-header>
+      <nb-list>
+        <nb-list-item class="team-members" *ngFor="let member of teamMembers">
+          <nb-user [picture]="member.picture" [name]="member.name"></nb-user>
+        </nb-list-item>
+      </nb-list>
+    </nb-card> -->
+  </div>
+
+
+</div>

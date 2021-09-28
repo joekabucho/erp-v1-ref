@@ -1,0 +1,134 @@
+<div class="row">
+  <div class="col-sm-6">
+    <nb-card status="info">
+      <nb-card-header>
+        <div class="title">Departments</div>
+        <button nbButton status="success" size="small" (click)="showDepForm(dialog1)">Add Department</button>
+      </nb-card-header>
+      <nb-card-body>
+        <nb-accordion *ngFor="let dep of departments">
+          <nb-accordion-item #item>
+            <nb-accordion-item-header>{{dep.name}}</nb-accordion-item-header>
+            <nb-accordion-item-body class="details">
+              Teams:
+
+              <!-- <button nbButton status="info" size="small" style="float: right;" (click)="addTeamToDepartment(dialog3, dept)">add team</button> -->
+              <nb-list>
+                <nb-list-item *ngFor="let team of dep.teams">{{team.name}}</nb-list-item>
+              </nb-list>
+            </nb-accordion-item-body>
+          </nb-accordion-item>
+        </nb-accordion>
+      </nb-card-body>
+    </nb-card>
+  </div>
+  <div class="col-sm-6">
+    <nb-card status="info">
+      <nb-card-header>
+        <div class="title">Teams</div>
+        <button nbButton status="success" size="small" (click)="showTeamForm(dialog2)">Add Team</button>
+      </nb-card-header>
+      <nb-card-body>
+        <nb-accordion *ngFor="let team of teams">
+          <nb-accordion-item #item>
+            <nb-accordion-item-header>{{team.name}}</nb-accordion-item-header>
+            <nb-accordion-item-body class="details">
+              Members:
+              <nb-list>
+                <nb-list-item *ngFor="let member of team.members">{{member.fullname}}</nb-list-item>
+              </nb-list>
+            </nb-accordion-item-body>
+          </nb-accordion-item>
+        </nb-accordion>
+      </nb-card-body>
+    </nb-card>
+  </div>
+</div>
+
+
+
+<ng-template #dialog1 let-data let-ref="dialogRef">
+  <nb-card style="width: 25em;">
+    <nb-card-header>Add Department
+      <a (click)="ref.close()" aria-label="Back" style="float: right;" id="close-dept">
+        <nb-icon icon="close"></nb-icon>
+      </a>
+    </nb-card-header>
+    <nb-card-body>
+      <form #deptForm="ngForm" (ngSubmit)="saveDepartment(deptForm)">
+        <div class="form-group">
+          <input
+          nbInput
+          autofocus
+          fullWidth
+          fieldSize="medium"
+          placeholder="Department name"
+          [(ngModel)]="deptForm.name"
+          #name="ngModel"
+          id="input-name"
+          name="name"
+          [status]="name.dirty ? (name.invalid  ? 'danger' : 'success') : 'basic'"
+          [attr.aria-invalid]="name.invalid && name.touched ? true : null"
+          required>
+          <ng-container *ngIf="name.invalid && name.touched">
+            <p class="caption status-danger" *ngIf="name.errors?.required">
+              Department Name is required!
+            </p>
+          </ng-container>
+        </div>
+        <div class="form-group">
+          <nb-select fullWidth  placeholder="Select divison" [(ngModel)]="deptForm.division"  name="division" selected="" required>
+            <nb-option *ngFor="let division of divisions" [value]="division.id">{{division.name}}</nb-option>
+          </nb-select>
+        </div>
+        <div class="form-group checkboxes">
+          <label class="label" for="inputSelectTeam">Select Teams</label>
+          <nb-checkbox status="success" *ngFor="let team of teams" id="inputSelectTeam" (change)="changed($event, team)">{{team.name}}</nb-checkbox>
+        </div>
+        <div class="form-group">
+          <button nbButton status="success" size="small" style="float: right;" [disabled]="submitted || deptForm.invalid"
+          [class.btn-pulse]="submitted">submit</button>
+        </div>
+      </form>
+    </nb-card-body>
+  </nb-card>
+</ng-template>
+
+
+<ng-template #dialog2 let-data let-ref="dialogRef">
+  <nb-card style="width: 25em;">
+    <nb-card-header>Add Team
+      <a (click)="ref.close()" aria-label="Back" style="float: right;" id="close-team">
+        <nb-icon icon="close"></nb-icon>
+      </a>
+    </nb-card-header>
+    <nb-card-body>
+      <form #teamForm="ngForm" (ngSubmit)="saveTeam(teamForm)">
+        <div class="form-group">
+          <input
+          nbInput
+          autofocus
+          fullWidth
+          fieldSize="medium"
+          placeholder="Team name"
+          [(ngModel)]="teamForm.name"
+          #name="ngModel"
+          id="input-name"
+          name="name"
+          [status]="name.dirty ? (name.invalid  ? 'danger' : 'success') : 'basic'"
+          [attr.aria-invalid]="name.invalid && name.touched ? true : null"
+          required>
+          <ng-container *ngIf="name.invalid && name.touched">
+            <p class="caption status-danger" *ngIf="name.errors?.required">
+              Team Name is required!
+            </p>
+          </ng-container>
+        </div>
+        <div class="form-group">
+          <button nbButton status="success" size="small" style="float: right;" [disabled]="submitted || teamForm.invalid"
+          [class.btn-pulse]="submitted">submit</button>
+        </div>
+      </form>
+    </nb-card-body>
+  </nb-card>
+</ng-template>

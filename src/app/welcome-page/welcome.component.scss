@@ -1,0 +1,63 @@
+@import '../@theme/styles/styles.scss';
+
+nb-layout-header {
+  // TODO: Update this once icons from design are ready
+  // background-color: #1e23aa;
+}
+.welcome-title {
+  h2 {
+    text-align: center;
+    font-size: 2em;
+    color: #1e23aa;
+    font-weight: bolder;
+    position: relative;
+    margin: 1.2em;
+
+    @include media-breakpoint-down(md) {
+      font-size: 1.1em;
+    }
+
+    @include media-breakpoint-down(sm) {
+      margin-top: 1.1em;
+    }
+  }
+}
+
+.content-section {
+  .card-wrap {
+    background-color: #ffffff;
+    margin: 1em;
+    cursor: pointer;
+    max-width: 31em;
+    min-width: 20em;
+    line-height: 1.8rem;
+    font-weight: 600;
+    border-radius: 10px;
+    box-shadow: 0 0 10px #0000009c;
+    text-align: center;
+
+    h4 {
+      color: #1e23aa;
+      font-size: 1.4rem;
+    }
+
+    .card-body {
+      > img {
+        width: 50px;
+        margin-right: 10px;
+      }
+    }
+
+    &:hover {
+      -webkit-box-shadow: 4px 4px 20px 10px #1e22a980;
+      -moz-box-shadow: 4px 4px 20px 10px #1e22a980;
+      box-shadow: 4px 4px 10px 10px #1e22a980;
+      transition: all 0.3s ease-in-out;
+      cursor: pointer;
+      visibility: visible;
+      animation-duration: 0.5s;
+      animation-name: slideInUp;
+      -webkit-transition: all 0.3s ease-in-out;
+    }
+  }
+}

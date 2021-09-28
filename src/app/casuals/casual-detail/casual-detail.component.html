@@ -1,0 +1,70 @@
+<a href="#" (click)="back()" class="link back-link" aria-label="Back">
+  <nb-icon icon="arrow-back"></nb-icon>
+</a>
+<div class="row">
+  <div class="col-sm-12">
+    <nb-card size="giant" status="info">
+      <nb-card-header class="d-flex justify-content-between">
+        {{casuals.length}} Casuals
+      </nb-card-header>
+      <nb-card-body>
+        <table class="table table-striped table-hover">
+          <thead>
+            <tr>
+              <th *ngFor="let head of casualDetails" scope="col">{{head}}</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let cas of casuals; index as i">
+              <th scope="row">{{ i + 1 }}</th>
+              <td>
+                <ng-container *ngIf="cas.casual?.file === noImage; else pic">
+                  <img src="assets/adrian-images/usermg.jpg" alt="casual" style="height: 60px; width: 60px; border-radius: 50%;">
+                </ng-container>
+                <ng-template #pic>
+                  <img src="{{cas.casual?.file}}" alt="casual" style="height: 60px; width: 60px; border-radius: 50%;">
+                </ng-template>
+              </td>
+              <td style="text-transform: capitalize">{{cas.casual?.name}}</td>
+              <td (click)="viewDates(dialog, cas)" class="week">{{cas.no_of_days_worked}}</td>
+              <td>{{cas.total_week_amount}}</td>
+            </tr>
+          </tbody>
+        </table>
+      </nb-card-body>
+    </nb-card>
+  </div>
+</div>
+
+
+
+<ng-template #dialog let-data let-ref="dialogRef">
+  <nb-card style="width: 45em;" status="success">
+    <nb-card-header class="d-flex justify-content-between">Casual Dates Present
+      <a (click)="ref.close()" aria-label="Back" id="close-modal" style="float: right;">
+        <nb-icon icon="close"></nb-icon>
+      </a>
+    </nb-card-header>
+    <nb-card-body class="dates-table">
+      <table class="table table-striped">
+        <thead>
+          <tr>
+            <th *ngFor="let head of casualDateDetails" scope="col">{{head}}</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let day of casualDates; index as i">
+            <th scope="row">{{ i + 1 }}</th>
+            <td>{{day.date}}</td>
+            <td>{{day.time_in}}</td>
+            <td>{{day.time_out}}</td>
+            <td>{{day.amount}}</td>
+            <td>
+              <nb-checkbox status="{{day.is_paid ? 'success' : 'danger'}}" [checked]="day.is_paid">{{day.is_paid ? 'Paid' : 'Not Paid'}}</nb-checkbox>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </nb-card-body>
+  </nb-card>
+</ng-template>

@@ -1,0 +1,33 @@
+.container-fluid {
+  background-color: #f5f7f9;
+  border-bottom: 1px #cfd7df solid;
+  z-index: 1;
+  color: #192038;
+  height: 4.75rem;
+  padding: 1.25rem;
+  box-shadow: 0 0.5rem 1rem 0 rgba(44, 51, 73, 0.1);
+  position: fixed;
+  width: 87%;
+}
+.container-fluid input {
+  width: 20%;
+  border: 1px solid #cfd7df;
+}
+.container-fluid nb-select {
+  border: 1px solid #cfd7df;
+  margin: -3px 5px;
+}
+.container-fluid .icon-button {
+  cursor: pointer;
+  background-color: #f3f5f7;
+  border: 1px solid #cfd7df;
+}
+.container-fluid .icon-button nb-icon {
+  font-size: 30px;
+}
+.container-fluid .icon-button nb-icon:hover {
+  color: #475867;
+  font-size: 35px;
+}
+
+/*# sourceMappingURL=sub-header.component.css.map */

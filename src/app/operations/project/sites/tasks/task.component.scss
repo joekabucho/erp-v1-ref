@@ -1,0 +1,271 @@
+@import '../../../../@theme/styles/themes';
+@import '~bootstrap/scss/mixins/breakpoints';
+@import '~@nebular/theme/styles/global/breakpoints';
+
+@include nb-install-component() {
+  nb-tabset {
+    nb-tab {
+      border-top: 1px solid #ced4da;
+      padding: 1.5em 1em 0 0.2em;
+    }
+  }
+  .todo-card {
+    height: 38em;
+    overflow: scroll;
+    padding: 0;
+    box-shadow: 0 0 4px 1px rgba(0, 0, 0, 0.3);
+
+
+    .header-title {
+      font-size: 1em;
+      font-weight: bold;
+      font-style: normal;
+    }
+
+    .task-add {
+      float: right;
+      padding: 6px;
+      font-size: 12px;
+    }
+  }
+
+  .no-task {
+    margin: 105px;
+
+    nb-icon {
+      font-size: 6em;
+      color: #8a9499;
+    }
+    h3 {
+      color: #8a9499;
+      font-size: 1.3rem;
+    }
+    p {
+      font-size: 12px;
+    }
+
+  }
+
+  .task-card {
+    cursor: pointer;
+    -webkit-box-shadow: 1px 1px 2px 2px rgba(0, 0, 0, 0.2);
+    -moz-box-shadow: 1px 1px 2px 2px rgba(0, 0, 0, 0.2);
+    box-shadow: 1px 1px 2px 2px rgba(0, 0, 0, 0.2);
+    margin-bottom: 1rem;
+
+    nb-card-header {
+      display: flex;
+      justify-content: space-between;
+      border: none;
+      padding: 0.5em;
+
+
+      .task-title {
+        font-size: 13px;
+        font-weight: bold;
+        font-family: Montserrat;
+        font-style: normal;
+
+      }
+
+      img {
+        border-radius: 50%;
+        width: 1.5rem;
+        height: 1.5rem;
+      }
+    }
+    nb-card-body {
+      padding: 0.5em;
+      padding-top: 0;
+
+      .task-data {
+        font-size: 10px;
+        margin-right: 3px;
+        font-style: normal;
+      }
+      nb-icon {
+        font-size: 1em;
+      }
+
+      .fetched-data {
+        font-size: 10px;
+        font-style: normal;
+      }
+      .capitalize {
+        text-transform: capitalize;
+      }
+
+      .taskbtn-section {
+        display: flex;
+        justify-content: space-between;
+
+        a {
+          font-size: 10px;
+          color: #3366ff;
+
+          &:hover {
+            text-decoration: underline;
+          }
+        }
+        .task-btn {
+          font-size: 0.6em;
+          padding: 0.4em 0.6em;
+        }
+
+        .trash {
+          cursor: pointer;
+          color: #ff3d71;
+          font-size: 1.2rem;
+
+          &:hover {
+            font-size: 1.3rem;
+          }
+        }
+
+        .edit-icon {
+          cursor: pointer;
+          font-size: 1.2rem;
+          margin: 0 0 0 10px;
+
+          &:hover {
+            color: #3366ff;
+            font-size: 1.3rem;
+          }
+        }
+
+        .task-icons {
+          .icon-data {
+            margin: 5px;
+            font-size: 0.7em;
+
+            nb-icon {
+              font-size: 1em;
+
+              &:hover {
+                color: #3366ff;
+                font-size: 1.5em;
+                transition: all 0.1s ease-in-out;
+              }
+            }
+
+          }
+        }
+
+      }
+    }
+
+  }
+
+  .add-card {
+    cursor: pointer;
+    -webkit-box-shadow: 1px 1px 2px 2px rgba(0, 0, 0, 0.2);
+    -moz-box-shadow: 1px 1px 2px 2px rgba(0, 0, 0, 0.2);
+    box-shadow: 1px 1px 2px 2px rgba(0, 0, 0, 0.2);
+
+    &:hover {
+      -webkit-box-shadow: 5px 5px 5px 5px rgba(0, 0, 0, 0.2);
+      -moz-box-shadow: 5px 5px 5px 5px rgba(0, 0, 0, 0.2);
+      box-shadow: 5px 5px 5px 5px rgba(0, 0, 0, 0.2);
+      transition: all 0.3s ease-in-out;
+      color: #3366ff;
+    }
+    nb-card-body {
+      display: flex;
+      justify-content: center;
+
+      div {
+        margin: 0.3em;
+      }
+      nb-icon {
+        font-size: 1.4em;
+        margin: 0.2em;
+      }
+    }
+  }
+
+  .contact {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    nb-list-item {
+      cursor: pointer;
+      &:hover {
+        -webkit-box-shadow: 4px 4px 5px 5px rgba(0, 0, 0, 0.2);
+        -moz-box-shadow: 4px 4px 5px 5px rgba(0, 0, 0, 0.2);
+        box-shadow: 4px 4px 5px 5px rgba(0, 0, 0, 0.2);
+        transition: all 0.5s ease-in-out;
+      }
+    }
+
+    nb-icon {
+      font-size: 1rem;
+      cursor: pointer;
+      &:hover {
+        font-size: 1.2rem;
+        transition: all 0.2s ease-in-out;
+        color: #3366ff;
+      }
+    }
+    &:first-child {
+      border-top: none;
+    }
+  }
+}
+
+.form-group {
+  // margin: 20px 10px;
+
+  .icons {
+    width: 15%;
+    display: flex;
+    justify-content: center;
+
+    nb-icon {
+      font-size: 1.5rem;
+      cursor: pointer;
+      margin: auto;
+
+      &:hover {
+        font-size: 1.6rem;
+      }
+    }
+
+    .show {
+      color: #3366ff;
+    }
+    .hide {
+      color: #e40046;
+    }
+
+  }
+
+  .label {
+    font-weight: bold;
+    color: #1e22aa;
+  }
+}
+
+.item-add {
+  display: flex;
+
+  input {
+    border: none;
+    background: #ffffff;
+    border-bottom: solid 1px #0095ff;
+  }
+
+  .add-btn {
+    margin: auto 5px;
+    width: 12%;
+    height: 20px;
+    padding: 2px;
+    text-transform: lowercase;
+  }
+}
+
+@media only screen and (max-width: 600px) {
+  .card-dialog {
+    width: 100vw !important;
+}
+}
